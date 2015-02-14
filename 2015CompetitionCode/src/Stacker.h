@@ -56,7 +56,7 @@ private: //Only used in this class
 	void Grab(bool button);
 	void AutoStacker(bool autobtn);
 	void ManualStacker(float rightjoy);
-	void Extender(float leftjoy);
+	void Extender(int extend, int retract);
 
 };
 
