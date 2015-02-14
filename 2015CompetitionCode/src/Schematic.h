@@ -46,4 +46,8 @@
 //Analog Inputs
 #define STACKER_LIFT_POT	0
 
+//PIDValues
+#define PID_LIFT_UP 		.04,.00,.00
+#define PID_LIFT_DOWN		.04,.00,.00
+
 #endif
