@@ -16,7 +16,7 @@ void Stacker::Grab(bool button)
 //When a button is pressed, automatically move the stacker down and back up
 void Stacker::AutoStacker(bool autobtn)
 {
-	if (autobtn)
+	if (autobtn && state == 0)
 	{
 		state = 1;
 	}
@@ -25,6 +25,7 @@ void Stacker::AutoStacker(bool autobtn)
 	case 0:
 		break;
 	case 1:
+		AutoLiftPID->SetPID(PID_LIFT_UP);
 		AutoLiftPID->Enable();
 		AutoLiftPID->SetSetpoint(1);
 		if (AutoLiftPID->OnTarget())
@@ -36,6 +37,7 @@ void Stacker::AutoStacker(bool autobtn)
 	case 2:
 		if (Clock.Get() >= .5)
 		{
+			AutoLiftPID->SetPID(PID_LIFT_DOWN);
 			Clock.Stop();
 			Clock.Reset();
 			AutoLiftPID->SetSetpoint(2);

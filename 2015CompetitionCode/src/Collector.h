@@ -32,9 +32,7 @@ private: //Used only in this class
 
 public: //Used in all classes
 
-	Collector ():
-		lState(COLLECTOR_STATEINIT),
-		rState(COLLECTOR_STATEINIT)
+	Collector ()
 	{
 		leftBackArm = new Solenoid(COLLECTOR_ARMLB);
 		leftFrontArm = new Solenoid(COLLECTOR_ARMLF);
@@ -48,6 +46,8 @@ public: //Used in all classes
 		rightBelt = new Victor(COLLECTOR_SUCKR);
 		lastrightgrab = 0;
 		lastleftgrab = 0;
+		lState = 0;
+		rState = 0;
 	}
 
 	//Declare functions
