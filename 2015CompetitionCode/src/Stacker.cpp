@@ -6,9 +6,13 @@
 //When a button is pressed, grab a tote
 void Stacker::Grab(bool button)
 {
-	if (button == 1 && lastreleasedpressed == 0)
+	if (button == 1 && lastreleasedpressed == 0 && Flaps->Get() == Relay::Value::kOff)
 	{
-		Flaps->Set(!Flaps->Get());
+		Flaps->Set(Relay::Value::kOn);
+	}
+	if (button == 1 && lastreleasedpressed == 0 && Flaps->Get() == Relay::Value::kOn)
+	{
+		Flaps->Set(Relay::Value::kOff);
 	}
 	lastreleasedpressed = button;
 }

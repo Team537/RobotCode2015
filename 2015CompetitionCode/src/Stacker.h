@@ -11,7 +11,7 @@
 //Stacker class constructor
 class Stacker
 {
-	Solenoid* Flaps;
+
 	Victor*   LiftRight, LiftLeft;
 	Talon*   Extend;
 	DigitalInput* SwitchIn;
@@ -23,7 +23,6 @@ class Stacker
 public: //Used in all classes
 
 	Stacker():
-		Flaps(STACKER_FLAPS),
 		LiftRight (STACKER_LIFT_RIGHT),
 		LiftLeft (STACKER_LIFT_LEFT),
 		Extend(STACKER_EXTEND),
@@ -33,6 +32,7 @@ public: //Used in all classes
 		LiftPotLeft(STACKER_LIFT_POT_LEFT)
 
 {
+		 Flaps = new Relay(STACKER_FLAPS, Relay::Direction::kForwardOnly);
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
 		lastreleasedpressed = 0;
@@ -80,6 +80,7 @@ private: //Only used in this class
 	void AutoStacker(bool autobtn, float pov);
 	void ManualStacker(int up, int down);
 	void Extender(int extend, int retract);
+	Relay* Flaps;
 
 };
 
