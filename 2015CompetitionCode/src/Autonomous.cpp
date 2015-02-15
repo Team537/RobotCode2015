@@ -13,34 +13,47 @@ void Autonomous::Run()
 	break;
 	case 1:
 		hoarder.hoard(1);
+		hoarder.hoard(0);
 	  /*drive->setdistance(1)
 	    if (drive->atdistance())
 	    {
 			hoarder.hoard(1);
-			count++;
-			if (count == 2)
-			{
-				Autostate = 2;
-			}
-			else if (count = 4)
-			{
-				Autostate = 3;
-			}
-			else
-			{
-				Autostate = 0;
-			}
+			hoarder.hoard(0);
+			hoarder.hoard(1);
+			hoarder.hoard(0)
+			Autostate = 2;
 	    }*/
 	break;
 	case 2:
-		/*drive->setdistance(20)
+		/*drive->setdistance(2)
 		  if (drive->atdistance())
 	      {
-			 Autostate = 1;
+	     	hoarder.hoard(1);
+			hoarder.hoard(0);
+			hoarder.hoard(1);
+			hoarder.hoard(0)
+			 Autostate = 3;
 		  }*/
 	break;
 	case 3:
-		//Do nothing
+		/*drive->setdistance(3)
+		  if (drive->atdistance())
+		  {
+			hoarder.hoard(1);
+			hoarder.hoard(0);
+			hoarder.hoard(1);
+			hoarder.hoard(0)
+			 Autostate = 4;
+		  }*/
 	break;
+	case 4:
+		/*drive->setdistance(4)
+		 if (drive->atdistance())
+		  {
+			hoarder.hoard(1);
+			hoarder.hoard(0);
+			 Autostate = 4;
+		  }*/
+		break;
 	}
 }

@@ -20,22 +20,26 @@
 #define JOYDEADBAND 			0.25
 
 //Pistons
-#define HOARDER_PISTON_1		0
-#define HOARDER_PISTON_2 		0
-#define GRAB_L_PISTON 	 		0
-#define GRAB_R_PISTON 	 		0
+#define HOARDER					3
+
+//Collector Pistons
+#define GRAB_L_PISTON 	 		1
+#define GRAB_R_PISTON 	 		4
+#define COLLECTOR_ARMLB 		0
+#define COLLECTOR_ARMLF 		2
+#define COLLECTOR_ARMRB 		5
+#define COLLECTOR_ARMRF 		6
+
+//Stacker
 #define STACKER_FLAPS 			0
 
 //Victors
 #define COLLECTOR_SUCKL 		0
-#define COLLECTOR_SUCKR	 		0
+#define COLLECTOR_SUCKR	 		1
 #define STACKER_LIFT_RIGHT		0
 #define STACKER_LIFT_LEFT		0
 #define STACKER_EXTEND			0
-#define COLLECTOR_ARMLB 		0
-#define COLLECTOR_ARMLF 		0
-#define COLLECTOR_ARMRB 		0
-#define COLLECTOR_ARMRF 		0
+
 
 //Constants
 #define COLLECTOR_STATEINIT 	0

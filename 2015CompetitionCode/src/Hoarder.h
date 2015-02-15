@@ -4,6 +4,7 @@
 
 //Dependencies
 #include "WPILib.h"
+#include "Schematic.h"
 
 //Hoarder class constructor
 class Hoarder {
@@ -11,8 +12,7 @@ class Hoarder {
 public: //Used in all classes
 	Hoarder()
 {
-		pistonextend = new Solenoid(3);
-		pistonretract = new Solenoid(4);
+		pistonextend = new Solenoid(HOARDER);
 		lastpressed = 0;
 }
 	//Declare functions
@@ -23,7 +23,6 @@ private: //Only used in this class
 
 	//Declare variables
 	Solenoid *pistonextend;
-	Solenoid *pistonretract;
 	bool lastpressed;
 
 };
