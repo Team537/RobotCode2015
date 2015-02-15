@@ -22,31 +22,56 @@ void Stacker::AutoStacker(bool autobtn, float pov)
 		{
 			if (pov == 0)
 			{
-				targetlevel += 250;
+				righttargetlevel += 250;
+				lefttargetlevel += 250;
 			}
 			if (pov == 180)
 			{
-				targetlevel -= 250;
+				righttargetlevel -= 250;
+				lefttargetlevel -= 250;
 			}
 		}
-		if (targetlevel >= elevatormax)
+		//right constraints
+		if (righttargetlevel >= rightelevatormax)
 		{
-			targetlevel = elevatormax;
+			righttargetlevel = rightelevatormax;
 		}
-		if (targetlevel <= elevatormin)
+		if (righttargetlevel <= rightelevatormin)
 		{
-			targetlevel = elevatormin;
+			righttargetlevel = rightelevatormin;
 		}
-		if((targetlevel - currentlevel) >= 0)
+		//Right PID Selection (up or down values)
+		if((righttargetlevel - rightcurrentlevel) >= 0)
 		{
-			AutoLiftPID->SetPID(PID_LIFT_UP);
+			AutoLiftPIDRight->SetPID(PID_LIFT_UP_RIGHT);
 		}
-		if((targetlevel - currentlevel) < 0)
+		if((righttargetlevel - rightcurrentlevel) < 0)
 		{
-			AutoLiftPID->SetPID(PID_LIFT_DOWN);
+			AutoLiftPIDRight->SetPID(PID_LIFT_DOWN_RIGHT);
 		}
-		AutoLiftPID->SetSetpoint(targetlevel);
-
+		//left constraints
+		if (lefttargetlevel >= leftelevatormax)
+		{
+			lefttargetlevel = leftelevatormax;
+		}
+		if (lefttargetlevel <= leftelevatormin)
+		{
+			lefttargetlevel = leftelevatormin;
+		}
+		//left PID selection (up or down)
+		if((lefttargetlevel - leftcurrentlevel) >= 0)
+		{
+			AutoLiftPIDLeft->SetPID(PID_LIFT_UP_LEFT);
+		}
+		if((lefttargetlevel - leftcurrentlevel) < 0)
+		{
+			AutoLiftPIDLeft->SetPID(PID_LIFT_DOWN_LEFT);
+		}
+		// setting target values
+		AutoLiftPIDLeft->SetSetpoint(lefttargetlevel);
+		AutoLiftPIDRight->SetSetpoint(righttargetlevel);
+		rightcurrentlevel = AutoLiftPIDRight->Get();
+		leftcurrentlevel = AutoLiftPIDLeft->Get();
 	}
 	if (autobtn && state == 0)
 	{
@@ -57,10 +82,13 @@ void Stacker::AutoStacker(bool autobtn, float pov)
 	case 0:
 		break;
 	case 1:
-		AutoLiftPID->SetPID(PID_LIFT_UP);
-		AutoLiftPID->Enable();
-		AutoLiftPID->SetSetpoint(1);
-		if (AutoLiftPID->OnTarget())
+		AutoLiftPIDLeft->SetPID(PID_LIFT_UP_LEFT);
+		AutoLiftPIDRight->SetPID(PID_LIFT_UP_RIGHT);
+		AutoLiftPIDLeft->Enable();
+		AutoLiftPIDRight->Enable();
+		AutoLiftPIDLeft->SetSetpoint(1);
+		AutoLiftPIDRight->SetSetpoint(1);
+		if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
 		{
 			Clock.Start();
 			state = 2;
@@ -69,13 +97,14 @@ void Stacker::AutoStacker(bool autobtn, float pov)
 	case 2:
 		if (Clock.Get() >= .5)
 		{
-			AutoLiftPID->SetPID(PID_LIFT_DOWN);
+			AutoLiftPIDLeft->SetPID(PID_LIFT_DOWN_LEFT);
+			AutoLiftPIDRight->SetPID(PID_LIFT_DOWN_RIGHT);
 			Clock.Stop();
 			Clock.Reset();
-			AutoLiftPID->SetSetpoint(2);
-			if (AutoLiftPID->OnTarget())
+			AutoLiftPIDLeft->SetSetpoint(0);
+			AutoLiftPIDRight->SetSetpoint(0);
+			if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
 			{
-				AutoLiftPID->Disable();
 				state = 0;
 			}
 		}
@@ -91,13 +120,17 @@ void Stacker::ManualStacker(int up, int down) {
 	{
 		if (down)
 		{
-			AutoLiftPID->SetPID(PID_LIFT_DOWN);
-			setpoint -= 1;
+			AutoLiftPIDLeft->SetPID(PID_LIFT_DOWN_LEFT);
+			AutoLiftPIDRight->SetPID(PID_LIFT_DOWN_RIGHT);
+			righttargetlevel -= 1;
+			lefttargetlevel -= 1;
 		}
 		if (up)
 		{
-			AutoLiftPID->SetPID(PID_LIFT_UP);
-			setpoint += 1;
+			AutoLiftPIDLeft->SetPID(PID_LIFT_UP_LEFT);
+			AutoLiftPIDRight->SetPID(PID_LIFT_UP_RIGHT);
+			righttargetlevel += 1;
+			lefttargetlevel += 1;
 		}
 	}
 

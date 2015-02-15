@@ -12,40 +12,50 @@
 class Stacker
 {
 	Solenoid* Flaps;
-	Victor*   Lift;
+	Victor*   LiftRight, LiftLeft;
 	Talon*   Extend;
 	DigitalInput* SwitchIn;
 	DigitalInput* SwitchOut;
-	AnalogInput* LiftPot;
-	PIDController* AutoLiftPID;
+	AnalogInput* LiftPotRight, LiftPotLeft;
+	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 	Timer Clock;
 
 public: //Used in all classes
 
 	Stacker():
 		Flaps(STACKER_FLAPS),
-		Lift (STACKER_LIFT),
+		LiftRight (STACKER_LIFT_RIGHT),
+		LiftLeft (STACKER_LIFT_LEFT),
 		Extend(STACKER_EXTEND),
 		SwitchIn(STACKER_IN_SWITCH),
 		SwitchOut(STACKER_OUT_SWITCH),
-		LiftPot(STACKER_LIFT_POT)
+		LiftPotRight(STACKER_LIFT_POT_RIGHT),
+		LiftPotLeft(STACKER_LIFT_POT_LEFT)
 
 {
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
 		lastreleasedpressed = 0;
 		deadband            = 0.1;
-		AutoLiftPID->SetAbsoluteTolerance(20);
-		AutoLiftPID->SetOutputRange(1,360);
-		AutoLiftPID = new PIDController(.04, 0.01, 0.01, LiftPot, Lift);
+		AutoLiftPIDRight->SetAbsoluteTolerance(20);
+		AutoLiftPIDRight->SetOutputRange(1,360);
+		AutoLiftPIDRight = new PIDController(.04, 0.01, 0.01, LiftPotRight, LiftRight);
+		AutoLiftPIDLeft->SetAbsoluteTolerance(20);
+		AutoLiftPIDLeft->SetOutputRange(1,360);
+		AutoLiftPIDLeft = new PIDController(.04, 0.01, 0.01, &LiftPotLeft, &LiftLeft);
 		oldelevatorspd = 0;
 		oldextendspeed = 0;
 		// Give this a value
 		setpoint = 0;
 		//
-		currentlevel = 0;
-		lastlevel = 0;
-		targetlevel = 0;
+		rightcurrentlevel = 0;
+		leftcurrentlevel = 0;
+		righttargetlevel = 0;
+		lefttargetlevel = 0;
+		rightelevatormax = 900;
+		leftelevatormax = 900;
+		rightelevatormin = 15;
+		leftelevatormin = 15;
 		lastpov = -1;
 }
 	//Declare master function
@@ -59,7 +69,11 @@ private: //Only used in this class
 	float elevatorrampspeed, extendrampspeed,deadband;
 	float setpoint;
 	int state = 0;
-	float currentlevel, lastlevel, targetlevel, elevatormax, elevatormin, lastpov;
+	float rightcurrentlevel, leftcurrentlevel;
+	float righttargetlevel, lefttargetlevel;
+	float rightelevatormax, leftelevatormax;
+	float rightelevatormin, leftelevatormin;
+	float lastpov;
 
 	//Declare functions
 	void Grab(bool button);
