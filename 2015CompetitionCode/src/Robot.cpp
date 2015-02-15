@@ -45,12 +45,12 @@ private:
 	void TeleopPeriodic()
 	{
 		swerve->Run();
-		Collect.setLeftState(SecondaryController->GetRawButton(LEFT_PROGRESS), SecondaryController->GetRawButton(LEFT_DEGRESS));
-		Collect.setRightState(SecondaryController->GetRawButton(RIGHT_PROGRESS), SecondaryController->GetRawButton(RIGHT_DEGRESS));
-		Collect.setGrab(SecondaryController->GetRawButton(COL_GRAB_RIGHT_BTN), SecondaryController->GetRawButton(COL_GRAB_LEFT_BTN));
-		Collect.setMotors(SecondaryController->GetRawButton(COL_MOTOR_BACKWARDS), SecondaryController->GetRawButton(COL_MOTOR_FORWARD));
+		Collect.setLeftState(SecondaryController->GetRawButton(LEFT_TOGGLE), SecondaryController->GetRawButton(LEFT_ORIENT));
+		Collect.setRightState(SecondaryController->GetRawButton(RIGHT_TOGGLE), SecondaryController->GetRawButton(RIGHT_ORIENT));
+		Collect.setGrab(SecondaryController->GetRawAxis(COL_GRAB_RIGHT_AXIS), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS));
+		Collect.setMotors(SecondaryController->GetRawAxis(COL_MOTOR_LEFT), SecondaryController->GetRawButton(COL_MOTOR_RIGHT));
 		Hoard.hoard(PrimaryController->GetRawButton(HOARD_BTN));
-		Stack.Run(SecondaryController->GetRawButton(TOTE_GRAB_BTN), SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawAxis(EXTENDER_JOYSTICK), SecondaryController->GetRawAxis(STACKER_JOYSTICK));
+		Stack.Run(SecondaryController->GetRawButton(TOTE_GRAB_BTN), SecondaryController->GetRawButton(AUTOSTACK_BTN),  SecondaryController->GetPOV(),SecondaryController->GetRawButton(STACKER_UP),SecondaryController->GetRawButton(STACKER_DOWN), SecondaryController->GetRawButton(EXTENDER_OUT),SecondaryController->GetRawButton(EXTENDER_IN));
 	}
 
 	void TestPeriodic()

@@ -40,9 +40,16 @@ public: //Used in all classes
 		AutoLiftPID = new PIDController(.04, 0.01, 0.01, LiftPot, Lift);
 		oldelevatorspd = 0;
 		oldextendspeed = 0;
+		// Give this a value
+		setpoint = 0;
+		//
+		currentlevel = 0;
+		lastlevel = 0;
+		targetlevel = 0;
+		lastpov = -1;
 }
 	//Declare master function
-	void Run(bool btngrab, bool autobtn, float leftjoy, float rightjoy);
+	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
 
 private: //Only used in this class
 
@@ -50,12 +57,14 @@ private: //Only used in this class
 	bool   lastreleasedpressed;
 	float oldelevatorspd, oldextendspeed;
 	float elevatorrampspeed, extendrampspeed,deadband;
+	float setpoint;
 	int state = 0;
+	float currentlevel, lastlevel, targetlevel, elevatormax, elevatormin, lastpov;
 
 	//Declare functions
 	void Grab(bool button);
-	void AutoStacker(bool autobtn);
-	void ManualStacker(float rightjoy);
+	void AutoStacker(bool autobtn, float pov);
+	void ManualStacker(int up, int down);
 	void Extender(int extend, int retract);
 
 };

@@ -1,44 +1,45 @@
 //Dependencies
 #include "Collector.h"
 
-void Collector::setLeftState(int lprogress, int ldegress) {
+void Collector::setLeftState(int ltoggle, int lorient) {
 
 	switch (lState){
 	case 0: // both pistons retracted
 		leftBackArm->Set(false);
 		leftFrontArm->Set(false);
-		if(lprogress)
-		{
-			lState = 1;
-		}
-		if(ldegress)
+		if(ltoggle && !lastltoggle)
 		{
 			lState = 2;
 		}
+		if(lorient)
+		{
+			lState = 1;
+			rState = 1;
+		}
+		lastltoggle = ltoggle;
 		break;
 	case 1:
 		leftBackArm->Set(true);
 		leftFrontArm->Set(false);
-		if(lprogress)
+		if(!lorient)
 		{
 			lState = 2;
-		}
-		if(ldegress)
-		{
-			lState = 0;
+			rState = 2;
 		}
 		break;
 	case 2:
 		leftBackArm->Set(true);
 		leftFrontArm->Set(true);
-		if(lprogress)
+		if(ltoggle && !lastltoggle)
 		{
 			lState = 0;
 		}
-		if(ldegress)
+		if(lorient)
 		{
 			lState = 1;
+			rState = 1;
 		}
+		lastltoggle = ltoggle;
 		break;
 	default:
 		//wut u do now kurt...
@@ -47,43 +48,44 @@ void Collector::setLeftState(int lprogress, int ldegress) {
 
 }
 
-void Collector::setRightState(int rprogress, int rdegress) {
+void Collector::setRightState(int rtoggle, int rorient) {
 	switch (rState){
 	case 0: // both pistons retracted
 		rightBackArm->Set(false);
 		rightFrontArm->Set(false);
-		if(rprogress)
+		if(rorient)
 		{
 			rState = 1;
+			lState = 1;
 		}
-		if(rdegress)
+		if(rtoggle && !lastrtoggle)
 		{
 			rState = 2;
 		}
+		lastrtoggle = rtoggle;
 		break;
 	case 1:
 		rightBackArm->Set(true);
 		rightFrontArm->Set(false);
-		if(rprogress)
+		if(!rorient)
 		{
-			rState = 2;
-		}
-		if(rdegress)
-		{
-			rState = 0;
+			rState = 1;
+			lState = 1;
 		}
 		break;
 	case 2:
 		rightBackArm->Set(true);
 		rightFrontArm->Set(true);
-		if(rprogress)
+		if(rorient)
+		{
+			rState = 1;
+			lState = 1;
+		}
+		if(rtoggle && !lastrtoggle)
 		{
 			rState = 0;
 		}
-		if(rdegress)
-		{
-			rState = 1;
-		}
+		lastrtoggle = rtoggle;
 		break;
 	default:
 		//wut u do now kurt...
@@ -94,37 +96,51 @@ void Collector::setRightState(int rprogress, int rdegress) {
 int Collector::getLeftState() { return lState; }
 int Collector::getRightState() { return rState; }
 
-void Collector::setGrab(int rightgrab, int leftgrab) {
-	if(rState == 1 || rState == 2)
+void Collector::setGrab(float leftyaxis, float rightyaxis) {
+	if(lState == 2)
 	{
-		if (rightgrab && !lastrightgrab)
+		if (leftyaxis <= -.5)
+		{
+			leftGrabber->Set(0);
+		}
+		if (leftyaxis >= .5)
 		{
 			leftGrabber->Set(1);
 		}
 	}
-	lastrightgrab = rightgrab;
-	if(lState == 1 || lState == 2)
+	if(rState == 2)
 	{
-		if(leftgrab && !lastleftgrab)
+		if (rightyaxis <= -.5)
 		{
 			rightGrabber->Set(1);
 		}
+		if (rightyaxis >= .5)
+		{
+			rightGrabber->Set(0);
+		}
 	}
-	lastleftgrab = leftgrab;
 }
 
 bool Collector::getGrab() { return (leftGrabber->Get() && rightGrabber->Get()); }
 
-void Collector::setMotors(bool forward, bool reverse) {
-	if(forward)
+void Collector::setMotors(float leftverticaljoy, float rightverticaljoy) {
+	if(fabs(rightverticaljoy) >= .1)
 	{
-		leftBelt->Set(1);
-		rightBelt->Set(1);
+		float rightbeltdifferance = rightverticaljoy - oldrbelt;
+		if(fabs(rightbeltdifferance) >= rampbelt)
+		{
+			oldrbelt += rampbelt * (rightbeltdifferance / fabs(rightbeltdifferance));
+		}
+		rightBelt->Set(rightverticaljoy);
 	}
-	if (reverse)
+	if (fabs(leftverticaljoy) >= .1)
 	{
-		leftBelt->Set(-1);
-		rightBelt->Set(-1);
+		float leftbeltdifferance = leftverticaljoy - oldlbelt;
+		if(fabs(leftbeltdifferance) >= rampbelt)
+		{
+			oldlbelt += rampbelt * (leftbeltdifferance / fabs(leftbeltdifferance));
+		}
+		leftBelt->Set(leftverticaljoy);
 	}
 }
 

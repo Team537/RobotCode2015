@@ -14,8 +14,40 @@ void Stacker::Grab(bool button)
 }
 
 //When a button is pressed, automatically move the stacker down and back up
-void Stacker::AutoStacker(bool autobtn)
+void Stacker::AutoStacker(bool autobtn, float pov)
 {
+	if (state == 0)
+	{
+		if(pov != -1 && lastpov == -1)
+		{
+			if (pov == 0)
+			{
+				targetlevel += 250;
+			}
+			if (pov == 180)
+			{
+				targetlevel -= 250;
+			}
+		}
+		if (targetlevel >= elevatormax)
+		{
+			targetlevel = elevatormax;
+		}
+		if (targetlevel <= elevatormin)
+		{
+			targetlevel = elevatormin;
+		}
+		if((targetlevel - currentlevel) >= 0)
+		{
+			AutoLiftPID->SetPID(PID_LIFT_UP);
+		}
+		if((targetlevel - currentlevel) < 0)
+		{
+			AutoLiftPID->SetPID(PID_LIFT_DOWN);
+		}
+		AutoLiftPID->SetSetpoint(targetlevel);
+
+	}
 	if (autobtn && state == 0)
 	{
 		state = 1;
@@ -54,61 +86,54 @@ void Stacker::AutoStacker(bool autobtn)
 }
 
 //When a joystick is moved, move the stacker accordingly
-void Stacker::ManualStacker(float rightjoy) {
-	rightjoy = -1*rightjoy;
-	if (fabs(rightjoy) < .1)
-		rightjoy = 0;
-	if (fabs(rightjoy) > 1)
+void Stacker::ManualStacker(int up, int down) {
+	if (state == 0)
 	{
-		if (rightjoy < 0)
+		if (down)
 		{
-			rightjoy = -1;
+			AutoLiftPID->SetPID(PID_LIFT_DOWN);
+			setpoint -= 1;
 		}
-		if (rightjoy > 0)
+		if (up)
 		{
-			rightjoy = 1;
+			AutoLiftPID->SetPID(PID_LIFT_UP);
+			setpoint += 1;
 		}
 	}
-	float RightJoydiferrance = rightjoy - oldelevatorspd;
-	if (fabs(RightJoydiferrance) >= elevatorrampspeed)
-		rightjoy += elevatorrampspeed * (RightJoydiferrance / fabs(RightJoydiferrance));
-	Lift->Set(rightjoy);
+
+
 }
 
 
 //When a joystick is moved, extend or retract the stacker accordingly
-void Stacker::Extender(float leftjoy)
+void Stacker::Extender(int extend, int retract)
 {
-	if (fabs(leftjoy) < .1)
+
+	float spd;
+	if (extend)
 	{
-		leftjoy = 0;
+		spd = 1;
 	}
-	if (fabs(leftjoy) > 1)
+	if (retract)
 	{
-		if (leftjoy < 0)
-		{
-			leftjoy = -1;
-		}
-		if (leftjoy > 0)
-		{
-			leftjoy = 1;
-		}
+		spd = -1;
 	}
-	float LeftJoydiferrance = leftjoy - oldextendspeed;
+	float LeftJoydiferrance = spd - oldextendspeed;
 	if (fabs(LeftJoydiferrance) >= extendrampspeed)
-		leftjoy += extendrampspeed * (LeftJoydiferrance / fabs(LeftJoydiferrance));
+		oldextendspeed += extendrampspeed * (LeftJoydiferrance / fabs(LeftJoydiferrance));
 	if (!SwitchIn && !SwitchOut)
 	{
-		Extend->Set(leftjoy);
+		Extend->Set(oldextendspeed);
 	}
 }
 
 
 //Master function: Runs all functions
-void Stacker::Run(bool btngrab, bool autobtn, float leftjoy, float rightjoy)
+void Stacker::Run(bool btngrab, bool autobtn, float pov,int up, int down, int extend, int retract)
 {
 	Grab(btngrab);
-	AutoStacker(autobtn);
-	ManualStacker(rightjoy);
-	Extender(leftjoy);
+	AutoStacker( autobtn,  pov);
+	ManualStacker( up,  down);
+	Extender( extend,  retract);
+
 }

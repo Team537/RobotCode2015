@@ -48,20 +48,29 @@ public: //Used in all classes
 		lastleftgrab = 0;
 		lState = 0;
 		rState = 0;
+		rampbelt = 0.1;
+		oldlbelt = 0;
+		oldrbelt = 0;
+		lastltoggle = 0;
+		lastrtoggle = 0;
 	}
 
 	//Declare functions
-	void setLeftState(int lprogress, int ldegress);
-	void setRightState(int rprogess, int rdegress);
+	void setLeftState(int ltoggle, int lorient);
+	void setRightState(int rtoggle, int rorient);
 	int getLeftState();
 	int getRightState();
 	int lastrightgrab;
 	int lastleftgrab;
+	float oldrbelt, oldlbelt;
+	float rampbelt;
+	int lastltoggle;
+	int lastrtoggle;
 
-	void setGrab(int rightgrab, int leftgrab);
+	void setGrab(float leftyaxis, float rightyaxis);
 	bool getGrab();
 
-	void setMotors(bool forward, bool reverse);
+	void setMotors(float leftverticaljoy, float rightverticaljoy);
 	float getLeftMotor();
 	float getRightMotor();
 

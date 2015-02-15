@@ -3,18 +3,20 @@
 
 //Controller
 #define HOARD_BTN 				1
-#define TOTE_GRAB_BTN			4
-#define AUTOSTACK_BTN			1
-#define STACKER_JOYSTICK		3
-#define EXTENDER_JOYSTICK		1
-#define LEFT_PROGRESS			7
-#define LEFT_DEGRESS			5
-#define RIGHT_PROGRESS			8
-#define RIGHT_DEGRESS			6
-#define COL_GRAB_RIGHT_BTN		14
-#define COL_GRAB_LEFT_BTN		13
-#define COL_MOTOR_FORWARD		2
-#define COL_MOTOR_BACKWARDS		3
+#define TOTE_GRAB_BTN			3
+#define AUTOSTACK_BTN			2
+#define STACKER_UP				6
+#define STACKER_DOWN			5
+#define EXTENDER_IN				1
+#define EXTENDER_OUT			4
+#define LEFT_TOGGLE				7
+#define LEFT_ORIENT				13
+#define RIGHT_TOGGLE			8
+#define RIGHT_ORIENT			14
+#define COL_GRAB_RIGHT_AXIS		0
+#define COL_GRAB_LEFT_AXIS		2
+#define COL_MOTOR_LEFT			1
+#define COL_MOTOR_RIGHT			3
 #define JOYDEADBAND 			0.25
 
 //Pistons
