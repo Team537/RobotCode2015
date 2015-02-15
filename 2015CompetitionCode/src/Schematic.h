@@ -48,6 +48,10 @@
 //Analog Inputs
 #define STACKER_LIFT_POT	0
 
+//Compressor
+#define COMPRESSOR_SWITCH	0
+#define COMPRESSOR_RELAY	0
+
 //PIDValues
 #define PID_LIFT_UP 		.04,.00,.00
 #define PID_LIFT_DOWN		.04,.00,.00

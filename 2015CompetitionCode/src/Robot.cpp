@@ -4,6 +4,7 @@
 #include "Hoarder.h"
 #include "Stacker.h"
 #include "swerve/Swerve.h"
+#include "Compressor.h"
 
 class Robot: public IterativeRobot
 {
@@ -11,6 +12,7 @@ class Robot: public IterativeRobot
 	Collector Collect;
 	Hoarder   Hoard;
 	Stacker   Stack;
+	CompressorManager compressor;
 private:
 	LiveWindow *lw;
 	Swerve *swerve;
@@ -29,21 +31,23 @@ private:
 
 	void AutonomousInit()
 	{
-
+		//compressor.checkCompressor();
 	}
 
 	void AutonomousPeriodic()
 	{
-
+		//compressor.checkCompressor();
 	}
 
 	void TeleopInit()
 	{
 		swerve->Initialize();
+		//compressor.checkCompressor();
 	}
 
 	void TeleopPeriodic()
 	{
+		//compressor.checkCompressor();
 		swerve->Run();
 		Collect.setLeftState(SecondaryController->GetRawButton(LEFT_TOGGLE), SecondaryController->GetRawButton(LEFT_ORIENT));
 		Collect.setRightState(SecondaryController->GetRawButton(RIGHT_TOGGLE), SecondaryController->GetRawButton(RIGHT_ORIENT));

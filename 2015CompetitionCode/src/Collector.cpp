@@ -19,8 +19,8 @@ void Collector::setLeftState(int ltoggle, int lorient) {
 		lastltoggle = ltoggle;
 		break;
 	case 1:
-		leftBackArm->Set(true);
-		leftFrontArm->Set(false);
+		leftBackArm->Set(false);
+		leftFrontArm->Set(true);
 		if(!lorient)
 		{
 			lState = 2;
@@ -32,7 +32,7 @@ void Collector::setLeftState(int ltoggle, int lorient) {
 		leftFrontArm->Set(true);
 		if(ltoggle && !lastltoggle)
 		{
-			lState = 0;
+			lState = 3;
 		}
 		if(lorient)
 		{
@@ -40,6 +40,20 @@ void Collector::setLeftState(int ltoggle, int lorient) {
 			rState = 1;
 		}
 		lastltoggle = ltoggle;
+		break;
+	case 3:
+		leftBackArm->Set(true);
+		leftFrontArm->Set(false);
+		if(ltoggle && !lastltoggle)
+			{
+				lState = 2;
+			}
+			if(lorient)
+			{
+				lState = 1;
+				rState = 1;
+			}
+			lastltoggle = ltoggle;
 		break;
 	default:
 		//wut u do now kurt...
@@ -65,8 +79,8 @@ void Collector::setRightState(int rtoggle, int rorient) {
 		lastrtoggle = rtoggle;
 		break;
 	case 1:
-		rightBackArm->Set(true);
-		rightFrontArm->Set(false);
+		rightBackArm->Set(false);
+		rightFrontArm->Set(true);
 		if(!rorient)
 		{
 			rState = 1;
@@ -83,7 +97,21 @@ void Collector::setRightState(int rtoggle, int rorient) {
 		}
 		if(rtoggle && !lastrtoggle)
 		{
-			rState = 0;
+			rState = 3;
+		}
+		lastrtoggle = rtoggle;
+		break;
+	case 3:
+		rightBackArm->Set(true);
+		rightFrontArm->Set(false);
+		if(rorient)
+		{
+			rState = 1;
+			lState = 1;
+		}
+		if(rtoggle && !lastrtoggle)
+		{
+			rState = 2;
 		}
 		lastrtoggle = rtoggle;
 		break;

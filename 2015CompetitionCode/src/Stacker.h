@@ -13,7 +13,7 @@ class Stacker
 {
 	Solenoid* Flaps;
 	Victor*   Lift;
-	Victor*   Extend;
+	Talon*   Extend;
 	DigitalInput* SwitchIn;
 	DigitalInput* SwitchOut;
 	AnalogInput* LiftPot;
