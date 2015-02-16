@@ -22,10 +22,10 @@ void Swerve::Run()
 				//SmartDashboard::PutNumber("537test", 537);*/
 				//FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
 				//FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-				BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+				//BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
 				//BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
 				//automatic->Runtime(BackRightMod->ReadPot(), p);
-				/*if (Controller->GetRawButton(1) == 1){
+				if (Controller->GetRawButton(1) == 1){
 					AngleSetpoint = 250;
 				}
 				else if (Controller->GetRawButton(2)) {
@@ -34,8 +34,8 @@ void Swerve::Run()
 				else {
 					AngleSetpoint = 165;
 				}
-				SmartDashboard::PutNumber("Runtime done", automatic->Runtime(BackRightMod->ReadPot(), p));
-				if (automatic->Runtime(BackRightMod->ReadPot(), p))
+				//SmartDashboard::PutNumber("Runtime done", automatic->Runtime(BackRightMod->ReadPot(), p));
+				/*if (automatic->Runtime(BackRightMod->ReadPot(), p))
 				{
 					BackRightMod->DisablePID();
 				}
@@ -75,64 +75,64 @@ void Swerve::Run()
 				/*AngleSetpoint = Controller->GetDirectionDegrees();
 				if (AngleSetpoint < 0)
 					AngleSetpoint += 360;*/
-				// = Controller->GetDirectionDegrees();
+				//AngleSetpoint = Controller->GetDirectionDegrees();
 				//AngleSetpoint += 180;
-				SmartDashboard::PutNumber("Angle Setpoint", AngleSetpoint);
+				//SmartDashboard::PutNumber("Angle Setpoint", AngleSetpoint);
 				//SmartDashboard::PutNumber("N Angle Setpoint", NAngleSetpoint);
 				//FrontRightMod->AutoDrive(AngleSetpoint);
 				//BackLeftMod->AutoDrive(AngleSetpoint);
 				//BackRightMod->AutoDrive(AngleSetpoint);
-				//FrontLeftMod->AutoDrive(AngleSetpoint );
+				FrontLeftMod->AutoDrive(AngleSetpoint );
 
-	 		/*if(newtime.Get() >= .25)
+	 		if(newtime.Get() >= .25)
 				{
 					if (Controller->GetRawButton(7)==1)
 					{
 						p-=.0001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
 					if (Controller->GetRawButton(8)==1)
 					{
 						p+=.0001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
 					if (Controller->GetRawButton(9)==1)
 					{
 						i-=.000001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
 					if (Controller->GetRawButton(10)==1)
 					{
 						i+=.000001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
 					if (Controller->GetRawButton(3)==1)
 					{
 						i-=.00001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
 					if (Controller->GetRawButton(5)==1)
 					{
 						i+=.00001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
 					if (Controller->GetRawButton(11)==1)
 					{
 						d-=.0001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
 					if (Controller->GetRawButton(12)==1)
 					{
 						d+=.0001;
-						BackLeftMod->Reset();
+						FrontLeftMod->Reset();
 					}
-					BackLeftMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
+					FrontLeftMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
 				SmartDashboard::PutNumber("P Change Test", PChangeTest);
 					newtime.Stop();
 					newtime.Reset();
 					newtime.Start();
-					BackLeftMod->PIDAdjust(p,i,d);
-					}*/
+					FrontLeftMod->PIDAdjust(p,i,d);
+					}
 					/*if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
 					{
 						FrontLeftMod->AutoDrive(329.3);
@@ -181,10 +181,10 @@ void Swerve::Run()
 						FrontLeftMod->AutoDrive(AngleSetpoint);
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
-							FrontLeftMod->drive(Controller->GetRawAxis(0),-1*sign*Controller->GetMagnitude());
+							FrontLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
 							FrontRightMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
 							BackRightMod->drive(Controller->GetRawAxis(0), sign*Controller->GetMagnitude());
-							BackLeftMod->drive(Controller->GetRawAxis(0),-1*sign*Controller->GetMagnitude());
+							BackLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
 						}
 						else
 						{

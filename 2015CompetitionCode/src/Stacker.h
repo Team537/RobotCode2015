@@ -12,27 +12,23 @@
 class Stacker
 {
 
-	Victor*   LiftRight, LiftLeft;
-	Talon*   Extend;
-	DigitalInput* SwitchIn;
-	DigitalInput* SwitchOut;
-	AnalogInput* LiftPotRight, LiftPotLeft;
-	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
+
 	Timer Clock;
 
 public: //Used in all classes
 
-	Stacker():
-		LiftRight (STACKER_LIFT_RIGHT),
-		LiftLeft (STACKER_LIFT_LEFT),
-		Extend(STACKER_EXTEND),
-		SwitchIn(STACKER_IN_SWITCH),
-		SwitchOut(STACKER_OUT_SWITCH),
-		LiftPotRight(STACKER_LIFT_POT_RIGHT),
-		LiftPotLeft(STACKER_LIFT_POT_LEFT)
+	Stacker()
+
 
 {
 		 Flaps = new Relay(STACKER_FLAPS, Relay::Direction::kForwardOnly);
+		 LiftRight = new Victor (STACKER_LIFT_RIGHT);
+		 LiftLeft = new Victor (STACKER_LIFT_LEFT);
+		 Extend = new Talon (STACKER_EXTEND);
+		 SwitchIn = new DigitalInput(STACKER_IN_SWITCH);
+		 SwitchOut = new DigitalInput(STACKER_OUT_SWITCH);
+		 LiftPotRight = new AnalogInput(STACKER_LIFT_POT_RIGHT);
+		 LiftPotLeft = new AnalogInput(STACKER_LIFT_POT_LEFT);
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
 		lastreleasedpressed = 0;
@@ -42,7 +38,7 @@ public: //Used in all classes
 		AutoLiftPIDRight = new PIDController(.04, 0.01, 0.01, LiftPotRight, LiftRight);
 		AutoLiftPIDLeft->SetAbsoluteTolerance(20);
 		AutoLiftPIDLeft->SetOutputRange(1,360);
-		AutoLiftPIDLeft = new PIDController(.04, 0.01, 0.01, &LiftPotLeft, &LiftLeft);
+		AutoLiftPIDLeft = new PIDController(.04, 0.01, 0.01, LiftPotLeft, LiftLeft);
 		oldelevatorspd = 0;
 		oldextendspeed = 0;
 		// Give this a value
@@ -81,6 +77,12 @@ private: //Only used in this class
 	void ManualStacker(int up, int down);
 	void Extender(int extend, int retract);
 	Relay* Flaps;
+	Victor*   LiftRight, *LiftLeft;
+	Talon*   Extend;
+	DigitalInput* SwitchIn;
+	DigitalInput* SwitchOut;
+	AnalogInput* LiftPotRight, *LiftPotLeft;
+	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 
 };
 
