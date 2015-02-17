@@ -25,8 +25,7 @@ public: //Used in all classes
 		 LiftRight = new Victor (STACKER_LIFT_RIGHT);
 		 LiftLeft = new Victor (STACKER_LIFT_LEFT);
 		 Extend = new Talon (STACKER_EXTEND);
-		 SwitchIn = new DigitalInput(STACKER_IN_SWITCH);
-		 SwitchOut = new DigitalInput(STACKER_OUT_SWITCH);
+		 Switch = new DigitalInput(STACKER_IN_SWITCH);
 		 LiftPotRight = new AnalogInput(STACKER_LIFT_POT_RIGHT);
 		 LiftPotLeft = new AnalogInput(STACKER_LIFT_POT_LEFT);
 		elevatorrampspeed           = 0.1;
@@ -53,6 +52,7 @@ public: //Used in all classes
 		rightelevatormin = 15;
 		leftelevatormin = 15;
 		lastpov = -1;
+		lastswitch = false;
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
@@ -70,6 +70,7 @@ private: //Only used in this class
 	float rightelevatormax, leftelevatormax;
 	float rightelevatormin, leftelevatormin;
 	float lastpov;
+	bool lastswitch;
 
 	//Declare functions
 	void Grab(bool button);
@@ -79,8 +80,7 @@ private: //Only used in this class
 	Relay* Flaps;
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   Extend;
-	DigitalInput* SwitchIn;
-	DigitalInput* SwitchOut;
+	DigitalInput* Switch;
 	AnalogInput* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 

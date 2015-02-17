@@ -16,124 +16,8 @@ void Swerve::Initialize()
 
 void Swerve::Run()
 {
-	//testing.Set(0.25);
-				//compress.checkCompressor();
-				//SpdSet.Setspeed(Controller.GetRawAxis(2), Controller.GetRawAxis(4), Controller.GetRawButton(1), Controller.GetRawButton(2), Controller.GetRawButton(6));
-				//SmartDashboard::PutNumber("537test", 537);*/
-				//FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-				//FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-				//BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-				//BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-				//automatic->Runtime(BackRightMod->ReadPot(), p);
-				if (Controller->GetRawButton(1) == 1){
-					AngleSetpoint = 250;
-				}
-				else if (Controller->GetRawButton(2)) {
-					AngleSetpoint = 185;
-				}
-				else {
-					AngleSetpoint = 165;
-				}
-				//SmartDashboard::PutNumber("Runtime done", automatic->Runtime(BackRightMod->ReadPot(), p));
-				/*if (automatic->Runtime(BackRightMod->ReadPot(), p))
-				{
-					BackRightMod->DisablePID();
-				}
-				SmartDashboard::PutNumber("P", automatic->GetKp());
-				SmartDashboard::PutNumber("I", automatic->GetKi());
-				SmartDashboard::PutNumber("D", automatic->GetKd());
-			//	BackRightMod->AutoDrive(AngleSetpoint);*/
-				/*if (Controller->GetMagnitude() >= .15)
-				{
-					NAngleSetpoint = Controller->GetDirectionDegrees();
-					SmartDashboard::PutNumber("RawDegrees", Controller->GetDirectionDegrees());
 
-					if (Controller->GetRawAxis(1) < 0)
-					{
-						NAngleSetpoint += 90;
-						sign = 1;
-					}
-					else if (NAngleSetpoint > 0)
-					{
-						sign = -1;
-						NAngleSetpoint -= 90;
-
-					}
-					else
-					{
-						sign = -1;
-						NAngleSetpoint += 270;
-					}
-
-					SmartDashboard::PutNumber("NAngleSetpoint", NAngleSetpoint);
-					AngleSetpoint = NAngleSetpoint/180;
-					AngleSetpoint = AngleSetpoint*330;
-					AngleSetpoint += 15;
-				}*/
-
-
-				/*AngleSetpoint = Controller->GetDirectionDegrees();
-				if (AngleSetpoint < 0)
-					AngleSetpoint += 360;*/
-				//AngleSetpoint = Controller->GetDirectionDegrees();
-				//AngleSetpoint += 180;
-				//SmartDashboard::PutNumber("Angle Setpoint", AngleSetpoint);
-				//SmartDashboard::PutNumber("N Angle Setpoint", NAngleSetpoint);
-				//FrontRightMod->AutoDrive(AngleSetpoint);
-				//BackLeftMod->AutoDrive(AngleSetpoint);
-				//BackRightMod->AutoDrive(AngleSetpoint);
-				FrontLeftMod->AutoDrive(AngleSetpoint );
-
-	 		if(newtime.Get() >= .25)
-				{
-					if (Controller->GetRawButton(7)==1)
-					{
-						p-=.0001;
-						FrontLeftMod->Reset();
-					}
-					if (Controller->GetRawButton(8)==1)
-					{
-						p+=.0001;
-						FrontLeftMod->Reset();
-					}
-					if (Controller->GetRawButton(9)==1)
-					{
-						i-=.000001;
-						FrontLeftMod->Reset();
-					}
-					if (Controller->GetRawButton(10)==1)
-					{
-						i+=.000001;
-						FrontLeftMod->Reset();
-					}
-					if (Controller->GetRawButton(3)==1)
-					{
-						i-=.00001;
-						FrontLeftMod->Reset();
-					}
-					if (Controller->GetRawButton(5)==1)
-					{
-						i+=.00001;
-						FrontLeftMod->Reset();
-					}
-					if (Controller->GetRawButton(11)==1)
-					{
-						d-=.0001;
-						FrontLeftMod->Reset();
-					}
-					if (Controller->GetRawButton(12)==1)
-					{
-						d+=.0001;
-						FrontLeftMod->Reset();
-					}
-					FrontLeftMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
-				SmartDashboard::PutNumber("P Change Test", PChangeTest);
-					newtime.Stop();
-					newtime.Reset();
-					newtime.Start();
-					FrontLeftMod->PIDAdjust(p,i,d);
-					}
-					/*if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
+					if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
 					{
 						FrontLeftMod->AutoDrive(329.3);
 						FrontRightMod->AutoDrive(30.7);
@@ -194,11 +78,97 @@ void Swerve::Run()
 							BackRightMod->drive(0,0);
 							BackLeftMod->drive(0,0);
 						}
-					}*/
+					}
 
 }
 
 void Swerve::TestMode()
 {
-	LW->AddActuator("Left Front", "Angle", FrontLeftMod->GetAnglePID());
+	LW->AddActuator("Left Back", "Angle", FrontLeftMod->GetAnglePID());
+}
+
+void Swerve::Tune()
+{
+					//Manually drive the moters use for sensor testing
+
+					//FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+					//FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+					//BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+					//BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+
+					//Get Angle based off Button Inputs
+
+					if (Controller->GetRawButton(1) == 1){
+						AngleSetpoint = 250;
+					}
+					else if (Controller->GetRawButton(2)) {
+						AngleSetpoint = 185;
+					}
+					else {
+						AngleSetpoint = 165;
+					}
+
+					//Get Angle Based off Joystick
+
+					//AngleSetpoint = Controller->GetDirectionDegrees();
+					//AngleSetpoint += 180;
+					//SmartDashboard::PutNumber("Angle Setpoint", AngleSetpoint);
+					//SmartDashboard::PutNumber("N Angle Setpoint", NAngleSetpoint);
+
+					//Enables AutoDribe
+
+					//FrontRightMod->AutoDrive(AngleSetpoint);
+					//BackLeftMod->AutoDrive(AngleSetpoint);
+					//BackRightMod->AutoDrive(AngleSetpoint);
+					//FrontLeftMod->AutoDrive(AngleSetpoint );
+
+		 		if(newtime.Get() >= .25)
+					{
+						if (Controller->GetRawButton(7)==1)
+						{
+							p-=.0001;
+							BackRightMod->Reset();
+						}
+						if (Controller->GetRawButton(8)==1)
+						{
+							p+=.0001;
+							BackRightMod->Reset();
+						}
+						if (Controller->GetRawButton(9)==1)
+						{
+							i-=.000001;
+							BackRightMod->Reset();
+						}
+						if (Controller->GetRawButton(10)==1)
+						{
+							i+=.000001;
+							BackRightMod->Reset();
+						}
+						if (Controller->GetRawButton(3)==1)
+						{
+							i-=.00001;
+							BackRightMod->Reset();
+						}
+						if (Controller->GetRawButton(5)==1)
+						{
+							i+=.00001;
+							BackRightMod->Reset();
+						}
+						if (Controller->GetRawButton(11)==1)
+						{
+							d-=.0001;
+							BackRightMod->Reset();
+						}
+						if (Controller->GetRawButton(12)==1)
+						{
+							d+=.0001;
+							BackRightMod->Reset();
+						}
+						BackRightMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
+					SmartDashboard::PutNumber("P Change Test", PChangeTest);
+						newtime.Stop();
+						newtime.Reset();
+						newtime.Start();
+						BackRightMod->PIDAdjust(p,i,d);
+						}
 }

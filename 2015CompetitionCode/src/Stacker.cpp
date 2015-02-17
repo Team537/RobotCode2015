@@ -145,23 +145,44 @@ void Stacker::ManualStacker(int up, int down) {
 //When a joystick is moved, extend or retract the stacker accordingly
 void Stacker::Extender(int extend, int retract)
 {
-
 	float spd;
+	float lastspd;
 	if (extend)
 	{
-		spd = 1;
+		spd = .5;
 	}
 	if (retract)
 	{
-		spd = -1;
+		spd = -.5;
 	}
 	float LeftJoydiferrance = spd - oldextendspeed;
 	if (fabs(LeftJoydiferrance) >= extendrampspeed)
 		oldextendspeed += extendrampspeed * (LeftJoydiferrance / fabs(LeftJoydiferrance));
-	if (!SwitchIn && !SwitchOut)
+	if (Switch->Get() == 1 && lastswitch == 0)
 	{
+		lastspd = oldextendspeed;
+		Extend->Set(0);
+	}
+	if (Switch->Get() == 1 && lastswitch == 1)
+	{
+		if (lastspd > 0 && oldextendspeed < 0)
+		{
+			Extend->Set(oldextendspeed);
+		}
+		if (lastspd < 0 && oldextendspeed > 0)
+		{
+			Extend->Set(oldextendspeed);
+		}
+		else
+		{
+			Extend->Set(0);
+		}
+	}
+	else {
 		Extend->Set(oldextendspeed);
 	}
+	lastswitch = Switch->Get();
+
 }
 
 

@@ -38,12 +38,12 @@ public:
 			//
 		PIDValue *FrontLeftAngleValues  = new PIDValue(.0217,0.000320,.0431, 15, 345, -1,1);
 		PIDValue *FrontRightAngleValues = new PIDValue(.020,0.000350,0.05, 15, 345, -1, 1);
-		PIDValue *BackLeftAngleValues   = new PIDValue(.0239,0.00017, 0.0454,15,345,-1,1);
-		PIDValue *BackRightAngleValues  = new PIDValue(.020,0.000210,0.0335,15,345,-1,1);
+		PIDValue *BackLeftAngleValues   = new PIDValue(.0217,0.00025,0.045, 15,345,-1,1);
+		PIDValue *BackRightAngleValues  = new PIDValue(.025,0.000220,0.05,15,345,-1,1);
 		PIDDriveValue *FrontLeftDriveValues  = new PIDDriveValue(.004, 0, 0,0, .5/515.808);
 		PIDDriveValue *FrontRightDriveValues = new PIDDriveValue(.004, 0, 0,0,.5/440);
 		PIDDriveValue *BackLeftDriveValues   = new PIDDriveValue(.004, 0, 0,0,.5/477.852);
-		PIDDriveValue *BackRightDriveValues  = new PIDDriveValue(.004, 0, 0,0,.5/476.224);
+		PIDDriveValue *BackRightDriveValues  = new PIDDriveValue(.00, 0, 0,0,.5/476.224);
 		PIDDistance *FrontLeftDistance = new PIDDistance(.004,0.0,0);
 		PIDDistance *FrontRightDistance = new PIDDistance(.004,0.0,0.0);
 		PIDDistance *BackLeftDistance = new PIDDistance(.004,0.0,0.0);
@@ -61,10 +61,11 @@ public:
 		PChangeTest = 0;
 		p = .0217;
 		i = 0.000;
-		d = .035;
+		d = .0;
 	}
 	void Initialize();
 	void Run();
 	void TestMode();
+	void Tune();
 };
 #endif
