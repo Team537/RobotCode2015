@@ -40,6 +40,7 @@ void SwerveModule::drive(float angle, float speed)
 	SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
 	SmartDashboard::PutNumber("Angle IO",angle);
 	SmartDashboard::PutNumber("Speed IO",speed);
+	SmartDashboard::PutNumber("angle", angle);
 }
 
 void SwerveModule::AutoDrive(float Angle)

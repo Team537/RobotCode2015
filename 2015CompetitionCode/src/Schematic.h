@@ -58,10 +58,48 @@
 #define COMPRESSOR_SWITCH		5
 #define COMPRESSOR_RELAY		1
 
-//PIDValues
+//PIDValues for the Stacker on Capn hook
 #define PID_LIFT_UP_RIGHT 		.04,.00,.00
 #define PID_LIFT_DOWN_RIGHT		.04,.00,.00
 #define PID_LIFT_UP_LEFT 		.04,.00,.00
 #define PID_LIFT_DOWN_LEFT		.04,.00,.00
+
+//PIDValues for the Stacker on PTSD
+//#define PID_LIFT_UP_RIGHT 		.04,.00,.00
+//#define PID_LIFT_DOWN_RIGHT		.04,.00,.00
+//#define PID_LIFT_UP_LEFT 		.04,.00,.00
+//#define PID_LIFT_DOWN_LEFT		.04,.00,.00
+
+//Drive train Angle PID's on Capn hook
+//#define PID_FRONT_LEFT_ANGLE 	-.0217, -.00026, -.0444, 15, 345, -1, 1
+//#define PID_FRONT_RIGHT_ANGLE	 .0251,  .00029,  .0505, 15, 345, -1, 1
+//#define PID_BACK_RIGHT_ANGLE	 .0289,  .00029,  .0489, 15, 345, -1, 1
+//#define PID_BACK_LEFT_ANGLE	 .0301,  .00026,  .0633, 15, 345, -1, 1
+
+//Drive train Angle PID's on PTSD
+#define PID_FRONT_LEFT_ANGLE 			.0217,0.000320,.0431, 15, 345, -1,1
+#define PID_FRONT_RIGHT_ANGLE 			.020,0.000350,0.05, 15, 345, -1, 1
+#define PID_BACK_LEFT_ANGLE				.0217,0.00025,0.045, 15,345,-1,1
+#define PID_BACK_RIGHT_ANGLE			.025,0.000220,0.05,15,345,-1,1
+
+//Drive train Velocity PID's on Capn hook
+/*
+#define PID_FRONT_LEFT_VELOCITY		 	.04, 0, 0, 0
+#define PID_FRONT_RIGHT_VELOCITY		.04, 0, 0, 0
+#define PID_BACK_LEFT_VELOCITY			.04, 0, 0, 0
+#define PID_BACK_RIGHT_VELOCITY 		.04, 0, 0, 0
+ */
+
+//Drive train Velocity PID's on PTSD
+#define PID_FRONT_LEFT_VELOCITY 		.04, 0.0, 0.0, .5/515.808
+#define PID_FRONT_RIGHT_VELOCITY		.04, 0.0, 0.0, .5/440
+#define PID_BACK_LEFT_VELOCITY			.04, 0.0, 0.0, .5/477.852
+#define PID_BACK_RIGHT_VELOCITY 		.04, 0.0, 0.0, .5/476.224
+
+//Drive train Distance PID's on Capn hook
+
+
+//Drive train Distance PID's on PTSD
+
 
 #endif

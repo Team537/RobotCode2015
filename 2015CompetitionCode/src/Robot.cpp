@@ -17,14 +17,14 @@ class Robot: public IterativeRobot
 private:
 	LiveWindow *lw;
 	Swerve *swerve;
-	CameraServer *camera;
+	//CameraServer *camera;
 
 	void RobotInit()
 	{
 		lw 					= LiveWindow::GetInstance();
 		//Hoard.initialize();
-		camera 				= CameraServer::GetInstance();
-		camera->StartAutomaticCapture("cam0");
+		//camera 				= CameraServer::GetInstance();
+		//camera->StartAutomaticCapture("cam0");
 		PrimaryController 	= new Joystick(0);
 		SecondaryController = new Joystick(1);
 		swerve 				= new Swerve(PrimaryController);
@@ -51,7 +51,8 @@ private:
 	void TeleopPeriodic()
 	{
 		//compressor.checkCompressor();
-		swerve->Run();
+		//swerve->Run();
+		swerve->Tune();
 		/*.setLeftState(SecondaryController->GetRawButton(LEFT_TOGGLE), SecondaryController->GetRawButton(LEFT_ORIENT));
 		Collect.setRightState(SecondaryController->GetRawButton(RIGHT_TOGGLE), SecondaryController->GetRawButton(RIGHT_ORIENT));
 		Collect.setGrab(SecondaryController->GetRawAxis(COL_GRAB_RIGHT_AXIS), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS));

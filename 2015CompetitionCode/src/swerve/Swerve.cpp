@@ -16,8 +16,11 @@ void Swerve::Initialize()
 
 void Swerve::Run()
 {
-
-					if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
+						//FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+						//FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+						//BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+						//BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+				/*	if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
 					{
 						FrontLeftMod->AutoDrive(329.3);
 						FrontRightMod->AutoDrive(30.7);
@@ -78,7 +81,7 @@ void Swerve::Run()
 							BackRightMod->drive(0,0);
 							BackLeftMod->drive(0,0);
 						}
-					}
+					}*/
 
 }
 
@@ -89,7 +92,7 @@ void Swerve::TestMode()
 
 void Swerve::Tune()
 {
-					//Manually drive the moters use for sensor testing
+					//Manually drive the motors use for sensor testing
 
 					//FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
 					//FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
@@ -115,60 +118,60 @@ void Swerve::Tune()
 					//SmartDashboard::PutNumber("Angle Setpoint", AngleSetpoint);
 					//SmartDashboard::PutNumber("N Angle Setpoint", NAngleSetpoint);
 
-					//Enables AutoDribe
+					//Enables AutoDrive
 
-					//FrontRightMod->AutoDrive(AngleSetpoint);
+					FrontRightMod->AutoDrive(AngleSetpoint);
 					//BackLeftMod->AutoDrive(AngleSetpoint);
 					//BackRightMod->AutoDrive(AngleSetpoint);
-					//FrontLeftMod->AutoDrive(AngleSetpoint );
+					//FrontLeftMod->AutoDrive(AngleSetpoint);
 
 		 		if(newtime.Get() >= .25)
 					{
 						if (Controller->GetRawButton(7)==1)
 						{
 							p-=.0001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
 						if (Controller->GetRawButton(8)==1)
 						{
 							p+=.0001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
 						if (Controller->GetRawButton(9)==1)
 						{
 							i-=.000001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
 						if (Controller->GetRawButton(10)==1)
 						{
 							i+=.000001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
 						if (Controller->GetRawButton(3)==1)
 						{
 							i-=.00001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
 						if (Controller->GetRawButton(5)==1)
 						{
 							i+=.00001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
 						if (Controller->GetRawButton(11)==1)
 						{
 							d-=.0001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
 						if (Controller->GetRawButton(12)==1)
 						{
 							d+=.0001;
-							BackRightMod->Reset();
+							FrontRightMod->Reset();
 						}
-						BackRightMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
+						FrontRightMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
 					SmartDashboard::PutNumber("P Change Test", PChangeTest);
 						newtime.Stop();
 						newtime.Reset();
 						newtime.Start();
-						BackRightMod->PIDAdjust(p,i,d);
+						FrontRightMod->PIDAdjust(p,i,d);
 						}
 }

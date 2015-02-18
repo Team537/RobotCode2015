@@ -7,6 +7,7 @@
 #include "WPILib.h"
 #include "SwerveModule.h"
 #include <swerve/PIDDistance.h>
+#include <Schematic.h>
 
 /* defines for extended board ports
 #define FrontLeftSpeed
@@ -35,11 +36,10 @@ public:
 	{
 		Controller = controller;
 		LW = LiveWindow::GetInstance();
-			//
-		PIDValue *FrontLeftAngleValues  = new PIDValue(.0217,0.000320,.0431, 15, 345, -1,1);
-		PIDValue *FrontRightAngleValues = new PIDValue(.020,0.000350,0.05, 15, 345, -1, 1);
-		PIDValue *BackLeftAngleValues   = new PIDValue(.0217,0.00025,0.045, 15,345,-1,1);
-		PIDValue *BackRightAngleValues  = new PIDValue(.025,0.000220,0.05,15,345,-1,1);
+		PIDValue *FrontLeftAngleValues  = new PIDValue(PID_FRONT_LEFT_ANGLE);
+		PIDValue *FrontRightAngleValues = new PIDValue(PID_FRONT_RIGHT_ANGLE);
+		PIDValue *BackLeftAngleValues   = new PIDValue(PID_BACK_LEFT_ANGLE);
+		PIDValue *BackRightAngleValues  = new PIDValue(PID_BACK_RIGHT_ANGLE);
 		PIDDriveValue *FrontLeftDriveValues  = new PIDDriveValue(.004, 0, 0,0, .5/515.808);
 		PIDDriveValue *FrontRightDriveValues = new PIDDriveValue(.004, 0, 0,0,.5/440);
 		PIDDriveValue *BackLeftDriveValues   = new PIDDriveValue(.004, 0, 0,0,.5/477.852);
@@ -49,19 +49,19 @@ public:
 		PIDDistance *BackLeftDistance = new PIDDistance(.004,0.0,0.0);
 		PIDDistance *BackRightDistance = new PIDDistance(.004,0.0,0.0);
 		automatic = new PID_ATune();
-		///                            (speed,angle,encoder1,encoder2,pot,pidAngle,PIDDrive,name,PIDDistance Values,offset, Max Encoder rate, setpointoffset)
-		FrontLeftMod  = new SwerveModule(11,15,16,17,5, FrontLeftAngleValues, FrontLeftDriveValues,FrontLeftDistance,"FrontLeft", 0,400,0);
-		FrontRightMod = new SwerveModule(10,14,14,15,4,FrontRightAngleValues,FrontRightDriveValues,FrontRightDistance,"FrontRight", 0,400,0);
-		BackLeftMod   = new SwerveModule(13,17,24,25,7,BackLeftAngleValues, BackLeftDriveValues,BackLeftDistance,"BackLeft",0,400,0);
-		BackRightMod  = new SwerveModule(12,16,23,22,6,BackRightAngleValues, BackRightDriveValues,BackRightDistance,"BackRight", 0,400,0);
+		///                             (speed,angle,encoder1,encoder2,pot,pidAngle,PIDDrive,name,PIDDistance Values,offset, Max Encoder rate, setpointoffset)
+		FrontRightMod = new SwerveModule(10,   14,   14,      15,      4,  FrontRightAngleValues,FrontRightDriveValues,FrontRightDistance,"FrontRight", 0,400,0);
+		FrontLeftMod  = new SwerveModule(11,   15,   16,      17,      5,  FrontLeftAngleValues, FrontLeftDriveValues,FrontLeftDistance,"FrontLeft", 0,400,0);
+		BackRightMod  = new SwerveModule(12,   16,   23,      22,      6,  BackRightAngleValues, BackRightDriveValues,BackRightDistance,"BackRight", 0,400,0);
+		BackLeftMod   = new SwerveModule(13,   17,   24,      25,      7,  BackLeftAngleValues, BackLeftDriveValues,BackLeftDistance,"BackLeft",0,400,0);
 
 		sign = 0;
 		NAngleSetpoint = 0;
 		AngleSetpoint = 90;
 		PChangeTest = 0;
-		p = .0217;
+		p = 0.0217;
 		i = 0.000;
-		d = .0;
+		d = 0.0;
 	}
 	void Initialize();
 	void Run();
