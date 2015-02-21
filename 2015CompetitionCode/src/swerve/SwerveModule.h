@@ -21,6 +21,7 @@ private:
 	std::string Name;
 	float range,MIN,MAX,Offset;
 	float OldSetpoint;
+	float target;
 	Timer watch;
 	double MaxRate;
 public:
@@ -49,6 +50,7 @@ public:
 		lasttrigger = 0;
 		range = MAX - MIN;
 		OldSetpoint = 165;
+		target  = 0;
 		Oldreading = 165;
 		firsttime = true;
 		SpeedEncoder->SetDistancePerPulse(.05026548);

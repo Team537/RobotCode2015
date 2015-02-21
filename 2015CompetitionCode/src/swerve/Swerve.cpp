@@ -20,7 +20,7 @@ void Swerve::Run()
 						//FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
 						//BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
 						//BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-				/*	if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
+					if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
 					{
 						FrontLeftMod->AutoDrive(329.3);
 						FrontRightMod->AutoDrive(30.7);
@@ -48,7 +48,6 @@ void Swerve::Run()
 						NAngleSetpoint += 180;
 						AngleSetpoint = (NAngleSetpoint);
 						SmartDashboard::PutNumber("Magnitude", Controller->GetMagnitude());
-						SmartDashboard::PutNumber("Angle Setpoint", AngleSetpoint);
 						if(AngleSetpoint > 315)
 						{
 							sign = -1;
@@ -62,6 +61,7 @@ void Swerve::Run()
 						else{
 							sign = 1;
 						}
+						SmartDashboard::PutNumber("Angle Setpoint", AngleSetpoint);
 						FrontRightMod->AutoDrive(AngleSetpoint);
 						BackLeftMod->AutoDrive(AngleSetpoint);
 						BackRightMod->AutoDrive(AngleSetpoint);
@@ -81,7 +81,7 @@ void Swerve::Run()
 							BackRightMod->drive(0,0);
 							BackLeftMod->drive(0,0);
 						}
-					}*/
+					}
 
 }
 

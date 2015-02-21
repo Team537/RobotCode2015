@@ -22,7 +22,7 @@ private:
 	void RobotInit()
 	{
 		lw 					= LiveWindow::GetInstance();
-		//Hoard.initialize();
+		Hoard.initialize();
 		//camera 				= CameraServer::GetInstance();
 		//camera->StartAutomaticCapture("cam0");
 		PrimaryController 	= new Joystick(0);

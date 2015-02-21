@@ -1,121 +1,20 @@
 //Dependencies
 #include "Collector.h"
 
-void Collector::setLeftState(int ltoggle, int lorient) {
+void Collector::setLeftState(int ltoggle, int rtoggle) {
 	SmartDashboard::PutNumber("LState", lState);
-	switch (lState){
-	case 0: // both pistons retracted
-		leftBackArm->Set(false);
-		leftFrontArm->Set(true);
-		if(ltoggle && !lastltoggle)
-		{
-			lState = 2;
-		}
-		if(lorient)
-		{
-			lState = 1;
-		}
-		lastltoggle = ltoggle;
-		break;
-	case 1:
-		leftBackArm->Set(true);
-		leftFrontArm->Set(true);
-		if(ltoggle == 1)
-		{
-			lState = 2;
-		}
-		break;
-	case 2:
-		leftBackArm->Set(true);
-		leftFrontArm->Set(false);
-		if(ltoggle && !lastltoggle)
-		{
-			lState = 3;
-		}
-		if(lorient)
-		{
-			lState = 1;
-		}
-		lastltoggle = ltoggle;
-		break;
-	case 3:
-		leftBackArm->Set(false);
-		leftFrontArm->Set(false);
-		if(ltoggle && !lastltoggle)
-			{
-				lState = 2;
-			}
-			if(lorient)
-			{
-				lState = 1;
-			}
-			lastltoggle = ltoggle;
-		break;
-	default:
-		//wut u do now kurt...
-		break;
+	if (ltoggle == 1 && lastltoggle == 0)
+	{
+		leftFrontArm->Set(!leftFrontArm->Get());
 	}
-
+	lastltoggle = ltoggle;
+	if (rtoggle == 1 && lastrtoggle == 0)
+	{
+		rightFrontArm->Set(!rightFrontArm->Get());
+	}
+	lastrtoggle = rtoggle;
 }
 
-void Collector::setRightState(int rtoggle, int rorient) {
-	SmartDashboard::PutNumber("RState", rState);
-	switch (rState){
-	case 0: // both pistons retracted
-		rightBackArm->Set(false);
-		rightFrontArm->Set(true);
-		if(rorient)
-		{
-			rState = 1;
-		}
-		if(rtoggle && !lastrtoggle)
-		{
-			rState = 2;
-		}
-		lastrtoggle = rtoggle;
-		break;
-	case 1:
-		rightBackArm->Set(true);
-		rightFrontArm->Set(true);
-		if(rtoggle == 1)
-		{
-			rState = 2;
-		}
-		break;
-	case 2:
-		rightBackArm->Set(true);
-		rightFrontArm->Set(false);
-		if(rorient)
-		{
-			rState = 1;
-		}
-		if(rtoggle && !lastrtoggle)
-		{
-			rState = 3;
-		}
-		lastrtoggle = rtoggle;
-		break;
-	case 3:
-		rightBackArm->Set(false);
-		rightFrontArm->Set(false);
-		if(rorient)
-		{
-			rState = 1;
-		}
-		if(rtoggle && !lastrtoggle)
-		{
-			rState = 2;
-		}
-		lastrtoggle = rtoggle;
-		break;
-	default:
-		//wut u do now kurt...
-		break;
-	}
-}
-
-int Collector::getLeftState() { return lState; }
-int Collector::getRightState() { return rState; }
 
 void Collector::setGrab(float leftyaxis, float rightyaxis) {
 	if(lState == 2)

@@ -33,7 +33,7 @@ void SwerveModule::drive(float angle, float speed)
 	}
 	SmartDashboard::PutNumber(Name + "crate", crate);
 	SmartDashboard::PutNumber(Name + "max encoder rate", maxencrate);
-	AngleOutput->Set(angle);
+	//AngleOutput->Set(angle);
 	SpeedOutput->Set(speed);
 	//PIDDrive->SetSetpoint(.5*speed*MaxRate);
 	SmartDashboard::PutNumber("Encoder", SpeedEncoder->GetRate());
@@ -59,17 +59,15 @@ void SwerveModule::AutoDrive(float Angle)
 	if (Angle < 90)
 		Angle = 90;*/
 	PIDAngle->Enable();
+	OldSetpoint = Angle;
 	PIDAngle->SetSetpoint(Angle);
-	if(AngleOutput->Get() > 0)
-	{
-		PIDAngle->SetSetpoint(Angle - offSet);
-	}
+	target = PIDAngle->Get();
+	SmartDashboard::PutNumber(Name+ "PID output", target);
 	SmartDashboard::PutNumber(Name+ "PotReading", AnglePotentiometer->PIDGet());
 	SmartDashboard::PutNumber(Name+ "Angle Error", PIDAngle->GetError());
 	SmartDashboard::PutNumber(Name+ "Angle Setpoint", PIDAngle->GetSetpoint());
 	SmartDashboard::PutBoolean(Name+ "Angle Target", PIDAngle->OnTarget());
 	SmartDashboard::PutNumber(Name+ "Angle Error2", PIDAngle->GetError());
-	SmartDashboard::PutNumber(Name+ "Angle Error3", PIDAngle->GetError());
 }
 
 void SwerveModule::PIDAdjust(float P, float I, float D)
