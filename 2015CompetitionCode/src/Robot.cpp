@@ -52,12 +52,12 @@ private:
 	{
 		//compressor.checkCompressor();
 		//swerve->Run();
-		swerve->Tune();
-		/*.setLeftState(SecondaryController->GetRawButton(LEFT_TOGGLE), SecondaryController->GetRawButton(LEFT_ORIENT));
-		Collect.setRightState(SecondaryController->GetRawButton(RIGHT_TOGGLE), SecondaryController->GetRawButton(RIGHT_ORIENT));
-		Collect.setGrab(SecondaryController->GetRawAxis(COL_GRAB_RIGHT_AXIS), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS));
-		Collect.setMotors(SecondaryController->GetRawAxis(COL_MOTOR_LEFT), SecondaryController->GetRawAxis(COL_MOTOR_RIGHT));
-		Hoard.hoard(PrimaryController->GetRawButton(HOARD_BTN));*/
+		//swerve->Tune();
+		//Collect.setLeftState(SecondaryController->GetRawButton(LEFT_TOGGLE), SecondaryController->GetRawButton(LEFT_ORIENT));
+		//Collect.setRightState(SecondaryController->GetRawButton(RIGHT_TOGGLE), SecondaryController->GetRawButton(RIGHT_ORIENT));
+		//Collect.setGrab(SecondaryController->GetRawAxis(COL_GRAB_RIGHT_AXIS), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS));
+		//Collect.setMotors(SecondaryController->GetRawAxis(COL_MOTOR_LEFT), SecondaryController->GetRawAxis(COL_MOTOR_RIGHT));
+		Hoard.hoard(PrimaryController->GetRawButton(HOARD_BTN));
 		//Stack.Run(SecondaryController->GetRawButton(TOTE_GRAB_BTN), SecondaryController->GetRawButton(AUTOSTACK_BTN),  SecondaryController->GetPOV(),SecondaryController->GetRawButton(STACKER_UP),SecondaryController->GetRawButton(STACKER_DOWN), SecondaryController->GetRawButton(EXTENDER_OUT),SecondaryController->GetRawButton(EXTENDER_IN));
 	}
 
