@@ -1,7 +1,7 @@
 //Dependencies
 #include "Collector.h"
 
-void Collector::setLeftState(int ltoggle, int rtoggle) {
+void Collector::setState(int ltoggle, int rtoggle) {
 	SmartDashboard::PutNumber("LState", lState);
 	if (ltoggle == 1 && lastltoggle == 0)
 	{

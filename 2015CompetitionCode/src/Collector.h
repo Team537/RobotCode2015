@@ -56,7 +56,7 @@ public: //Used in all classes
 	}
 
 	//Declare functions
-	void setLeftState(int ltoggle, int rtoggle);
+	void setState(int ltoggle, int rtoggle);
 	int getLeftState();
 	int getRightState();
 	int lastrightgrab;
