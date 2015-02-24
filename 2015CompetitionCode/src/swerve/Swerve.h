@@ -9,18 +9,6 @@
 #include <swerve/PIDDistance.h>
 #include <Schematic.h>
 
-/* defines for extended board ports
-#define FrontLeftSpeed
-#define FrontLeftAngle
-#define FrontLeftEnc1
-#define FrontLeftEnc2
-#define FrontLeftPot
-#define FrontLeftOffSet
-#define EXT6
-#define EXT7
-#define EXT8
-#define EXT9 */
-
 class Swerve
 {
 private:
