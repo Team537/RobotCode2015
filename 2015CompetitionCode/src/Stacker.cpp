@@ -195,3 +195,26 @@ void Stacker::Run(bool btngrab, bool autobtn, float pov,int up, int down, int ex
 	Extender( extend,  retract);
 
 }
+void Stacker::StackLeft(int lup, int ldown)
+{
+	if(lup)
+	{
+		LiftLeft->Set(.25);
+	}
+	if(ldown)
+	{
+		LiftLeft->Set(-.25);
+	}
+}
+
+void Stacker::StackRight(int rup, int rdown)
+{
+	if(rup)
+	{
+		LiftRight->Set(.25);
+	}
+	if(rdown)
+	{
+		LiftRight->Set(-.25);
+	}
+}

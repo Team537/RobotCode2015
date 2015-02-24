@@ -56,6 +56,8 @@ public: //Used in all classes
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
+	void StackLeft(int lup, int ldown);
+	void StackRight(int rup, int rdown);
 
 private: //Only used in this class
 
