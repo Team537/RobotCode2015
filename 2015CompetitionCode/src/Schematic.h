@@ -31,15 +31,15 @@
 #define COLLECTOR_ARMRF 		6
 
 //Stacker
-#define STACKER_FLAPS 			7
+#define STACKER_FLAPS 			0
 
 //Victors
 #define COLLECTOR_SUCKL 		0
 #define COLLECTOR_SUCKR	 		1
 #define STACKER_LIFT_RIGHT		4
 #define STACKER_LIFT_LEFT		5
-#define STACKER_EXTEND			6
-
+#define STACKER_EXTEND_RIGHT	2
+#define STACKER_EXTEND_LEFT		3
 
 //Constants
 #define COLLECTOR_STATEINIT 	0
@@ -51,8 +51,8 @@
 #define STACKER_OUT_SWITCH		2
 
 //Analog Inputs
-#define STACKER_LIFT_POT_RIGHT	3
-#define STACKER_LIFT_POT_LEFT	0
+#define STACKER_LIFT_POT_RIGHT	0
+#define STACKER_LIFT_POT_LEFT	1
 
 //Compressor
 #define COMPRESSOR_SWITCH		5

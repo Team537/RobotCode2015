@@ -3,6 +3,12 @@
 #include <cmath>
 #include <ctime>
 
+void Stacker::init()
+{
+	AutoLiftPIDRight->Disable();
+	AutoLiftPIDLeft->Disable();
+}
+
 //When a button is pressed, grab a tote
 void Stacker::Grab(bool button)
 {
@@ -161,25 +167,30 @@ void Stacker::Extender(int extend, int retract)
 	if (Switch->Get() == 1 && lastswitch == 0)
 	{
 		lastspd = oldextendspeed;
-		Extend->Set(0);
+		ExtendLeft->Set(0);
+		ExtendRight->Set(0);
 	}
 	if (Switch->Get() == 1 && lastswitch == 1)
 	{
 		if (lastspd > 0 && oldextendspeed < 0)
 		{
-			Extend->Set(oldextendspeed);
+			ExtendLeft->Set(oldextendspeed);
+			ExtendRight->Set(oldextendspeed);
 		}
 		if (lastspd < 0 && oldextendspeed > 0)
 		{
-			Extend->Set(oldextendspeed);
+			ExtendLeft->Set(oldextendspeed);
+			ExtendRight->Set(oldextendspeed);
 		}
 		else
 		{
-			Extend->Set(0);
+			ExtendLeft->Set(0);
+			ExtendRight->Set(0);
 		}
 	}
 	else {
-		Extend->Set(oldextendspeed);
+		ExtendLeft->Set(oldextendspeed);
+		ExtendRight->Set(oldextendspeed);
 	}
 	lastswitch = Switch->Get();
 
@@ -199,22 +210,95 @@ void Stacker::StackLeft(int lup, int ldown)
 {
 	if(lup)
 	{
+		LiftLeft->Set(-.5);
+	}
+	else if(ldown)
+	{
 		LiftLeft->Set(.25);
 	}
-	if(ldown)
+	else
 	{
-		LiftLeft->Set(-.25);
+		LiftLeft->Set(0);
 	}
+	SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
 }
 
 void Stacker::StackRight(int rup, int rdown)
 {
 	if(rup)
 	{
+		LiftRight->Set(-.5);
+	}
+	else if(rdown)
+	{
 		LiftRight->Set(.25);
 	}
-	if(rdown)
+	else
 	{
-		LiftRight->Set(-.25);
+		LiftRight->Set(0);
 	}
+	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
+}
+void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle)
+{
+	AutoLiftPIDLeft->Enable();
+	AutoLiftPIDRight->Enable();
+	if(toggle)
+	{
+		AutoLiftPIDLeft->SetSetpoint(700);
+	}
+	else
+	{
+		AutoLiftPIDLeft->SetSetpoint(450);
+	}
+	if(Clock.Get() > .25)
+	{
+		if (pup == 1 )
+		{
+			p += 0.001;
+		}
+		if (pdown == 1)
+		{
+			p -= 0.001;
+		}
+		if (biup == 1)
+		{
+			i += 0.0001;
+		}
+		if (bidown == 1)
+		{
+			i -= 0.0001;
+		}
+		if (iup == 1)
+		{
+			i += 0.000001;
+		}
+		if (idown == 1)
+		{
+			i -= 0.000001;
+		}
+		if (dup == 1)
+		{
+			d += 0.001;
+		}
+		if (ddown == 1)
+		{
+			d -= 0.001;
+		}
+		Clock.Reset();
+		Clock.Start();
+	}
+	AutoLiftPIDLeft->SetPID(p,i,d);
+	//AutoLiftPIDRight->SetPID(p,i,d);
+	SmartDashboard::PutNumber("Stacker P", p);
+	SmartDashboard::PutNumber("Stacker I", i);
+	SmartDashboard::PutNumber("Stacker D", d);
+	SmartDashboard::PutNumber("Stacker Left Error", AutoLiftPIDLeft->GetError());
+	//SmartDashboard::PutNumber("Stacker Right Error", AutoLiftPIDRight->GetError());
+	SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
+	//SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->GetValue());
+	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
+	//SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetError());
+
+
 }

@@ -34,7 +34,7 @@ void SwerveModule::drive(float angle, float speed)
 	SmartDashboard::PutNumber(Name + "crate", crate);
 	SmartDashboard::PutNumber(Name + "max encoder rate", maxencrate);
 	//AngleOutput->Set(angle);
-	SpeedOutput->Set(speed);
+	SpeedOutput->Set(.5*speed);
 	//PIDDrive->SetSetpoint(.5*speed*MaxRate);
 	SmartDashboard::PutNumber("Encoder", SpeedEncoder->GetRate());
 	SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
