@@ -16,12 +16,12 @@ void Swerve::Initialize()
 
 void Swerve::Run()
 {
-						FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-						FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-						BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-						BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+						//FrontLeftMod->drive(.5*Controller->GetRawAxis(0),.5*Controller->GetRawAxis(1));
+						//FrontRightMod->drive(.5*Controller->GetRawAxis(0),.5*Controller->GetRawAxis(1));
+						//BackRightMod->drive(.5*Controller->GetRawAxis(0),.5*Controller->GetRawAxis(1));
+						//BackLeftMod->drive(.5*Controller->GetRawAxis(0),.5*Controller->GetRawAxis(1));
 
-					/*if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
+					if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
 					{
 						FrontLeftMod->AutoDrive(329.3);
 						FrontRightMod->AutoDrive(30.7);
@@ -81,7 +81,7 @@ void Swerve::Run()
 							BackRightMod->drive(0,0);
 							BackLeftMod->drive(0,0);
 						}
-					}*/
+					}
 }
 
 void Swerve::TestMode()
@@ -164,13 +164,13 @@ void Swerve::Tune()
 						if (Controller->GetRawButton(12)==1)
 						{
 							d+=.0001;
-							BackRightMod->Reset();
+							FrontLeftMod->Reset();
 						}
-						BackRightMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
+						FrontLeftMod->offSetAdjust(Controller->GetRawButton(4),Controller->GetRawButton(6));
 					SmartDashboard::PutNumber("P Change Test", PChangeTest);
 						newtime.Stop();
 						newtime.Reset();
 						newtime.Start();
-						BackRightMod->PIDAdjust(p,i,d);
+						FrontLeftMod->PIDAdjust(p,i,d);
 						}
 }

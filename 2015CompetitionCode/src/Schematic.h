@@ -32,6 +32,10 @@
 
 //Stacker
 #define STACKER_FLAPS 			0
+#define STACKER_LEVEL_0			50
+#define STACKER_LEVEL_1			100
+#define STACKER_LEVEL_2			392
+#define STACKER_LEVEL_3			570
 
 //Victors
 #define COLLECTOR_SUCKL 		0
@@ -47,8 +51,7 @@
 #define COLLECTOR_CONVRAMP 		0.05
 
 //Digital Inputs
-#define STACKER_IN_SWITCH		0
-#define STACKER_OUT_SWITCH		2
+#define STACKER_SWITCH		0
 
 //Analog Inputs
 #define STACKER_LIFT_POT_RIGHT	0
@@ -101,5 +104,8 @@
 
 //Drive train Distance PID's on PTSD
 
+//Names
+#define RETRACT 0
+#define EXTEND 1
 
 #endif

@@ -26,24 +26,34 @@ public: //Used in all classes
 		LiftLeft = new Victor (STACKER_LIFT_LEFT);
 		ExtendLeft = new Talon (STACKER_EXTEND_LEFT);
 		ExtendRight = new Talon (STACKER_EXTEND_RIGHT);
-		Switch = new DigitalInput(STACKER_IN_SWITCH);
+		Switch = new DigitalInput(STACKER_SWITCH);
+
 		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT,1024,0);
-		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,1024,0);
-		AutoLiftPIDLeft = new PIDController(.04, 0.01, 0.01, LiftPotLeft, LiftLeft);
-		AutoLiftPIDRight = new PIDController(.04, 0.01, 0.01, LiftPotRight, LiftRight);
+		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,-1024,1024);
+
+		AutoLiftPIDLeft = new PIDController(-.02, -0.000151, -0.03, LiftPotLeft, LiftLeft);
+		AutoLiftPIDRight = new PIDController(-.02, -0.000151, -0.03, LiftPotRight, LiftRight);
+		Righttime = new Timer;
+		Lefttime = new Timer;
+
+		AutoLiftPIDRight->SetAbsoluteTolerance(10);
+		AutoLiftPIDRight->SetInputRange(1,1024);
+		AutoLiftPIDRight->SetOutputRange(-1,.2);
+		AutoLiftPIDLeft->SetAbsoluteTolerance(10);
+		AutoLiftPIDLeft->SetInputRange(1,1024);
+		AutoLiftPIDLeft->SetOutputRange(-.75,.2);
+
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
 		lastreleasedpressed = 0;
 		deadband            = 0.1;
-		AutoLiftPIDRight->SetAbsoluteTolerance(20);
-		AutoLiftPIDRight->SetOutputRange(1,360);
-		AutoLiftPIDLeft->SetAbsoluteTolerance(20);
-		AutoLiftPIDLeft->SetOutputRange(1,360);
+
 
 		oldelevatorspd = 0;
 		oldextendspeed = 0;
 		// Give this a value
-		setpoint = 0;
+		targetPoint = 100;
+
 		//
 		rightcurrentlevel = 0;
 		leftcurrentlevel = 0;
@@ -55,6 +65,7 @@ public: //Used in all classes
 		leftelevatormin = 15;
 		lastpov = -1;
 		lastswitch = false;
+		ExtendState = 0;
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
@@ -63,6 +74,8 @@ public: //Used in all classes
 	void Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle);
 	void init();
 	void Extender(int extend, int retract);
+	void Grab(int button);
+	void ManualStacker(int up, int down);
 
 private: //Only used in this class
 
@@ -70,7 +83,7 @@ private: //Only used in this class
 	bool   lastreleasedpressed;
 	float oldelevatorspd, oldextendspeed;
 	float elevatorrampspeed, extendrampspeed,deadband;
-	float setpoint;
+	float targetPoint;
 	int state = 0;
 	float rightcurrentlevel, leftcurrentlevel;
 	float righttargetlevel, lefttargetlevel;
@@ -78,20 +91,23 @@ private: //Only used in this class
 	float rightelevatormin, leftelevatormin;
 	float lastpov;
 	bool lastswitch;
-	float p = 0;
-	float i = 0;
-	float d = 0;
+	float p = -.017;
+	float i = -.0001;
+	float d = .0;
+	float LeftOffset = 6;
+	int ExtendState;
+	float extensionspeed;
 
 	//Declare functions
-	void Grab(bool button);
 	void AutoStacker(bool autobtn, float pov);
-	void ManualStacker(int up, int down);
+	void SetLevel(float);
 	Relay* Flaps;
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   ExtendLeft, *ExtendRight;
 	DigitalInput* Switch;
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
+	Timer *Lefttime, *Righttime;
 
 };
 

@@ -1,6 +1,6 @@
-#include "Autonomous.h"
+#include "AutonomousCan.h"
 
-void Autonomous::Run()
+void AutonomousCan::Run()
 {
 	switch (AutoState)
 	{
@@ -12,15 +12,15 @@ void Autonomous::Run()
 		}*/
 	break;
 	case 1:
-		hoarder.hoard(1);
-		hoarder.hoard(0);
+		hoarder->hoard(1);
+		hoarder->hoard(0);
 	  /*drive->setdistance(1)
 	    if (drive->atdistance())
 	    {
-			hoarder.hoard(1);
-			hoarder.hoard(0);
-			hoarder.hoard(1);
-			hoarder.hoard(0)
+			hoarder->hoard(1);
+			hoarder->hoard(0);
+			hoarder->hoard(1);
+			hoarder->hoard(0)
 			Autostate = 2;
 	    }*/
 	break;
@@ -28,10 +28,10 @@ void Autonomous::Run()
 		/*drive->setdistance(2)
 		  if (drive->atdistance())
 	      {
-	     	hoarder.hoard(1);
-			hoarder.hoard(0);
-			hoarder.hoard(1);
-			hoarder.hoard(0)
+	     	hoarder->hoard(1);
+			hoarder->hoard(0);
+			hoarder->hoard(1);
+			hoarder->hoard(0)
 			 Autostate = 3;
 		  }*/
 	break;
@@ -39,10 +39,10 @@ void Autonomous::Run()
 		/*drive->setdistance(3)
 		  if (drive->atdistance())
 		  {
-			hoarder.hoard(1);
-			hoarder.hoard(0);
-			hoarder.hoard(1);
-			hoarder.hoard(0)
+			hoarder->hoard(1);
+			hoarder->hoard(0);
+			hoarder->hoard(1);
+			hoarder->hoard(0)
 			 Autostate = 4;
 		  }*/
 	break;
@@ -50,8 +50,8 @@ void Autonomous::Run()
 		/*drive->setdistance(4)
 		 if (drive->atdistance())
 		  {
-			hoarder.hoard(1);
-			hoarder.hoard(0);
+			hoarder->hoard(1);
+			hoarder->hoard(0);
 			 Autostate = 4;
 		  }*/
 		break;
