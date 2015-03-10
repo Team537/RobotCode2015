@@ -5,6 +5,7 @@
 //Dependencies
 #include "WPILib.h"
 #include "Schematic.h"
+#include "Stacker.h"
 
 /* #### CONTROLS ####
 LT		-	increase left arm extend state
@@ -23,20 +24,18 @@ class Collector {
 
 private: //Used only in this class
 
-	Solenoid *leftBackArm, *leftFrontArm, *rightBackArm, *rightFrontArm; //arm pistons
-	Solenoid *leftGrabber, *rightGrabber; 								 //pushing pistons to grab
+	Solenoid  *leftFrontArm, *rightFrontArm; //arm pistons
+									 //pushing pistons to grab
 	Victor 	 *leftBelt, *rightBelt; 	  								 //conveyor belt suckers
 
 	int lState, rState;
 
 
 public: //Used in all classes
-
+	Solenoid *leftGrabber, *rightGrabber;
 	Collector ()
 	{
-		leftBackArm = new Solenoid(COLLECTOR_ARMLB);
 		leftFrontArm = new Solenoid(COLLECTOR_ARMLF);
-		rightBackArm = new Solenoid(COLLECTOR_ARMRB);
 		rightFrontArm = new Solenoid(COLLECTOR_ARMRF);
 
 		leftGrabber = new Solenoid(GRAB_L_PISTON);
@@ -44,6 +43,8 @@ public: //Used in all classes
 
 		leftBelt = new Victor(COLLECTOR_SUCKL);
 		rightBelt = new Victor(COLLECTOR_SUCKR);
+
+
 		lastrightgrab = 0;
 		lastleftgrab = 0;
 		lState = 0;
@@ -66,7 +67,8 @@ public: //Used in all classes
 	int lastltoggle;
 	int lastrtoggle;
 
-	void setGrab(float leftyaxis, float rightyaxis);
+
+	void setGrab(float leftyaxis, float rightyaxis, bool elevatorInDanger);
 	bool getGrab();
 
 	void setMotors(float leftverticaljoy, float rightverticaljoy);

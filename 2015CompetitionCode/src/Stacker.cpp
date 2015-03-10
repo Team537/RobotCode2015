@@ -11,6 +11,7 @@ void Stacker::init()
 	Clock.Start();
 	state = 0;
 	targetPoint = LiftPotLeft->Get();
+	ExtendState = 0;
 }
 
 //When a button is pressed, grab a tote
@@ -32,139 +33,160 @@ void Stacker::Grab(int button)
 }
 
 //When a button is pressed, automatically move the stacker down and back up
-void Stacker::AutoStacker(bool autobtn, float pov)
+void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown)
 {
-	if (state == 0)
+	switch (state)
 	{
-		if(pov != -1 && lastpov == -1)
-		{
-			if (pov == 0)
+		case 0:
+			if(levelup && lastleveluppressed == 0)
 			{
-				righttargetlevel += 250;
-				lefttargetlevel += 250;
+				level ++;
+				if (level > 3)
+				{
+					level = 3;
+				}
+				SwitchLevel(level);
 			}
-			if (pov == 180)
+			if(leveldown && lastleveldownpressed == 0)
 			{
-				righttargetlevel -= 250;
-				lefttargetlevel -= 250;
+				level --;
+				if (level < 0)
+				{
+					level = 0;
+				}
+				SwitchLevel(level);
 			}
-		}
-		//right constraints
-		if (righttargetlevel >= rightelevatormax)
-		{
-			righttargetlevel = rightelevatormax;
-		}
-		if (righttargetlevel <= rightelevatormin)
-		{
-			righttargetlevel = rightelevatormin;
-		}
-		//Right PID Selection (up or down values)
-		if((righttargetlevel - rightcurrentlevel) >= 0)
-		{
-			AutoLiftPIDRight->SetPID(PID_LIFT_UP_RIGHT);
-		}
-		if((righttargetlevel - rightcurrentlevel) < 0)
-		{
-			AutoLiftPIDRight->SetPID(PID_LIFT_DOWN_RIGHT);
-		}
-		//left constraints
-		if (lefttargetlevel >= leftelevatormax)
-		{
-			lefttargetlevel = leftelevatormax;
-		}
-		if (lefttargetlevel <= leftelevatormin)
-		{
-			lefttargetlevel = leftelevatormin;
-		}
-		//left PID selection (up or down)
-		if((lefttargetlevel - leftcurrentlevel) >= 0)
-		{
-			AutoLiftPIDLeft->SetPID(PID_LIFT_UP_LEFT);
-		}
-		if((lefttargetlevel - leftcurrentlevel) < 0)
-		{
-			AutoLiftPIDLeft->SetPID(PID_LIFT_DOWN_LEFT);
-		}
-		// setting target values
-		AutoLiftPIDLeft->SetSetpoint(lefttargetlevel);
-		AutoLiftPIDRight->SetSetpoint(righttargetlevel);
-		rightcurrentlevel = AutoLiftPIDRight->Get();
-		leftcurrentlevel = AutoLiftPIDLeft->Get();
+			lastleveluppressed = levelup;
+			lastleveldownpressed = leveldown;
+			if (autobtn)
+			{
+				state = 1;
+			}
+			SetLevel(targetPoint);
+			break;
+		case 1:
+			if(ExtendState != 2)
+			{
+				Stacker::Extender(1,0,0,0);
+			}
+			if(ExtendState == 2)
+			{
+				state = 2;
+			}
+			break;
+		case 2:
+			targetPoint = ZERO;
+			SetLevel(targetPoint);
+			if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
+			{
+				Clock.Start();
+				state = 3;
+			}
+			break;
+		case 3:
+			if (Clock.Get() >= .25)
+			{
+				targetPoint = ONE;
+				SetLevel(targetPoint);
+				if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
+				{
+					Clock.Stop();
+					Clock.Reset();
+					state = 0;
+					level = 1;
+				}
+			}
+			break;
+		default:
+			break;
 	}
-	if (autobtn && state == 0)
+	SmartDashboard::PutNumber("Automatic Stacker State", state);
+	SmartDashboard::PutNumber("level", level);
+}
+
+void  Stacker::SwitchLevel(int totelevel)
+{
+	switch(totelevel)
 	{
-		state = 1;
+		case 0:
+			targetPoint = ZERO;
+			break;
+		case 1:
+			targetPoint = ONE;
+			break;
+		case 2:
+			targetPoint = TWO;
+			break;
+		case 3:
+			targetPoint = THREE;
+			break;
 	}
-//	switch (state)
-//	{
-//	case 0:
-//		break;
-//	case 1:
-//		AutoLiftPIDLeft->SetPID(PID_LIFT_UP_LEFT);
-//		AutoLiftPIDRight->SetPID(PID_LIFT_UP_RIGHT);
-//		AutoLiftPIDLeft->Enable();
-//		AutoLiftPIDRight->Enable();
-//		AutoLiftPIDLeft->SetSetpoint(1);
-//		AutoLiftPIDRight->SetSetpoint(1);
-//		if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
-//		{
-//			Clock.Start();
-//			state = 2;
-//		}
-//		break;
-//	case 2:
-//		if (Clock.Get() >= .5)
-//		{
-//			AutoLiftPIDLeft->SetPID(PID_LIFT_DOWN_LEFT);
-//			AutoLiftPIDRight->SetPID(PID_LIFT_DOWN_RIGHT);
-//			Clock.Stop();
-//			Clock.Reset();
-//			AutoLiftPIDLeft->SetSetpoint(0);
-//			AutoLiftPIDRight->SetSetpoint(0);
-//			if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
-//			{
-//				state = 0;
-//			}
-//		}
-//		break;
-//	default:
-//		break;
-//	}
+}
+
+void Stacker::CurrentLevel()
+{
+	if (LiftPotLeft->Get() < ONE)
+	{
+		currentlevel = 0;
+	}
+	else if (LiftPotLeft->Get() > ONE && LiftPotLeft->Get() < TWO)
+	{
+		currentlevel = 1;
+	}
+	else if (LiftPotLeft->Get() > TWO && LiftPotLeft->Get() < THREE)
+	{
+		currentlevel = 2;
+	}
+	else
+	{
+		currentlevel = 3;
+	}
+	SmartDashboard::PutNumber("Current Stacker Level", currentlevel);
+}
+
+bool Stacker::DangerLevel()
+{
+	return (currentlevel < 1);
 }
 
 //When a joystick is moved, move the stacker accordingly
 void Stacker::ManualStacker(int up, int down) {
 		if (down)
 		{
+			level = 4;
 //			AutoLiftPIDLeft->SetPID(PID_LIFT_DOWN_LEFT);
 //			AutoLiftPIDRight->SetPID(PID_LIFT_DOWN_RIGHT);
 			targetPoint -= 5;
+			level = 4;
 		}
 		if (up)
 		{
+			level = 4;
 //			AutoLiftPIDLeft->SetPID(PID_LIFT_UP_LEFT);
 //			AutoLiftPIDRight->SetPID(PID_LIFT_UP_RIGHT);
 			targetPoint += 5;
 		}
-
-	SmartDashboard::PutNumber("Stacker Left Error", AutoLiftPIDLeft->GetError());
-	SmartDashboard::PutNumber("Stacker Right Error", AutoLiftPIDRight->GetError());
-	SmartDashboard::PutNumber("Stacker Left Error2", AutoLiftPIDLeft->GetError());
-	SmartDashboard::PutNumber("Stacker Right Error2", AutoLiftPIDRight->GetError());
-	SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
-	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
-	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
-	SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
 	SetLevel(targetPoint);
 }
 
 
 //When a joystick is moved, extend or retract the stacker accordingly
-void Stacker::Extender(int extend, int retract)
+void Stacker::Extender(int extend, int retract, int limitswitch, int manual)
 {
 	switch (ExtendState){
 	case 0:
-		ExtendState = 1;
+		extendtimer->Start();
+		extensionspeed = -.25;
+		if (extendtimer->Get() > .5)
+		{
+			extensionspeed = .25;
+			if(Switch->Get() == 0)
+			{
+				extendtimer->Stop();
+				extendtimer->Reset();
+				ExtendState = 2;
+			}
+		}
 		break;
 	case 1:
 		if(extend)
@@ -186,6 +208,10 @@ void Stacker::Extender(int extend, int retract)
 		else{
 			extensionspeed = 0;
 		}
+		if (manual)
+		{
+			ExtendState = 4;
+		}
 		break;
 	case 2:
 		if (retract)
@@ -199,6 +225,10 @@ void Stacker::Extender(int extend, int retract)
 		else
 		{
 			extensionspeed = 0;
+		}
+		if (manual)
+		{
+			ExtendState = 4;
 		}
 		break;
 	case 3:
@@ -214,23 +244,47 @@ void Stacker::Extender(int extend, int retract)
 		{
 			extensionspeed = 0;
 		}
+		if (manual)
+		{
+			ExtendState = 4;
+		}
+		break;
+	case 4:
+		if (extend)
+		{
+			extensionspeed = .25;
+		}
+		else if (retract)
+		{
+			extensionspeed = -.25;
+		}
+		else
+		{
+			extensionspeed = 0;
+		}
+		if(limitswitch)
+		{
+			ExtendState = 1;
+		}
 		break;
 	}
 	ExtendLeft->Set(extensionspeed);
 	ExtendRight->Set(-extensionspeed);
 	SmartDashboard::PutNumber("Limit Switch", Switch->Get());
+	SmartDashboard::PutNumber("ExtendState", ExtendState);
 }
 
 
 //Master function: Runs all functions
-void Stacker::Run(bool btngrab, bool autobtn, float pov,int up, int down, int extend, int retract)
+/*void Stacker::Run(bool btngrab, bool autobtn, float pov,int up, int down, int extend, int retract)
 {
 	Grab(btngrab);
 	AutoStacker( autobtn,  pov);
 	ManualStacker( up,  down);
-	Extender( extend,  retract);
+	Extender( extend,  retract, limitswitch, manual);
 
-}
+}*/
+
 void Stacker::StackLeft(int lup, int ldown)
 {
 	if(lup)
@@ -264,7 +318,7 @@ void Stacker::StackRight(int rup, int rdown)
 	}
 	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
 }
-void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle)
+void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle, int otoggle)
 {
 	AutoLiftPIDLeft->Enable();
 	AutoLiftPIDRight->Enable();
@@ -273,6 +327,10 @@ void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown,
 	if(toggle)
 	{
 		setPoint = 500;
+	}
+	else if (otoggle)
+	{
+		setPoint = 5;
 	}
 	else
 	{
@@ -318,27 +376,32 @@ void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown,
 		Clock.Reset();
 		Clock.Start();
 	}
-	AutoLiftPIDLeft->SetPID(p,i,d);
+	//AutoLiftPIDLeft->SetPID(p,i,d);
 	AutoLiftPIDRight->SetPID(p,i,d);
-	SmartDashboard::PutNumber("Stacker P", p);
-	SmartDashboard::PutNumber("Stacker I", i * 1000);
-	SmartDashboard::PutNumber("Stacker D", d);
-	SmartDashboard::PutNumber("Stacker Left Error", AutoLiftPIDLeft->GetError());
-	SmartDashboard::PutNumber("Stacker Right Error", AutoLiftPIDRight->GetError());
-	SmartDashboard::PutNumber("Stacker Left Error2", AutoLiftPIDLeft->GetError());
-	SmartDashboard::PutNumber("Stacker Right Error2", AutoLiftPIDRight->GetError());
-	SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
-	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
-	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
-	SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
-
-
 }
 
-void Stacker::SetLevel(float SetPoint)
+void Stacker::SetLevel(float SetPoint, bool leftarm, bool rightarm)
 {
-	AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
-	AutoLiftPIDRight->SetSetpoint(SetPoint);
+	if (SetPoint < ONE)
+	{
+		{
+			if (SetPoint < 10)
+			{
+				AutoLiftPIDLeft->SetSetpoint(15);
+				AutoLiftPIDRight->SetSetpoint(26);
+			}
+			if (SetPoint > 10)
+			{
+				AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
+				AutoLiftPIDRight->SetSetpoint(SetPoint);
+			}
+		}
+	}
+	else
+	{
+		AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
+		AutoLiftPIDRight->SetSetpoint(SetPoint);
+	}
 	if (AutoLiftPIDLeft->OnTarget())
 	{
 		Lefttime->Start();
@@ -371,4 +434,16 @@ void Stacker::SetLevel(float SetPoint)
 	}
 	SmartDashboard::PutNumber("Right time", Righttime->Get());
 	SmartDashboard::PutNumber("Left time", Lefttime->Get());
+	SmartDashboard::PutNumber("Stacker P", p);
+	SmartDashboard::PutNumber("Stacker I", i * 1000);
+	SmartDashboard::PutNumber("Stacker D", d);
+	SmartDashboard::PutNumber("Stacker Left Error", AutoLiftPIDLeft->GetError());
+	SmartDashboard::PutNumber("Stacker Right Error", AutoLiftPIDRight->GetError());
+	SmartDashboard::PutNumber("Stacker Left Error2", AutoLiftPIDLeft->GetError());
+	SmartDashboard::PutNumber("Stacker Right Error2", AutoLiftPIDRight->GetError());
+	SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
+	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
+	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
+	SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
+	CurrentLevel();
 }

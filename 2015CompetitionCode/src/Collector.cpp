@@ -2,7 +2,6 @@
 #include "Collector.h"
 
 void Collector::setState(int ltoggle, int rtoggle) {
-	SmartDashboard::PutNumber("LState", lState);
 	if (ltoggle == 1 && lastltoggle == 0)
 	{
 		leftFrontArm->Set(!leftFrontArm->Get());
@@ -16,28 +15,25 @@ void Collector::setState(int ltoggle, int rtoggle) {
 }
 
 
-void Collector::setGrab(float leftyaxis, float rightyaxis) {
-	if(lState == 2)
+void Collector::setGrab(float leftyaxis, float rightyaxis, bool elevatorInDanger) {
+	if (leftyaxis <= -.5)
 	{
-		if (leftyaxis <= -.5)
-		{
-			leftGrabber->Set(0);
-		}
+		leftGrabber->Set(0);
+	}
+	if (!elevatorInDanger)
+	{
 		if (leftyaxis >= .5)
 		{
 			leftGrabber->Set(1);
 		}
-	}
-	if(rState == 2)
-	{
 		if (rightyaxis <= -.5)
 		{
 			rightGrabber->Set(1);
 		}
-		if (rightyaxis >= .5)
-		{
-			rightGrabber->Set(0);
-		}
+	}
+	if (rightyaxis >= .5)
+	{
+		rightGrabber->Set(0);
 	}
 }
 
@@ -51,7 +47,7 @@ void Collector::setMotors(float leftverticaljoy, float rightverticaljoy) {
 		{
 			oldrbelt += rampbelt * (rightbeltdifferance / fabs(rightbeltdifferance));
 		}
-		rightBelt->Set(rightverticaljoy);
+		rightBelt->Set(-rightverticaljoy);
 	}
 	else{
 		rightBelt->Set(0);
@@ -63,7 +59,7 @@ void Collector::setMotors(float leftverticaljoy, float rightverticaljoy) {
 		{
 			oldlbelt += rampbelt * (leftbeltdifferance / fabs(leftbeltdifferance));
 		}
-		leftBelt->Set(leftverticaljoy);
+		leftBelt->Set(-leftverticaljoy);
 	}
 	else
 	{

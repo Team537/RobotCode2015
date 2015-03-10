@@ -5,14 +5,16 @@
 #define HOARD_BTN 				1
 #define TOTE_GRAB_BTN			3
 #define AUTOSTACK_BTN			2
-#define STACKER_UP				6
-#define STACKER_DOWN			5
+#define LEVEL_DOWN				5
+#define LEVEL_UP				6
 #define EXTENDER_IN				1
 #define EXTENDER_OUT			4
-#define LEFT_TOGGLE				7
-#define LEFT_ORIENT				13
-#define RIGHT_TOGGLE			8
-#define RIGHT_ORIENT			14
+#define SETPOINT_DOWN			7
+#define SETPOINT_UP				8
+#define MANUAL					9
+#define AUTOMATIC				10
+#define LEFT_VERTICAL			11
+#define RIGHT_VERTICAL			12
 #define COL_GRAB_RIGHT_AXIS		0
 #define COL_GRAB_LEFT_AXIS		2
 #define COL_MOTOR_LEFT			1
@@ -23,12 +25,10 @@
 #define HOARDER					3
 
 //Collector Pistons
-#define GRAB_L_PISTON 	 		1
-#define GRAB_R_PISTON 	 		4
-#define COLLECTOR_ARMLB 		0
-#define COLLECTOR_ARMLF 		2
-#define COLLECTOR_ARMRB 		5
-#define COLLECTOR_ARMRF 		6
+#define GRAB_L_PISTON 	 		2
+#define GRAB_R_PISTON 	 		6
+#define COLLECTOR_ARMLF 		0
+#define COLLECTOR_ARMRF 		5
 
 //Stacker
 #define STACKER_FLAPS 			0
@@ -103,6 +103,12 @@
 
 
 //Drive train Distance PID's on PTSD
+
+//Stacker Heights
+#define ZERO 	5
+#define ONE		300
+#define TWO		500
+#define THREE	750
 
 //Names
 #define RETRACT 0

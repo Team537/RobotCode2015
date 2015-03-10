@@ -5,6 +5,7 @@
 //Dependencies
 #include <WPILib.h>
 #include "Schematic.h"
+#include "Collector.h"
 #include "cmath"
 
 
@@ -17,9 +18,9 @@ class Stacker
 
 public: //Used in all classes
 
+	int currentlevel;
+
 	Stacker()
-
-
 {
 		Flaps = new Relay(STACKER_FLAPS, Relay::Direction::kForwardOnly);
 		LiftRight = new Victor (STACKER_LIFT_RIGHT);
@@ -31,15 +32,16 @@ public: //Used in all classes
 		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT,1024,0);
 		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,-1024,1024);
 
-		AutoLiftPIDLeft = new PIDController(-.02, -0.000151, -0.03, LiftPotLeft, LiftLeft);
-		AutoLiftPIDRight = new PIDController(-.02, -0.000151, -0.03, LiftPotRight, LiftRight);
+		AutoLiftPIDLeft = new PIDController(-.02, -0.000151, -0.054, LiftPotLeft, LiftLeft);
+		AutoLiftPIDRight = new PIDController(-.02, -0.000151, -0.054, LiftPotRight, LiftRight);
 		Righttime = new Timer;
 		Lefttime = new Timer;
+		extendtimer = new Timer;
 
-		AutoLiftPIDRight->SetAbsoluteTolerance(10);
+		AutoLiftPIDRight->SetAbsoluteTolerance(5);
 		AutoLiftPIDRight->SetInputRange(1,1024);
-		AutoLiftPIDRight->SetOutputRange(-1,.2);
-		AutoLiftPIDLeft->SetAbsoluteTolerance(10);
+		AutoLiftPIDRight->SetOutputRange(-1,.4);
+		AutoLiftPIDLeft->SetAbsoluteTolerance(5);
 		AutoLiftPIDLeft->SetInputRange(1,1024);
 		AutoLiftPIDLeft->SetOutputRange(-.75,.2);
 
@@ -66,16 +68,22 @@ public: //Used in all classes
 		lastpov = -1;
 		lastswitch = false;
 		ExtendState = 0;
+		level = 1;
+		lastleveldownpressed = 0;
+		lastleveluppressed = 0;
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
 	void StackLeft(int lup, int ldown);
 	void StackRight(int rup, int rdown);
-	void Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle);
+	void Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle, int otoggle);
 	void init();
-	void Extender(int extend, int retract);
+	void Extender(int extend, int retract, int limitswitch, int manual);
 	void Grab(int button);
 	void ManualStacker(int up, int down);
+	void AutoStacker(bool autobtn, int levelup, int leveldown);
+	bool DangerLevel();
+	bool
 
 private: //Only used in this class
 
@@ -91,23 +99,27 @@ private: //Only used in this class
 	float rightelevatormin, leftelevatormin;
 	float lastpov;
 	bool lastswitch;
-	float p = -.017;
-	float i = -.0001;
-	float d = .0;
-	float LeftOffset = 6;
+	float p = -.02;
+	float i = -.000151;
+	float d = -.054;
+	float LeftOffset = 0;
 	int ExtendState;
 	float extensionspeed;
+	int level;
+	int lastleveldownpressed;
+	int lastleveluppressed;
 
-	//Declare functions
-	void AutoStacker(bool autobtn, float pov);
+	//Declare function
 	void SetLevel(float);
+	void SwitchLevel(int);
+	void CurrentLevel();
 	Relay* Flaps;
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   ExtendLeft, *ExtendRight;
 	DigitalInput* Switch;
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
-	Timer *Lefttime, *Righttime;
+	Timer *Lefttime, *Righttime, *extendtimer;
 
 };
 
