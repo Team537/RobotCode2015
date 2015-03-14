@@ -19,6 +19,8 @@ private:
 	Timer newtime;
 	int sign;
 	LiveWindow *LW;
+	bool turtle;
+	int lastturtle;
 public:
 	Swerve(Joystick *controller)
 	{
@@ -50,10 +52,15 @@ public:
 		p = 0.0217;
 		i = 0.000;
 		d = 0.0;
+		lastturtle = 0;
+		turtle = 0;
 	}
 	void Initialize();
 	void Run();
 	void TestMode();
 	void Tune();
+	void AutonomousAngle(float FrontLeft, float FrontRight, float BackLeft, float BackRight);
+	void AutonomousSpeed(float FrontLeft, float FrontRight, float BackLeft, float BackRight);
+	bool OnTarget();
 };
 #endif

@@ -20,26 +20,51 @@ void Swerve::Run()
 						//FrontRightMod->drive(.5*Controller->GetRawAxis(0),.5*Controller->GetRawAxis(1));
 						//BackRightMod->drive(.5*Controller->GetRawAxis(0),.5*Controller->GetRawAxis(1));
 						//BackLeftMod->drive(.5*Controller->GetRawAxis(0),.5*Controller->GetRawAxis(1));
-
-					if (Controller->GetRawButton(7) || Controller->GetRawButton(8))
+					if(Controller->GetRawButton(2) &&  lastturtle == 0)
+					{
+						turtle = !turtle;
+					}
+					lastturtle = Controller->GetRawButton(2);
+					SmartDashboard::PutBoolean("Turtle Mode", turtle);
+					if (fabs(Controller->GetRawAxis(2)) > .25)
 					{
 						FrontLeftMod->AutoDrive(329.3);
 						FrontRightMod->AutoDrive(30.7);
 						BackLeftMod->AutoDrive(30.7);
 						BackRightMod->AutoDrive(329.3);
-						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && Controller->GetRawButton(8))
+						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && Controller->GetRawAxis(2) > .25)
 						{
-							FrontLeftMod->drive(0,-1);
-							FrontRightMod->drive(0,1);
-							BackRightMod->drive(0,1);
-							BackLeftMod->drive(0,-1);
+							if (turtle)
+							{
+								FrontLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
+								FrontRightMod->drive(0,.7*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,.7*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
+							}
+							if (!turtle)
+							{
+								FrontLeftMod->drive(0,-1*Controller->GetRawAxis(2));
+								FrontRightMod->drive(0,1*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,1*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,-1*Controller->GetRawAxis(2));
+							}
 						}
-						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && Controller->GetRawButton(7))
+						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && Controller->GetRawAxis(2) < -.25)
 						{
-							FrontLeftMod->drive(0,1);
-							FrontRightMod->drive(0,-1);
-							BackRightMod->drive(0, -1);
-							BackLeftMod->drive(0,1);
+							if (turtle)
+							{
+								FrontLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
+								FrontRightMod->drive(0,.7*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,.7*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
+							}
+							if (!turtle)
+							{
+								FrontLeftMod->drive(0,-1*Controller->GetRawAxis(2));
+								FrontRightMod->drive(0,1*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,1*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,-1*Controller->GetRawAxis(2));
+							}
 						}
 					}
 					else
@@ -69,10 +94,20 @@ void Swerve::Run()
 						FrontLeftMod->AutoDrive(AngleSetpoint);
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
-							FrontLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
-							FrontRightMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
-							BackRightMod->drive(Controller->GetRawAxis(0), sign*Controller->GetMagnitude());
-							BackLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
+							if (!turtle)
+							{
+								FrontLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
+								FrontRightMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
+								BackRightMod->drive(Controller->GetRawAxis(0), sign*Controller->GetMagnitude());
+								BackLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
+							}
+							if (turtle)
+							{
+								FrontLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Controller->GetMagnitude());
+								FrontRightMod->drive(Controller->GetRawAxis(0),.7*sign*Controller->GetMagnitude());
+								BackRightMod->drive(Controller->GetRawAxis(0), .7*sign*Controller->GetMagnitude());
+								BackLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Controller->GetMagnitude());
+							}
 						}
 						else
 						{
@@ -82,6 +117,7 @@ void Swerve::Run()
 							BackLeftMod->drive(0,0);
 						}
 					}
+
 }
 
 void Swerve::TestMode()
@@ -173,4 +209,32 @@ void Swerve::Tune()
 						newtime.Start();
 						FrontLeftMod->PIDAdjust(p,i,d);
 						}
+}
+
+void Swerve::AutonomousAngle(float FrontLeft, float FrontRight, float BackLeft, float BackRight)
+{
+	FrontLeftMod->AutoDrive(FrontLeft);
+	FrontRightMod->AutoDrive(FrontRight);
+	BackLeftMod->AutoDrive(BackLeft);
+	BackRightMod->AutoDrive(BackLeft);
+}
+
+void Swerve::AutonomousSpeed(float FrontLeft, float FrontRight, float BackLeft, float BackRight)
+{
+	FrontLeftMod->drive(0,FrontLeft);
+	FrontRightMod->drive(0, FrontRight);
+	BackRightMod->drive(0,BackLeft);
+	BackLeftMod->drive(0,BackRight);
+}
+
+bool Swerve::OnTarget()
+{
+	if (FrontLeftMod->AtAngle() && FrontRightMod->AtAngle() && BackLeftMod->AtAngle() && BackRightMod->AtAngle())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

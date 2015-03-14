@@ -27,7 +27,8 @@ public: //Used in all classes
 		LiftLeft = new Victor (STACKER_LIFT_LEFT);
 		ExtendLeft = new Talon (STACKER_EXTEND_LEFT);
 		ExtendRight = new Talon (STACKER_EXTEND_RIGHT);
-		Switch = new DigitalInput(STACKER_SWITCH);
+		SwitchLeft = new DigitalInput(STACKER_SWITCH_LEFT);
+		SwitchRight = new DigitalInput(STACKER_SWITCH_RIGHT);
 
 		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT,1024,0);
 		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,-1024,1024);
@@ -36,14 +37,15 @@ public: //Used in all classes
 		AutoLiftPIDRight = new PIDController(-.02, -0.000151, -0.054, LiftPotRight, LiftRight);
 		Righttime = new Timer;
 		Lefttime = new Timer;
-		extendtimer = new Timer;
+		extendlefttimer = new Timer;
+		extendrighttimer = new Timer;
 
 		AutoLiftPIDRight->SetAbsoluteTolerance(5);
 		AutoLiftPIDRight->SetInputRange(1,1024);
-		AutoLiftPIDRight->SetOutputRange(-1,.4);
+		AutoLiftPIDRight->SetOutputRange(-1,.45);
 		AutoLiftPIDLeft->SetAbsoluteTolerance(5);
 		AutoLiftPIDLeft->SetInputRange(1,1024);
-		AutoLiftPIDLeft->SetOutputRange(-.75,.2);
+		AutoLiftPIDLeft->SetOutputRange(-.75,.4);
 
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
@@ -67,10 +69,12 @@ public: //Used in all classes
 		leftelevatormin = 15;
 		lastpov = -1;
 		lastswitch = false;
-		ExtendState = 0;
+		ExtendStateLeft = 0;
+		ExtendStateRight = 0;
 		level = 1;
 		lastleveldownpressed = 0;
 		lastleveluppressed = 0;
+		currentlevel = 1;
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
@@ -83,7 +87,8 @@ public: //Used in all classes
 	void ManualStacker(int up, int down);
 	void AutoStacker(bool autobtn, int levelup, int leveldown);
 	bool DangerLevel();
-	bool
+	bool CollectorDanger(bool left, bool right);
+
 
 private: //Only used in this class
 
@@ -103,11 +108,12 @@ private: //Only used in this class
 	float i = -.000151;
 	float d = -.054;
 	float LeftOffset = 0;
-	int ExtendState;
-	float extensionspeed;
+	int ExtendStateLeft, ExtendStateRight;
+	float extensionspeedleft, extensionspeedright;
 	int level;
 	int lastleveldownpressed;
 	int lastleveluppressed;
+	bool danger;
 
 	//Declare function
 	void SetLevel(float);
@@ -116,10 +122,10 @@ private: //Only used in this class
 	Relay* Flaps;
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   ExtendLeft, *ExtendRight;
-	DigitalInput* Switch;
+	DigitalInput* SwitchLeft, *SwitchRight;
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
-	Timer *Lefttime, *Righttime, *extendtimer;
+	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer;
 
 };
 

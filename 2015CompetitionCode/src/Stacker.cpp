@@ -11,7 +11,8 @@ void Stacker::init()
 	Clock.Start();
 	state = 0;
 	targetPoint = LiftPotLeft->Get();
-	ExtendState = 0;
+	ExtendStateLeft = 0;
+	ExtendStateRight = 0;
 }
 
 //When a button is pressed, grab a tote
@@ -41,9 +42,9 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown)
 			if(levelup && lastleveluppressed == 0)
 			{
 				level ++;
-				if (level > 3)
+				if (level > 4)
 				{
-					level = 3;
+					level = currentlevel;
 				}
 				SwitchLevel(level);
 			}
@@ -65,11 +66,11 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown)
 			SetLevel(targetPoint);
 			break;
 		case 1:
-			if(ExtendState != 2)
+			if(ExtendStateLeft != 2 && ExtendStateRight != 2)
 			{
 				Stacker::Extender(1,0,0,0);
 			}
-			if(ExtendState == 2)
+			if(ExtendStateLeft == 2, ExtendStateRight == 2)
 			{
 				state = 2;
 			}
@@ -84,7 +85,7 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown)
 			}
 			break;
 		case 3:
-			if (Clock.Get() >= .25)
+			if (Clock.Get() >= .5)
 			{
 				targetPoint = ONE;
 				SetLevel(targetPoint);
@@ -112,14 +113,17 @@ void  Stacker::SwitchLevel(int totelevel)
 			targetPoint = ZERO;
 			break;
 		case 1:
-			targetPoint = ONE;
+			targetPoint = CAN;
 			break;
 		case 2:
-			targetPoint = TWO;
+			targetPoint = ONE;
 			break;
 		case 3:
-			targetPoint = THREE;
+			targetPoint = TWO;
 			break;
+		case 4:
+			targetPoint = THREE;
+
 	}
 }
 
@@ -146,25 +150,35 @@ void Stacker::CurrentLevel()
 
 bool Stacker::DangerLevel()
 {
-	return (currentlevel < 1);
+	return (LiftPotLeft->Get() <= 200);
 }
 
 //When a joystick is moved, move the stacker accordingly
 void Stacker::ManualStacker(int up, int down) {
+		CurrentLevel();
 		if (down)
 		{
-			level = 4;
+			level = 5;
 //			AutoLiftPIDLeft->SetPID(PID_LIFT_DOWN_LEFT);
 //			AutoLiftPIDRight->SetPID(PID_LIFT_DOWN_RIGHT);
 			targetPoint -= 5;
 			level = 4;
+
 		}
 		if (up)
 		{
-			level = 4;
+			level = 5;
 //			AutoLiftPIDLeft->SetPID(PID_LIFT_UP_LEFT);
 //			AutoLiftPIDRight->SetPID(PID_LIFT_UP_RIGHT);
 			targetPoint += 5;
+		}
+		if (level == 5 &&  lastleveluppressed == 1)
+		{
+			level = currentlevel + 1;
+		}
+		if(level == 5 && lastleveldownpressed == 1)
+		{
+			level = currentlevel;
 		}
 	SetLevel(targetPoint);
 }
@@ -173,117 +187,212 @@ void Stacker::ManualStacker(int up, int down) {
 //When a joystick is moved, extend or retract the stacker accordingly
 void Stacker::Extender(int extend, int retract, int limitswitch, int manual)
 {
-	switch (ExtendState){
+	switch (ExtendStateLeft){
 	case 0:
-		extendtimer->Start();
-		extensionspeed = -.25;
-		if (extendtimer->Get() > .5)
+		extendlefttimer->Start();
+		extensionspeedleft = -.25;
+		if (extendlefttimer->Get() > .5)
 		{
-			extensionspeed = .25;
-			if(Switch->Get() == 0)
+			extensionspeedleft = .25;
+			if(SwitchLeft->Get() == 0)
 			{
-				extendtimer->Stop();
-				extendtimer->Reset();
-				ExtendState = 2;
+				extendlefttimer->Stop();
+				extendlefttimer->Reset();
+				ExtendStateLeft = 2;
 			}
 		}
 		break;
 	case 1:
 		if(extend)
 		{
-			extensionspeed = .25;
-			if (Switch->Get() == 0)
+			extensionspeedleft = .25;
+			if (SwitchLeft->Get() == 0)
 			{
-				ExtendState = 2;
+				ExtendStateLeft = 2;
 			}
 		}
 		else if (retract)
 		{
-			extensionspeed = -.25;
-			if (Switch->Get() == 0)
+			extensionspeedleft = -.25;
+			if (SwitchLeft->Get() == 0)
 			{
-				ExtendState = 3;
+				ExtendStateLeft = 3;
 			}
 		}
 		else{
-			extensionspeed = 0;
+			extensionspeedleft = 0;
 		}
 		if (manual)
 		{
-			ExtendState = 4;
+			ExtendStateLeft = 4;
 		}
 		break;
 	case 2:
 		if (retract)
 		{
-			extensionspeed = -.25;
-			if (Switch->Get() == 1)
+			extensionspeedleft = -.25;
+			if (SwitchLeft->Get() == 1)
 			{
-				ExtendState = 1;
+				ExtendStateLeft = 1;
 			}
 		}
 		else
 		{
-			extensionspeed = 0;
+			extensionspeedleft = 0;
 		}
 		if (manual)
 		{
-			ExtendState = 4;
+			ExtendStateLeft = 4;
 		}
 		break;
 	case 3:
 		if(extend)
 		{
-			extensionspeed = .25;
-			if (Switch->Get() == 1)
+			extensionspeedleft = .25;
+			if (SwitchLeft->Get() == 1)
 			{
-				ExtendState = 1;
+				ExtendStateLeft = 1;
 			}
 		}
 		else
 		{
-			extensionspeed = 0;
+			extensionspeedleft = 0;
 		}
 		if (manual)
 		{
-			ExtendState = 4;
+			ExtendStateLeft = 4;
 		}
 		break;
 	case 4:
 		if (extend)
 		{
-			extensionspeed = .25;
+			extensionspeedleft = .25;
 		}
 		else if (retract)
 		{
-			extensionspeed = -.25;
+			extensionspeedleft = -.25;
 		}
 		else
 		{
-			extensionspeed = 0;
+			extensionspeedleft = 0;
 		}
 		if(limitswitch)
 		{
-			ExtendState = 1;
+			ExtendStateLeft = 1;
 		}
 		break;
 	}
-	ExtendLeft->Set(extensionspeed);
-	ExtendRight->Set(-extensionspeed);
-	SmartDashboard::PutNumber("Limit Switch", Switch->Get());
-	SmartDashboard::PutNumber("ExtendState", ExtendState);
+	switch (ExtendStateRight){
+		case 0:
+			extendrighttimer->Start();
+			extensionspeedright = -.25;
+			if (extendrighttimer->Get() > .5)
+			{
+				extensionspeedright = .25;
+				if(SwitchRight->Get() == 0)
+				{
+					extendrighttimer->Stop();
+					extendrighttimer->Reset();
+					ExtendStateRight = 2;
+				}
+			}
+			break;
+		case 1:
+			if(extend)
+			{
+				extensionspeedright = .25;
+				if (SwitchRight->Get() == 0)
+				{
+					ExtendStateRight = 2;
+				}
+			}
+			else if (retract)
+			{
+				extensionspeedright = -.25;
+				if (SwitchRight->Get() == 0)
+				{
+					ExtendStateRight = 3;
+				}
+			}
+			else{
+				extensionspeedright = 0;
+			}
+			if (manual)
+			{
+				ExtendStateRight = 4;
+			}
+			break;
+		case 2:
+			if (retract)
+			{
+				extensionspeedright = -.25;
+				if (SwitchRight->Get() == 1)
+				{
+					ExtendStateRight = 1;
+				}
+			}
+			else
+			{
+				extensionspeedright = 0;
+			}
+			if (manual)
+			{
+				ExtendStateRight = 4;
+			}
+			break;
+		case 3:
+			if(extend)
+			{
+				extensionspeedright = .25;
+				if (SwitchRight->Get() == 1)
+				{
+					ExtendStateRight = 1;
+				}
+			}
+			else
+			{
+				extensionspeedright = 0;
+			}
+			if (manual)
+			{
+				ExtendStateRight = 4;
+			}
+			break;
+		case 4:
+			if (extend)
+			{
+				extensionspeedright = .25;
+			}
+			else if (retract)
+			{
+				extensionspeedright = -.25;
+			}
+			else
+			{
+				extensionspeedright = 0;
+			}
+			if(limitswitch)
+			{
+				ExtendStateRight = 1;
+			}
+			break;
+		}
+	ExtendLeft->Set(1.04*extensionspeedleft);
+	ExtendRight->Set(-extensionspeedright);
+	SmartDashboard::PutNumber("Limit Switch Left", SwitchLeft->Get());
+	SmartDashboard::PutNumber("Limit Switch Right", SwitchRight->Get());
+	SmartDashboard::PutNumber("ExtendState", ExtendStateLeft);
+	SmartDashboard::PutNumber("ExtendState", ExtendStateRight);
 }
 
-
-//Master function: Runs all functions
-/*void Stacker::Run(bool btngrab, bool autobtn, float pov,int up, int down, int extend, int retract)
+bool Stacker::CollectorDanger(bool left, bool right)
 {
-	Grab(btngrab);
-	AutoStacker( autobtn,  pov);
-	ManualStacker( up,  down);
-	Extender( extend,  retract, limitswitch, manual);
-
-}*/
+	if (left || right)
+		danger = true;
+	else
+		danger = false;
+	return danger;
+}
 
 void Stacker::StackLeft(int lup, int ldown)
 {
@@ -380,28 +489,24 @@ void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown,
 	AutoLiftPIDRight->SetPID(p,i,d);
 }
 
-void Stacker::SetLevel(float SetPoint, bool leftarm, bool rightarm)
+void Stacker::SetLevel(float SetPoint)
 {
-	if (SetPoint < ONE)
-	{
+		if (SetPoint < 10)
 		{
-			if (SetPoint < 10)
-			{
-				AutoLiftPIDLeft->SetSetpoint(15);
-				AutoLiftPIDRight->SetSetpoint(26);
-			}
-			if (SetPoint > 10)
-			{
-				AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
-				AutoLiftPIDRight->SetSetpoint(SetPoint);
-			}
+			AutoLiftPIDLeft->SetSetpoint(27);
+			AutoLiftPIDRight->SetSetpoint(26);
 		}
-	}
-	else
+		if (SetPoint > 10)
+		{
+			AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
+			AutoLiftPIDRight->SetSetpoint(SetPoint);
+		}
+	/*}
+	if(danger && SetPoint > (ONE - 100))
 	{
 		AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
 		AutoLiftPIDRight->SetSetpoint(SetPoint);
-	}
+	}*/
 	if (AutoLiftPIDLeft->OnTarget())
 	{
 		Lefttime->Start();
@@ -445,5 +550,7 @@ void Stacker::SetLevel(float SetPoint, bool leftarm, bool rightarm)
 	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
 	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
 	SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
+	SmartDashboard::PutBoolean("Left stack pid", AutoLiftPIDLeft->IsEnabled());
+	SmartDashboard::PutBoolean("Right stack pid", AutoLiftPIDRight->IsEnabled());
 	CurrentLevel();
 }

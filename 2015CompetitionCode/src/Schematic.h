@@ -51,7 +51,8 @@
 #define COLLECTOR_CONVRAMP 		0.05
 
 //Digital Inputs
-#define STACKER_SWITCH		0
+#define STACKER_SWITCH_LEFT		0
+#define STACKER_SWITCH_RIGHT	1
 
 //Analog Inputs
 #define STACKER_LIFT_POT_RIGHT	0
@@ -109,6 +110,7 @@
 #define ONE		300
 #define TWO		500
 #define THREE	750
+#define CAN 	200
 
 //Names
 #define RETRACT 0

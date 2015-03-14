@@ -57,7 +57,7 @@ public: //Used in all classes
 	}
 
 	//Declare functions
-	void setState(int ltoggle, int rtoggle);
+	void setState(int ltoggle, int rtoggle, bool elevatordanger );
 	int getLeftState();
 	int getRightState();
 	int lastrightgrab;
@@ -68,10 +68,11 @@ public: //Used in all classes
 	int lastrtoggle;
 
 
-	void setGrab(float leftyaxis, float rightyaxis, bool elevatorInDanger);
-	bool getGrab();
+	void setGrab(int leftyaxis, float rightyaxis, bool elevatordanger);
+	bool getGrableft();
+	bool getGrabright();
 
-	void setMotors(float leftverticaljoy, float rightverticaljoy);
+	void setMotors(int leftverticaljoy, int rightverticaljoyint, int rightreverse, int leftreverse);
 	float getLeftMotor();
 	float getRightMotor();
 

@@ -1,27 +1,25 @@
 //Dependencies
 #include "Collector.h"
 
-void Collector::setState(int ltoggle, int rtoggle) {
-	if (ltoggle == 1 && lastltoggle == 0)
-	{
-		leftFrontArm->Set(!leftFrontArm->Get());
-	}
+void Collector::setState(int ltoggle, int rtoggle, bool elevatordanger) {
+		if (ltoggle == 1 && lastltoggle == 0)
+		{
+			leftFrontArm->Set(!leftFrontArm->Get());
+		//}
+		//if (rtoggle == 1 && lastrtoggle == 0)
+		//{
+			rightFrontArm->Set(!rightFrontArm->Get());
+		}
 	lastltoggle = ltoggle;
-	if (rtoggle == 1 && lastrtoggle == 0)
-	{
-		rightFrontArm->Set(!rightFrontArm->Get());
-	}
 	lastrtoggle = rtoggle;
 }
 
 
-void Collector::setGrab(float leftyaxis, float rightyaxis, bool elevatorInDanger) {
-	if (leftyaxis <= -.5)
+void Collector::setGrab(int leftyaxis, float rightyaxis, bool elevatordanger) {
+	/*if (leftyaxis <= -.5)
 	{
 		leftGrabber->Set(0);
 	}
-	if (!elevatorInDanger)
-	{
 		if (leftyaxis >= .5)
 		{
 			leftGrabber->Set(1);
@@ -30,17 +28,30 @@ void Collector::setGrab(float leftyaxis, float rightyaxis, bool elevatorInDanger
 		{
 			rightGrabber->Set(1);
 		}
-	}
 	if (rightyaxis >= .5)
 	{
 		rightGrabber->Set(0);
+	}*/
+	if(leftyaxis == 1 && lastleftgrab == 0)
+	{
+		rightGrabber->Set(!rightGrabber->Get());
+		leftGrabber->Set(!leftGrabber->Get());
 	}
+	lastleftgrab = leftyaxis;
 }
 
-bool Collector::getGrab() { return (leftGrabber->Get() && rightGrabber->Get()); }
+bool Collector::getGrableft()
+{
+	return leftGrabber->Get();
+}
 
-void Collector::setMotors(float leftverticaljoy, float rightverticaljoy) {
-	if(fabs(rightverticaljoy) >= .25)
+bool Collector::getGrabright()
+{
+	return rightGrabber->Get();
+}
+
+void Collector::setMotors(int leftverticaljoy, int rightverticaljoy, int rightreverse, int leftreverse) {
+	/*if(fabs(rightverticaljoy) >= .25)
 	{
 		float rightbeltdifferance = rightverticaljoy - oldrbelt;
 		if(fabs(rightbeltdifferance) >= rampbelt)
@@ -64,6 +75,30 @@ void Collector::setMotors(float leftverticaljoy, float rightverticaljoy) {
 	else
 	{
 		leftBelt->Set(0);
+	}*/
+	if(leftverticaljoy && leftreverse == 0)
+	{
+		leftBelt->Set(1);
+	}
+	else if (leftreverse && leftverticaljoy == 0)
+	{
+		leftBelt->Set(-1);
+	}
+	else
+	{
+		leftBelt->Set(0);
+	}
+	if(rightverticaljoy && rightreverse == 0)
+	{
+		rightBelt->Set(1);
+	}
+	else if (rightreverse && rightverticaljoy == 0)
+	{
+		rightBelt->Set(-1);
+	}
+	else
+	{
+		rightBelt->Set(0);
 	}
 }
 
