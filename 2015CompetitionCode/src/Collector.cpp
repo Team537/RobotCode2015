@@ -14,6 +14,15 @@ void Collector::setState(int ltoggle, int rtoggle, bool elevatordanger) {
 	lastrtoggle = rtoggle;
 }
 
+bool Collector::GetLeftArm()
+{
+	return leftFrontArm->Get();
+}
+
+bool Collector::GetRightArm()
+{
+	return rightFrontArm->Get();
+}
 
 void Collector::setGrab(int leftyaxis, float rightyaxis, bool elevatordanger) {
 	/*if (leftyaxis <= -.5)

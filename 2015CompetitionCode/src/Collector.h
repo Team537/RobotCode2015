@@ -5,7 +5,6 @@
 //Dependencies
 #include "WPILib.h"
 #include "Schematic.h"
-#include "Stacker.h"
 
 /* #### CONTROLS ####
 LT		-	increase left arm extend state
@@ -71,6 +70,8 @@ public: //Used in all classes
 	void setGrab(int leftyaxis, float rightyaxis, bool elevatordanger);
 	bool getGrableft();
 	bool getGrabright();
+	bool GetLeftArm();
+	bool GetRightArm();
 
 	void setMotors(int leftverticaljoy, int rightverticaljoyint, int rightreverse, int leftreverse);
 	float getLeftMotor();

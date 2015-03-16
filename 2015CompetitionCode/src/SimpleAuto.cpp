@@ -14,9 +14,9 @@ void SimpleAutonomous::Run()
 		break;
 	case 1:
 		//Drive For a Time
-		DriveTrain->AutonomousSpeed(.5,.5,.5,.5);
+		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
-		if (Autotime->Get() >= 5)
+		if (Autotime->Get() >= 1.5)
 		{
 			DriveTrain->AutonomousSpeed(0,0,0,0);
 			Autotime->Stop();

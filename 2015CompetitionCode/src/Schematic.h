@@ -20,6 +20,7 @@
 #define COL_MOTOR_LEFT			1
 #define COL_MOTOR_RIGHT			3
 #define JOYDEADBAND 			0.25
+#define BUTTON_CAN				3
 
 //Pistons
 #define HOARDER					3

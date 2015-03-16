@@ -11,11 +11,8 @@ class AutonomousTote{
 public:
 	AutonomousTote()
 {
-	Drive = new Swerve(0);
-	Stack = new Stacker();
+
 }
-	Swerve *Drive;
-	Stacker *Stack;
 	void Run();
 private:
 	int AutoState = 0;

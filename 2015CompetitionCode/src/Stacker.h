@@ -15,12 +15,12 @@ class Stacker
 
 
 	Timer Clock;
-
+	Collector *Intake;
 public: //Used in all classes
 
-	int currentlevel;
 
-	Stacker()
+
+	Stacker(Collector *Grabber)
 {
 		Flaps = new Relay(STACKER_FLAPS, Relay::Direction::kForwardOnly);
 		LiftRight = new Victor (STACKER_LIFT_RIGHT);
@@ -39,6 +39,7 @@ public: //Used in all classes
 		Lefttime = new Timer;
 		extendlefttimer = new Timer;
 		extendrighttimer = new Timer;
+		Intake = Grabber;
 
 		AutoLiftPIDRight->SetAbsoluteTolerance(5);
 		AutoLiftPIDRight->SetInputRange(1,1024);
@@ -82,12 +83,15 @@ public: //Used in all classes
 	void StackRight(int rup, int rdown);
 	void Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle, int otoggle);
 	void init();
-	void Extender(int extend, int retract, int limitswitch, int manual);
+	void Extender(int extend, int retract, int limitswitch, int manual, int reset);
 	void Grab(int button);
 	void ManualStacker(int up, int down);
-	void AutoStacker(bool autobtn, int levelup, int leveldown);
+	void AutoStacker(bool autobtn, int levelup, int leveldown, bool buttoncan);
 	bool DangerLevel();
 	bool CollectorDanger(bool left, bool right);
+	bool OnTarget();
+	int ReturnState();
+	int currentlevel;
 
 
 private: //Only used in this class
@@ -126,6 +130,7 @@ private: //Only used in this class
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer;
+
 
 };
 

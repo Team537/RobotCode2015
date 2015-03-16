@@ -7,34 +7,36 @@
 #include "Compressor.h"
 #include "SimpleAuto.h"
 #include "AutoSelect.h"
+#include "SimpleCanAndToteAuto.h"
 
 class Robot: public IterativeRobot
 {
+
+private:
 	Joystick* PrimaryController, *SecondaryController;
-	Collector *Collect;
 	Hoarder  * Hoard;
 	Stacker   *Stack;
+	Collector *Collect;
 	//CompressorManager compressor;
 	PowerDistributionPanel PDP;
-private:
 	LiveWindow *lw;
 	Swerve *swerve;
 	//SendableChooser *AutoSelect;
-	//SimpleAutonomous *SimpleAuto;
-	//CameraServer *camera;
+	SimpleAutonomous *SimpleAuto;
+	CameraServer *camera;
 
 	void RobotInit()
 	{
 		lw 					= LiveWindow::GetInstance();
-		//camera 				= CameraServer::GetInstance();
-		//camera->StartAutomaticCapture("cam0");
+		camera 				= CameraServer::GetInstance();
+		camera->StartAutomaticCapture("cam0");
 		PrimaryController 	= new Joystick(0);
 		SecondaryController = new Joystick(1);
 		swerve 				= new Swerve(PrimaryController);
-		Stack = new Stacker();
 		Collect = new Collector();
+		Stack = new Stacker(Collect);
 		Hoard = new Hoarder();
-		//SimpleAuto = new SimpleAutonomous(swerve);
+		SimpleAuto = new SimpleAutonomous(swerve);
 		//AutoSelect->AddDefault("SimpleAuto", &SimpleAuto);
 	}
 
@@ -47,6 +49,7 @@ private:
 	void AutonomousPeriodic()
 	{
 		//compressor.checkCompressor();
+		SimpleAuto->Run();
 	}
 
 	void TeleopInit()
@@ -71,9 +74,9 @@ private:
 		//Stack->CollectorIn(Collect.getGrableft(), Collect.getGrabright());
 		//Stack->CollectorDanger(Collect.getGrableft(), Collect.getGrabright());
 		Stack->ManualStacker(SecondaryController->GetRawButton(SETPOINT_UP), SecondaryController->GetRawButton(SETPOINT_DOWN));
-		Stack->Extender(SecondaryController->GetRawButton(EXTENDER_IN), SecondaryController->GetRawButton(EXTENDER_OUT),SecondaryController->GetRawButton(AUTOMATIC), SecondaryController->GetRawButton(MANUAL));
+		Stack->Extender(SecondaryController->GetRawButton(EXTENDER_IN), SecondaryController->GetRawButton(EXTENDER_OUT),SecondaryController->GetRawButton(AUTOMATIC), SecondaryController->GetRawButton(MANUAL), SecondaryController->GetRawButton(12));
 		Stack->Grab(SecondaryController->GetRawButton(TOTE_GRAB_BTN));
-		Stack->AutoStacker(SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawButton(LEVEL_UP), SecondaryController->GetRawButton(LEVEL_DOWN));
+		Stack->AutoStacker(SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawButton(LEVEL_UP), SecondaryController->GetRawButton(LEVEL_DOWN), SecondaryController->GetRawButton(BUTTON_CAN));
 		Collect->setState(PrimaryController->GetRawButton(4), SecondaryController->GetRawButton(RIGHT_VERTICAL), Stack->DangerLevel());
 		Collect->setGrab(PrimaryController->GetRawButton(3), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS), Stack->DangerLevel());
 		SmartDashboard::PutNumber("POV", SecondaryController->GetPOV());
