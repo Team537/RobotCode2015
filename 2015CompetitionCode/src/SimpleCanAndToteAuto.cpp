@@ -32,6 +32,29 @@ void SimpleCanAndToteAutonomous::Run()
 		break;
 	case 3:
 		Autotime->Reset();
+		Elevator->AutoStacker(0,0,1,0);
+		if(Elevator->OnTarget())
+		{
+			DriveTrain->AutonomousAngle(180,180,180,180);
+			if(DriveTrain->OnTarget())
+			{
+				SimpleAutoSwitch = 4;
+			}
+
+		}
+		break;
+	case 4:
+		DriveTrain->AutonomousSpeed(.5,.5,.5,.5);
+		Autotime->Start();
+		if(Autotime->Get() > 4)
+		{
+			DriveTrain->AutonomousSpeed(0,0,0,0);
+			Autotime->Stop();
+			SimpleAutoSwitch = 5;
+		}
+		break;
+	case 5:
+		Autotime->Reset();
 		break;
 	}
 }
