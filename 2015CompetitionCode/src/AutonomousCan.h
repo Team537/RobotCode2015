@@ -8,19 +8,23 @@
 
 class AutonomousCan
 {
-	AutonomousCan(){
-		hoarder = new Hoarder();
-		Drive = new Swerve(0);
+	public:
+
+	AutonomousCan(Hoarder * Hoard, Swerve *Swerve){
+		hoarder =  Hoard;
+		Drive =  Swerve;
+		Autotime = new Timer;
 
 	}
+	void Run(int cannumber);
+private:
 	Hoarder *hoarder;
 	Swerve *Drive;
-private:
-	int AutoState = 0;
+	Timer *Autotime;
+	int Autostate = 0;
 	int count 	  = 0;
 	bool armout   = false;
-public:
-	void Run();
+
 };
 
 #endif

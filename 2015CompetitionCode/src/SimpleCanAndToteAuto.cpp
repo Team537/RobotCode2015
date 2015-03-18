@@ -44,7 +44,7 @@ void SimpleCanAndToteAutonomous::Run()
 		}
 		break;
 	case 4:
-		DriveTrain->AutonomousSpeed(.5,.5,.5,.5);
+		DriveTrain->AutonomousSpeed(-.5,-.5,-.5,-.5);
 		Autotime->Start();
 		if(Autotime->Get() > 4)
 		{

@@ -1,5 +1,5 @@
 #ifndef AUTONOMOUSTOTE_H
-#define AUTONOMOUSTOTE_h
+#define AUTONOMOUSTOTE_H
 
 #include <WPILib.h>
 #include "Schematic.h"
@@ -18,7 +18,7 @@ public:
 		repetition = 0;
 		Autotime = new Timer;
 }
-	void Run();
+	void ToteRun();
 private:
 	Swerve *DriveTrain;
 	Collector *Collect;

@@ -1,6 +1,6 @@
 #include "AutonomousTote.h"
 
-void AutonomousTote::Run()
+void AutonomousTote::ToteRun()
 {
 	switch(AutoState)
 	{
@@ -97,6 +97,25 @@ void AutonomousTote::Run()
 		}
 		break;
 	case 6:
+		Autotime->Reset();
+		Stack->AutoStacker(0,0,1,0);
+		DriveTrain->AutonomousAngle(180,180,180,180);
+		if(DriveTrain->OnTarget())
+		{
+			AutoState = 7;
+		}
+		break;
+	case 7:
+		DriveTrain->AutonomousSpeed(-.5,-.5,-.5,-.5);
+		Autotime->Start();
+		if(Autotime->Get() > 1)
+		{
+			Autotime->Stop();
+			DriveTrain->AutonomousSpeed(0,0,0,0);
+			AutoState = 8;
+		}
+		break;
+	case 8:
 		Autotime->Reset();
 		break;
 	}

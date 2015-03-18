@@ -8,6 +8,8 @@
 #include "SimpleAuto.h"
 #include "AutoSelect.h"
 #include "SimpleCanAndToteAuto.h"
+#include "AutonomousCan.h"
+#include "AutonomousTote.cpp"
 
 class Robot: public IterativeRobot
 {
@@ -24,6 +26,9 @@ private:
 	//SendableChooser *AutoSelect;
 	SimpleAutonomous *SimpleAuto;
 	CameraServer *camera;
+	SimpleCanAndToteAutonomous *SingleTote;
+	AutonomousCan *CanAuto;
+	AutonomousTote *TripleTote;
 
 	void RobotInit()
 	{
@@ -37,6 +42,9 @@ private:
 		Stack = new Stacker(Collect);
 		Hoard = new Hoarder();
 		SimpleAuto = new SimpleAutonomous(swerve);
+		SingleTote = new SimpleCanAndToteAutonomous(swerve , Stack);
+		CanAuto = new AutonomousCan(Hoard, swerve);
+		TripleTote = new AutonomousTote(swerve, Collect, Stack);
 		//AutoSelect->AddDefault("SimpleAuto", &SimpleAuto);
 	}
 
@@ -49,7 +57,11 @@ private:
 	void AutonomousPeriodic()
 	{
 		//compressor.checkCompressor();
-		SimpleAuto->Run();
+		//SimpleAuto->Run();
+		//CanAuto->Run(3);
+		SingleTote->Run();
+		//TripleTote->ToteRun();
+
 	}
 
 	void TeleopInit()
