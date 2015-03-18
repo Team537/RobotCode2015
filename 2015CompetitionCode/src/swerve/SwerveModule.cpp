@@ -37,7 +37,7 @@ void SwerveModule::drive(float angle, float speed)
 	SpeedOutput->Set(.5*speed);
 	//PIDDrive->SetSetpoint(.5*speed*MaxRate);
 	//SmartDashboard::PutNumber("Encoder", SpeedEncoder->GetRate());
-	//SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
+	SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
 	//SmartDashboard::PutNumber("Angle IO",angle);
 	//SmartDashboard::PutNumber("Speed IO",speed);
 	//SmartDashboard::PutNumber("angle", angle);
@@ -62,11 +62,11 @@ void SwerveModule::AutoDrive(float Angle)
 	OldSetpoint = Angle;
 	PIDAngle->SetSetpoint(Angle);
 	target = PIDAngle->Get();
-	SmartDashboard::PutNumber(Name+ "PID output", target);
-	/*SmartDashboard::PutNumber(Name+ "PotReading", AnglePotentiometer->PIDGet());
-	SmartDashboard::PutNumber(Name+ "Angle Error", PIDAngle->GetError());
+	//SmartDashboard::PutNumber(Name+ "PID output", target);
+	SmartDashboard::PutNumber(Name+ "Potentiometer", AnglePotentiometer->PIDGet());
+	//SmartDashboard::PutNumber(Name+ "Angle Error", PIDAngle->GetError());*/
 	SmartDashboard::PutNumber(Name+ "Angle Setpoint", PIDAngle->GetSetpoint());
-	SmartDashboard::PutBoolean(Name+ "Angle Target", PIDAngle->OnTarget());*/
+	//SmartDashboard::PutBoolean(Name+ "Angle Target", PIDAngle->OnTarget());
 	SmartDashboard::PutNumber(Name+ "Angle Error2", PIDAngle->GetError());
 }
 

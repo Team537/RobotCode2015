@@ -32,8 +32,10 @@ public: //Used in all classes
 
 		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT,1024,0);
 		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,-1024,1024);
+		ExtendPotLeft = new AnalogPotentiometer(2,600,0);
+		ExtendPotRight = new AnalogPotentiometer(3,600,0);
 
-		AutoLiftPIDLeft = new PIDController(-.02, -0.000151, -0.054, LiftPotLeft, LiftLeft);
+		AutoLiftPIDLeft = new PIDController(-.02, -0.00012, -0.054, LiftPotLeft, LiftLeft);
 		AutoLiftPIDRight = new PIDController(-.02, -0.000151, -0.054, LiftPotRight, LiftRight);
 		Righttime = new Timer;
 		Lefttime = new Timer;
@@ -41,12 +43,12 @@ public: //Used in all classes
 		extendrighttimer = new Timer;
 		Intake = Grabber;
 
-		AutoLiftPIDRight->SetAbsoluteTolerance(5);
+		AutoLiftPIDRight->SetAbsoluteTolerance(10);
 		AutoLiftPIDRight->SetInputRange(1,1024);
-		AutoLiftPIDRight->SetOutputRange(-1,.45);
-		AutoLiftPIDLeft->SetAbsoluteTolerance(5);
+		AutoLiftPIDRight->SetOutputRange(-1,.75);
+		AutoLiftPIDLeft->SetAbsoluteTolerance(10);
 		AutoLiftPIDLeft->SetInputRange(1,1024);
-		AutoLiftPIDLeft->SetOutputRange(-.75,.4);
+		AutoLiftPIDLeft->SetOutputRange(-.75,.7);
 
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
@@ -70,12 +72,13 @@ public: //Used in all classes
 		leftelevatormin = 15;
 		lastpov = -1;
 		lastswitch = false;
-		ExtendStateLeft = 0;
-		ExtendStateRight = 0;
+		ExtendStateLeft = 1;
+		ExtendStateRight = 1;
 		level = 1;
 		lastleveldownpressed = 0;
 		lastleveluppressed = 0;
 		currentlevel = 1;
+		DangerDiferance = 50;
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
@@ -92,6 +95,7 @@ public: //Used in all classes
 	bool OnTarget();
 	int ReturnState();
 	int currentlevel;
+	float DangerDiferance;
 
 
 private: //Only used in this class
@@ -127,7 +131,7 @@ private: //Only used in this class
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   ExtendLeft, *ExtendRight;
 	DigitalInput* SwitchLeft, *SwitchRight;
-	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
+	AnalogPotentiometer* LiftPotRight, *LiftPotLeft, *ExtendPotLeft, *ExtendPotRight;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer;
 

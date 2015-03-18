@@ -129,14 +129,14 @@ void Swerve::Tune()
 {
 					//Manually drive the motors use for sensor testing
 
-					//FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-					//FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-					//BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
-					//BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+					FrontLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+					FrontRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+					BackRightMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
+					BackLeftMod->drive(Controller->GetRawAxis(0),Controller->GetRawAxis(1));
 
 					//Get Angle based off Button Inputs
 
-					if (Controller->GetRawButton(1) == 1){
+					/*if (Controller->GetRawButton(1) == 1){
 						AngleSetpoint = 250;
 					}
 					else if (Controller->GetRawButton(2)) {
@@ -160,7 +160,7 @@ void Swerve::Tune()
 					BackRightMod->AutoDrive(AngleSetpoint);
 					//FrontLeftMod->AutoDrive(AngleSetpoint);
 
-		 		if(newtime.Get() >= .25)
+		 		/*if(newtime.Get() >= .25)
 					{
 						if (Controller->GetRawButton(7)==1)
 						{
@@ -208,7 +208,7 @@ void Swerve::Tune()
 						newtime.Reset();
 						newtime.Start();
 						FrontLeftMod->PIDAdjust(p,i,d);
-						}
+						}*/
 }
 
 void Swerve::AutonomousAngle(float FrontLeft, float FrontRight, float BackLeft, float BackRight)

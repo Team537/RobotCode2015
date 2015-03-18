@@ -87,6 +87,9 @@
 #define PID_BACK_LEFT_ANGLE				.0217,0.00025,0.045, 15,345,-1,1
 #define PID_BACK_RIGHT_ANGLE			.025,0.000220,0.05,15,345,-1,1
 
+//Have Back  Modules as Replacements
+
+
 //Drive train Velocity PID's on Capn hook
 /*
 #define PID_FRONT_LEFT_VELOCITY		 	.04, 0, 0, 0
@@ -111,7 +114,7 @@
 #define ONE		300
 #define TWO		500
 #define THREE	750
-#define CAN 	200
+#define CAN 	150
 
 //Names
 #define RETRACT 0
