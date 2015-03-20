@@ -1,25 +1,26 @@
-#ifndef SIMPLECANANDTOTEAUTO_H
-#define SIMPLECANANDTOTEAUTO_H
+#ifndef NOAUTO_H
+#define NOAUTO_H
 
 #include <WPILib.h>
 #include "Schematic.h"
-#include "Stacker.h"
 #include "swerve/Swerve.h"
+#include "Collector.h"
+#include "Stacker.h"
 #include "Hoarder.h"
 #include "AutoSelect.h"
 
+class NoAutonomous : public AutoSelect{
 
-class SimpleCanAndToteAutonomous : public AutoSelect{
-
-private:
-	Timer *Autotime;
-	int SimpleAutoSwitch;
 
 public:
+	NoAutonomous(){
 
+		}
 	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+
+private:
 };
 
 #endif

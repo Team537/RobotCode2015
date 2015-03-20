@@ -9,6 +9,7 @@
 #include "AutoSelect.h"
 #include "SimpleCanAndToteAuto.h"
 #include "AutonomousCan.h"
+#include "NoAuto.h"
 #include "AutonomousTote.h"
 
 class Robot: public IterativeRobot
@@ -28,7 +29,8 @@ private:
 	SimpleCanAndToteAutonomous *SingleTote;
 	AutonomousCan *CanAuto;
 	AutonomousTote *TripleTote;
-	//SendableChooser *AutoChooser;
+	NoAutonomous *NoAuto;
+	SendableChooser *AutoChooser;
 
 	void RobotInit()
 	{
@@ -45,32 +47,35 @@ private:
 		SingleTote = new SimpleCanAndToteAutonomous();
 		CanAuto = new AutonomousCan();
 		TripleTote = new AutonomousTote();
+		NoAuto = new NoAutonomous();
+		AutoChooser = new SendableChooser;
 
-	/*	AutoChooser->AddDefault("SimpleAuto", &SimpleAuto);
-		AutoChooser->AddObject("Triple Yellow Tote", &TripleTote);
-		AutoChooser->AddObject("Hoard Can", &CanAuto);
-		AutoChooser->AddObject("Single Yellow Tote", &SingleTote);
-		SmartDashboard::PutData("Auto Choice", AutoChooser);*/
+		AutoChooser->AddDefault("SimpleAuto", SimpleAuto);
+		AutoChooser->AddObject("NoAutonomous", NoAuto);
+		//AutoChooser->AddObject("Triple Yellow Tote", TripleTote);
+		//AutoChooser->AddObject("Hoard Can", CanAuto);
+		//AutoChooser->AddObject("Single Yellow Tote", SingleTote);
+		SmartDashboard::PutData("Auto Choice", AutoChooser);
 	}
 
 	void AutonomousInit()
 	{
 		//compressor.checkCompressor();
-		//AutoSelect *ChoosenAutonomous = (AutoSelect *)AutoChooser->GetSelected();
-		//ChoosenAutonomous->Initialize(swerve, Collect, Stack, Hoard);
-		SimpleAuto->Initialize(swerve, Collect, Stack, Hoard);
+		AutoSelect *ChoosenAutonomous = (AutoSelect *)AutoChooser->GetSelected();
+		ChoosenAutonomous->Initialize(swerve, Collect, Stack, Hoard);
+		//SimpleAuto->Initialize(swerve, Collect, Stack, Hoard);
 	}
 
 	void AutonomousPeriodic()
 	{
-		/*AutoSelect *ChoosenAutonomous = (AutoSelect *)AutoChooser->GetSelected();
+		AutoSelect *ChoosenAutonomous = (AutoSelect *)AutoChooser->GetSelected();
 		while(IsAutonomous() && IsEnabled())
 		{
 			ChoosenAutonomous->Run(swerve, Collect, Stack, Hoard);
 		}
 		ChoosenAutonomous->End(swerve, Collect, Stack, Hoard);
-		//compressor.checkCompressor();*/
-		SimpleAuto->Run(swerve, Collect, Stack, Hoard);
+		//compressor.checkCompressor();
+		//SimpleAuto->Run(swerve, Collect, Stack, Hoard);
 		//CanAuto->Run(swerve, Collect, Stack, Hoard);
 		//SingleTote->Run(swerve, Collect, Stack, Hoard);
 		//TripleTote->Run(swerve, Collect, Stack, Hoard);*/
@@ -89,21 +94,21 @@ private:
 	void TeleopPeriodic()
 	{
 		//compressor.checkCompressor();
-		swerve->Run();
+		//swerve->Run();
 		//swerve->Tune();
-		Collect->setMotors(PrimaryController->GetRawButton(5), PrimaryController->GetRawButton(6), PrimaryController->GetRawButton(8), PrimaryController->GetRawButton(7));
+		//Collect->setMotors(PrimaryController->GetRawButton(5), PrimaryController->GetRawButton(6), PrimaryController->GetRawButton(8), PrimaryController->GetRawButton(7));
 		Hoard->hoard(PrimaryController->GetRawButton(HOARD_BTN));
-		Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
-		Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
-		//Stack->Tune(PrimaryController->GetRawButton(8),PrimaryController->GetRawButton(7),PrimaryController->GetRawButton(5),PrimaryController->GetRawButton(3),PrimaryController->GetRawButton(10),PrimaryController->GetRawButton(9),PrimaryController->GetRawButton(12),PrimaryController->GetRawButton(11),PrimaryController->GetRawButton(1), PrimaryController->GetRawButton(2));
+		//Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
+		//Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
+		Stack->Tune(PrimaryController->GetRawButton(8),PrimaryController->GetRawButton(7),PrimaryController->GetRawButton(5),PrimaryController->GetRawButton(3),PrimaryController->GetRawButton(10),PrimaryController->GetRawButton(9),PrimaryController->GetRawButton(12),PrimaryController->GetRawButton(11),PrimaryController->GetRawButton(1), PrimaryController->GetRawButton(2));
 		//Stack->CollectorIn(Collect.getGrableft(), Collect.getGrabright());
 		//Stack->CollectorDanger(Collect.getGrableft(), Collect.getGrabright());
 		//Stack->ManualStacker(SecondaryController->GetRawButton(SETPOINT_UP), SecondaryController->GetRawButton(SETPOINT_DOWN));
-		//Stack->Extender(SecondaryController->GetRawButton(EXTENDER_IN), SecondaryController->GetRawButton(EXTENDER_OUT),SecondaryController->GetRawButton(AUTOMATIC), SecondaryController->GetRawButton(MANUAL), SecondaryController->GetRawButton(12));
+		Stack->Extender(SecondaryController->GetRawButton(EXTENDER_IN), SecondaryController->GetRawButton(EXTENDER_OUT),SecondaryController->GetRawButton(AUTOMATIC), SecondaryController->GetRawButton(MANUAL), SecondaryController->GetRawButton(12));
 		//Stack->Grab(SecondaryController->GetRawButton(TOTE_GRAB_BTN));
 		//Stack->AutoStacker(SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawButton(LEVEL_UP), SecondaryController->GetRawButton(LEVEL_DOWN), SecondaryController->GetRawButton(BUTTON_CAN));
-		Collect->setState(PrimaryController->GetRawButton(4), SecondaryController->GetRawButton(RIGHT_VERTICAL), Stack->DangerLevel());
-		Collect->setGrab(PrimaryController->GetRawButton(3), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS), Stack->DangerLevel());
+		//Collect->setState(PrimaryController->GetRawButton(4), SecondaryController->GetRawButton(RIGHT_VERTICAL), Stack->DangerLevel());
+		//Collect->setGrab(PrimaryController->GetRawButton(3), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS), Stack->DangerLevel());
 		SmartDashboard::PutNumber("POV", SecondaryController->GetPOV());
 		SmartDashboard::PutNumber("Right Stacker Motor Current",  PDP.GetCurrent(10));
 		SmartDashboard::PutNumber("Left Stacker Motor Current",  PDP.GetCurrent(9));
