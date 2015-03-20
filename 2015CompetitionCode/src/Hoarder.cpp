@@ -15,3 +15,13 @@ void Hoarder::hoard(int btnhoard){
 	}
 	lastpressed = btnhoard;
 }
+
+void Hoarder::Extend()
+{
+	pistonextend->Set(1);
+}
+
+void Hoarder::Retract()
+{
+	pistonextend->Set(0);
+}

@@ -64,16 +64,12 @@
 #define COMPRESSOR_RELAY		1
 
 //PIDValues for the Stacker on Capn hook
-#define PID_LIFT_UP_RIGHT 		.04,.00,.00
-#define PID_LIFT_DOWN_RIGHT		.04,.00,.00
-#define PID_LIFT_UP_LEFT 		.04,.00,.00
-#define PID_LIFT_DOWN_LEFT		.04,.00,.00
+#define STACKERLEFT	-.021,-.0000191,-.005
+#define STACKERIGHT	.039, .000042, .005
 
 //PIDValues for the Stacker on PTSD
-//#define PID_LIFT_UP_RIGHT 		.04,.00,.00
-//#define PID_LIFT_DOWN_RIGHT		.04,.00,.00
-//#define PID_LIFT_UP_LEFT 		.04,.00,.00
-//#define PID_LIFT_DOWN_LEFT		.04,.00,.00
+//#define STACKERLEFT -.02, -0.00012, -0.054
+//#define STACKERRIGHT -.02, -0.000151, -0.054
 
 //Drive train Angle PID's on Capn hook
 #define PID_FRONT_LEFT_ANGLE 	-.0217, -.00026, -.0444, 15, 345, -1, 1

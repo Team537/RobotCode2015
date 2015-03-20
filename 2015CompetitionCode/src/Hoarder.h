@@ -18,6 +18,8 @@ public: //Used in all classes
 	//Declare functions
 	void hoard(int btnhoard);
 	void initialize();
+	void Extend();
+	void Retract();
 
 private: //Only used in this class
 

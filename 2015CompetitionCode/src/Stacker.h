@@ -35,8 +35,8 @@ public: //Used in all classes
 		ExtendPotLeft = new AnalogPotentiometer(2,600,0);
 		ExtendPotRight = new AnalogPotentiometer(3,600,0);
 
-		AutoLiftPIDLeft = new PIDController(-.02, -0.00012, -0.054, LiftPotLeft, LiftLeft);
-		AutoLiftPIDRight = new PIDController(-.02, -0.000151, -0.054, LiftPotRight, LiftRight);
+		AutoLiftPIDLeft = new PIDController(STACKERLEFT, LiftPotLeft, LiftLeft);
+		AutoLiftPIDRight = new PIDController(STACKERIGHT, LiftPotRight, LiftRight);
 		Righttime = new Timer;
 		Lefttime = new Timer;
 		extendlefttimer = new Timer;
@@ -44,11 +44,12 @@ public: //Used in all classes
 		Intake = Grabber;
 
 		AutoLiftPIDRight->SetAbsoluteTolerance(10);
-		AutoLiftPIDRight->SetInputRange(1,1024);
-		AutoLiftPIDRight->SetOutputRange(-.5,.5);
+		AutoLiftPIDRight->SetInputRange(20,1024);
+		AutoLiftPIDRight->SetOutputRange(-.65,1);
+
 		AutoLiftPIDLeft->SetAbsoluteTolerance(10);
-		AutoLiftPIDLeft->SetInputRange(1,1024);
-		AutoLiftPIDLeft->SetOutputRange(-.5,.5);
+		AutoLiftPIDLeft->SetInputRange(20,1024);
+		AutoLiftPIDLeft->SetOutputRange(-1,.5);
 
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
@@ -72,13 +73,13 @@ public: //Used in all classes
 		leftelevatormin = 15;
 		lastpov = -1;
 		lastswitch = false;
-		ExtendStateLeft = 4;
-		ExtendStateRight = 4;
+		ExtendStateLeft = 3;
+		ExtendStateRight = 3;
 		level = 1;
 		lastleveldownpressed = 0;
 		lastleveluppressed = 0;
 		currentlevel = 1;
-		DangerDiferance = 50;
+		DangerDiferance = 25;
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
@@ -112,9 +113,9 @@ private: //Only used in this class
 	float rightelevatormin, leftelevatormin;
 	float lastpov;
 	bool lastswitch;
-	float p = .0;
-	float i = .000;
-	float d = .0;
+	float p = .039;
+	float i = .000042;
+	float d = .005;
 	float LeftOffset = 0;
 	int ExtendStateLeft, ExtendStateRight;
 	float extensionspeedleft, extensionspeedright;

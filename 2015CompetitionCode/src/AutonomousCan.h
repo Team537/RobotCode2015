@@ -13,15 +13,21 @@
 class AutonomousCan : public AutoSelect
 {
 	public:
-
+		AutonomousCan()
+	{
+			Autotime = new Timer;
+			Autostate = 0;
+			count = 0;
+			cannumber = 0;
+	}
 	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 private:
 
 	Timer *Autotime;
-	int Autostate = 0;
-	int count 	  = 0;
+	int Autostate;
+	int count;
 	int cannumber;
 	bool armout   = false;
 

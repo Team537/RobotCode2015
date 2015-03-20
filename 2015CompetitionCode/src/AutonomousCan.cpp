@@ -3,7 +3,7 @@
 void AutonomousCan::Initialize(Swerve *DriveTrainTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
 {
 	SmartDashboard::PutString("Auto Selected", "Auto Can");
-	cannumber = SmartDashboard::GetNumber("Can Count");
+	cannumber = 1;
 
 	Autostate = 0;
 }
@@ -13,28 +13,22 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 	switch (Autostate)
 	{
 	case 0:
-	  /*DriveTrain->setdistance(10 or something IDFK)
-		if (DriveTrain->atdistance())
-		{
-			AutoState = 1;
-		}*/
+		Autostate = 1;
 	break;
 	case 1:
 		DriveTrain->AutonomousAngle(180,180,180,180);
 		if(DriveTrain->OnTarget())
 		{
-			Hoard->hoard(1);
-			Hoard->hoard(0);
+			Hoard->Extend();
 			DriveTrain->AutonomousSpeed(1,1,1,1);
 			Autotime->Start();
 			if (Autotime->Get() > 2)
 			{
-				Hoard->hoard(1);
-				Hoard->hoard(0);
+				DriveTrain->AutonomousSpeed(0,0,0,0);
+				Hoard->Retract();
 				if(Autotime->Get() > 3)
 				{
-					Hoard->hoard(1);
-					Hoard->hoard(0);
+					Hoard->Extend();
 					Autotime->Stop();
 					if(cannumber > 1)
 					{
@@ -54,12 +48,11 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 		Autotime->Start();
 		if (Autotime->Get() > 2)
 		{
-			Hoard->hoard(1);
-			Hoard->hoard(0);
+			DriveTrain->AutonomousSpeed(0,0,0,0);
+			Hoard->Retract();
 			if(Autotime->Get() > 3)
 			{
-				Hoard->hoard(1);
-				Hoard->hoard(0);
+				Hoard->Extend();
 				Autotime->Stop();
 				if(cannumber > 2)
 				{
@@ -78,12 +71,11 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 		Autotime->Start();
 		if (Autotime->Get() > 4)
 		{
-			Hoard->hoard(1);
-			Hoard->hoard(0);
+			DriveTrain->AutonomousSpeed(0,0,0,0);
+			Hoard->Retract();
 			if(Autotime->Get() > 5)
 			{
-				Hoard->hoard(1);
-				Hoard->hoard(0);
+				Hoard->Extend();
 				Autotime->Stop();
 				if(cannumber > 3)
 				{
@@ -102,18 +94,18 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 		Autotime->Start();
 		if (Autotime->Get() > 2)
 		{
-			Hoard->hoard(1);
-			Hoard->hoard(0);
+			DriveTrain->AutonomousSpeed(0,0,0,0);
+			Hoard->Retract();
 			if(Autotime->Get() > 3)
 			{
-				Hoard->hoard(1);
-				Hoard->hoard(0);
 				Autotime->Stop();
 				Autostate = 5;
 			}
 		}
 		break;
 	case 5:
+		//Hoarder Out
+		Autotime->Reset();
 		break;
 	}
 }
