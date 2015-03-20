@@ -87,11 +87,11 @@ void Collector::setMotors(int leftverticaljoy, int rightverticaljoy, int rightre
 	}*/
 	if(leftverticaljoy && leftreverse == 0)
 	{
-		leftBelt->Set(1);
+		leftBelt->Set(-1);
 	}
 	else if (leftreverse && leftverticaljoy == 0)
 	{
-		leftBelt->Set(-1);
+		leftBelt->Set(1);
 	}
 	else
 	{

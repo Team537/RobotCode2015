@@ -6,26 +6,19 @@
 #include "Stacker.h"
 #include "Collector.h"
 #include "swerve/Swerve.h"
+#include "Hoarder.h"
+#include "AutoSelect.h"
 
-class AutonomousTote{
+class AutonomousTote : public AutoSelect {
 
 public:
-	AutonomousTote(Swerve *Swerve, Collector *Grabber, Stacker *Elevator)
-{
-		DriveTrain = Swerve;
-		Collect = Grabber;
-		Stack = Elevator;
-		repetition = 0;
-		Autotime = new Timer;
-}
-	void ToteRun();
+	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 private:
-	Swerve *DriveTrain;
-	Collector *Collect;
-	Stacker *Stack;
 	Timer *Autotime;
 	int AutoState = 0;
-	int repetition;
+	int repetition = 0;
 
 };
 

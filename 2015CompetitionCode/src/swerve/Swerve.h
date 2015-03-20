@@ -21,6 +21,7 @@ private:
 	LiveWindow *LW;
 	bool turtle;
 	int lastturtle;
+	bool initialized;
 public:
 	Swerve(Joystick *controller)
 	{
@@ -54,6 +55,7 @@ public:
 		d = 0.0;
 		lastturtle = 0;
 		turtle = 0;
+		initialized = false;
 	}
 	void Initialize();
 	void Run();

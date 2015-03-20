@@ -4,24 +4,26 @@
 #include <WPILib.h>
 #include "Schematic.h"
 #include "swerve/Swerve.h"
+#include "Collector.h"
+#include "Stacker.h"
+#include "Hoarder.h"
+#include "AutoSelect.h"
 
-class SimpleAutonomous{
+class SimpleAutonomous : public AutoSelect{
 
 private:
-	Swerve *DriveTrain;
 	Timer *Autotime;
 	int SimpleAutoSwitch;
 
 public:
-
-	SimpleAutonomous (Swerve *SwerveDrive)
+	SimpleAutonomous ()
 {
-		DriveTrain = SwerveDrive;
-		SimpleAutoSwitch = 0;
 		Autotime = new Timer;
-
+		SimpleAutoSwitch = 0;
 }
-	void Run();
+	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 };
 
 #endif

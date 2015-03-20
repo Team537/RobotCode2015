@@ -1,7 +1,15 @@
 #include "SimpleAuto.h"
 
-void SimpleAutonomous::Run()
+void SimpleAutonomous::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
 {
+	DriveTrain->Initialize();
+	SmartDashboard::PutString("Auto Selected", "Simple Autonomous");
+	SimpleAutoSwitch = 0;
+}
+
+void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+{
+
 	switch(SimpleAutoSwitch)
 	{
 	case 0:
@@ -16,7 +24,7 @@ void SimpleAutonomous::Run()
 		//Drive For a Time
 		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
-		if (Autotime->Get() >= 1.5)
+		if (Autotime->Get() >= 1.75)
 		{
 			DriveTrain->AutonomousSpeed(0,0,0,0);
 			Autotime->Stop();
@@ -28,4 +36,9 @@ void SimpleAutonomous::Run()
 		Autotime->Reset();
 		break;
 	}
+}
+
+void SimpleAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+{
+	Autotime->Reset();
 }

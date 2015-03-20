@@ -211,7 +211,7 @@ void Stacker::ManualStacker(int up, int down) {
 //When a joystick is moved, extend or retract the stacker accordingly
 void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int reset)
 {
-	switch (ExtendStateLeft){
+	/*switch (ExtendStateLeft){
 	case 0:
 		extendlefttimer->Start();
 		extensionspeedleft = -.25;
@@ -434,7 +434,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			break;
 		}
 	ExtendLeft->Set(1.04*extensionspeedleft);
-	ExtendRight->Set(-extensionspeedright);
+	ExtendRight->Set(-extensionspeedright);*/
 	SmartDashboard::PutNumber("Extend Pot Left", ExtendPotLeft->Get());
 	SmartDashboard::PutNumber("Extend Pot Right", ExtendPotRight->Get());
 	SmartDashboard::PutNumber("ExtendState Left", ExtendStateLeft);
@@ -454,11 +454,11 @@ void Stacker::StackLeft(int lup, int ldown)
 {
 	if(lup)
 	{
-		LiftLeft->Set(-.5);
+		LiftLeft->Set(-1);
 	}
 	else if(ldown)
 	{
-		LiftLeft->Set(.25);
+		LiftLeft->Set(.75);
 	}
 	else
 	{
@@ -471,11 +471,11 @@ void Stacker::StackRight(int rup, int rdown)
 {
 	if(rup)
 	{
-		LiftRight->Set(-.5);
+		LiftRight->Set(1);
 	}
 	else if(rdown)
 	{
-		LiftRight->Set(.25);
+		LiftRight->Set(-.75);
 	}
 	else
 	{
@@ -541,7 +541,7 @@ void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown,
 		Clock.Reset();
 		Clock.Start();
 	}
-	//AutoLiftPIDLeft->SetPID(p,i,d);
+	AutoLiftPIDLeft->SetPID(p,i,d);
 	AutoLiftPIDRight->SetPID(p,i,d);
 }
 

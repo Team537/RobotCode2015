@@ -26,18 +26,14 @@ void SwerveModule::drive(float angle, float speed)
 	{
 		speed = 0;
 	}
-	double crate = SpeedEncoder->GetRate();
-	if (crate >= maxencrate)
-	{
-		maxencrate = crate;
-	}
+
 	//SmartDashboard::PutNumber(Name + "crate", crate);
 	//SmartDashboard::PutNumber(Name + "max encoder rate", maxencrate);
 	//AngleOutput->Set(angle);
 	SpeedOutput->Set(.5*speed);
 	//PIDDrive->SetSetpoint(.5*speed*MaxRate);
 	//SmartDashboard::PutNumber("Encoder", SpeedEncoder->GetRate());
-	SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
+	//SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
 	//SmartDashboard::PutNumber("Angle IO",angle);
 	//SmartDashboard::PutNumber("Speed IO",speed);
 	//SmartDashboard::PutNumber("angle", angle);

@@ -4,25 +4,25 @@
 #include <WPILib.h>
 #include "Schematic.h"
 #include "Hoarder.h"
+#include "Stacker.h"
+#include "Collector.h"
 #include "swerve/Swerve.h"
 
-class AutonomousCan
+#include "AutoSelect.h"
+
+class AutonomousCan : public AutoSelect
 {
 	public:
 
-	AutonomousCan(Hoarder * Hoard, Swerve *Swerve){
-		hoarder =  Hoard;
-		Drive =  Swerve;
-		Autotime = new Timer;
-
-	}
-	void Run(int cannumber);
+	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 private:
-	Hoarder *hoarder;
-	Swerve *Drive;
+
 	Timer *Autotime;
 	int Autostate = 0;
 	int count 	  = 0;
+	int cannumber;
 	bool armout   = false;
 
 };

@@ -1,14 +1,20 @@
 #include "SimpleCanAndToteAuto.h"
 
-void SimpleCanAndToteAutonomous::Run()
+void SimpleCanAndToteAutonomous::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+{
+	SmartDashboard::PutString("Auto Selected", "Single Yellow Tote");
+	SimpleAutoSwitch = 0;
+}
+
+void SimpleCanAndToteAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
 {
 	switch(SimpleAutoSwitch)
 	{
 	case 0:
 		Autotime->Reset();
-		Elevator->AutoStacker(1,0,0,0);
-		Elevator->AutoStacker(0,0,0,0);
-		if(Elevator->ReturnState() == 0)
+		Stack->AutoStacker(1,0,0,0);
+		Stack->AutoStacker(0,0,0,0);
+		if(Stack->ReturnState() == 0)
 		{
 			SimpleAutoSwitch = 1;
 		}
@@ -32,8 +38,8 @@ void SimpleCanAndToteAutonomous::Run()
 		break;
 	case 3:
 		Autotime->Reset();
-		Elevator->AutoStacker(0,0,1,0);
-		if(Elevator->OnTarget())
+		Stack->AutoStacker(0,0,1,0);
+		if(Stack->OnTarget())
 		{
 			DriveTrain->AutonomousAngle(180,180,180,180);
 			if(DriveTrain->OnTarget())
@@ -57,4 +63,9 @@ void SimpleCanAndToteAutonomous::Run()
 		Autotime->Reset();
 		break;
 	}
+}
+
+void SimpleCanAndToteAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+{
+	Autotime->Reset();
 }

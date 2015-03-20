@@ -5,26 +5,20 @@
 #include "Schematic.h"
 #include "Stacker.h"
 #include "swerve/Swerve.h"
+#include "Hoarder.h"
+#include "AutoSelect.h"
 
-class SimpleCanAndToteAutonomous{
+
+class SimpleCanAndToteAutonomous : public AutoSelect{
 
 private:
-	Swerve *DriveTrain;
-	Stacker *Elevator;
 	Timer *Autotime;
 	int SimpleAutoSwitch;
 
 public:
-
-	SimpleCanAndToteAutonomous (Swerve *SwerveDrive, Stacker *Stack)
-{
-		DriveTrain = SwerveDrive;
-		Elevator = Stack;
-		SimpleAutoSwitch = 0;
-		Autotime = new Timer;
-
-}
-	void Run();
+	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 };
 
 #endif

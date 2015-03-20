@@ -45,10 +45,10 @@ public: //Used in all classes
 
 		AutoLiftPIDRight->SetAbsoluteTolerance(10);
 		AutoLiftPIDRight->SetInputRange(1,1024);
-		AutoLiftPIDRight->SetOutputRange(-1,.75);
+		AutoLiftPIDRight->SetOutputRange(-.5,.5);
 		AutoLiftPIDLeft->SetAbsoluteTolerance(10);
 		AutoLiftPIDLeft->SetInputRange(1,1024);
-		AutoLiftPIDLeft->SetOutputRange(-.75,.7);
+		AutoLiftPIDLeft->SetOutputRange(-.5,.5);
 
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
@@ -72,8 +72,8 @@ public: //Used in all classes
 		leftelevatormin = 15;
 		lastpov = -1;
 		lastswitch = false;
-		ExtendStateLeft = 1;
-		ExtendStateRight = 1;
+		ExtendStateLeft = 4;
+		ExtendStateRight = 4;
 		level = 1;
 		lastleveldownpressed = 0;
 		lastleveluppressed = 0;
@@ -112,9 +112,9 @@ private: //Only used in this class
 	float rightelevatormin, leftelevatormin;
 	float lastpov;
 	bool lastswitch;
-	float p = -.02;
-	float i = -.000151;
-	float d = -.054;
+	float p = .0;
+	float i = .000;
+	float d = .0;
 	float LeftOffset = 0;
 	int ExtendStateLeft, ExtendStateRight;
 	float extensionspeedleft, extensionspeedright;

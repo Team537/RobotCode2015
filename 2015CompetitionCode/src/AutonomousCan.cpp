@@ -1,32 +1,40 @@
 #include "AutonomousCan.h"
 
-void AutonomousCan::Run(int cannumber)
+void AutonomousCan::Initialize(Swerve *DriveTrainTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+{
+	SmartDashboard::PutString("Auto Selected", "Auto Can");
+	cannumber = SmartDashboard::GetNumber("Can Count");
+
+	Autostate = 0;
+}
+
+void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
 {
 	switch (Autostate)
 	{
 	case 0:
-	  /*Drive->setdistance(10 or something IDFK)
-		if (Drive->atdistance())
+	  /*DriveTrain->setdistance(10 or something IDFK)
+		if (DriveTrain->atdistance())
 		{
 			AutoState = 1;
 		}*/
 	break;
 	case 1:
-		Drive->AutonomousAngle(180,180,180,180);
-		if(Drive->OnTarget())
+		DriveTrain->AutonomousAngle(180,180,180,180);
+		if(DriveTrain->OnTarget())
 		{
-			hoarder->hoard(1);
-			hoarder->hoard(0);
-			Drive->AutonomousSpeed(1,1,1,1);
+			Hoard->hoard(1);
+			Hoard->hoard(0);
+			DriveTrain->AutonomousSpeed(1,1,1,1);
 			Autotime->Start();
 			if (Autotime->Get() > 2)
 			{
-				hoarder->hoard(1);
-				hoarder->hoard(0);
+				Hoard->hoard(1);
+				Hoard->hoard(0);
 				if(Autotime->Get() > 3)
 				{
-					hoarder->hoard(1);
-					hoarder->hoard(0);
+					Hoard->hoard(1);
+					Hoard->hoard(0);
 					Autotime->Stop();
 					if(cannumber > 1)
 					{
@@ -42,16 +50,16 @@ void AutonomousCan::Run(int cannumber)
 	break;
 	case 2:
 		Autotime->Reset();
-		Drive->AutonomousSpeed(1,1,1,1);
+		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
 		if (Autotime->Get() > 2)
 		{
-			hoarder->hoard(1);
-			hoarder->hoard(0);
+			Hoard->hoard(1);
+			Hoard->hoard(0);
 			if(Autotime->Get() > 3)
 			{
-				hoarder->hoard(1);
-				hoarder->hoard(0);
+				Hoard->hoard(1);
+				Hoard->hoard(0);
 				Autotime->Stop();
 				if(cannumber > 2)
 				{
@@ -66,16 +74,16 @@ void AutonomousCan::Run(int cannumber)
 	break;
 	case 3:
 		Autotime->Reset();
-		Drive->AutonomousSpeed(1,1,1,1);
+		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
 		if (Autotime->Get() > 4)
 		{
-			hoarder->hoard(1);
-			hoarder->hoard(0);
+			Hoard->hoard(1);
+			Hoard->hoard(0);
 			if(Autotime->Get() > 5)
 			{
-				hoarder->hoard(1);
-				hoarder->hoard(0);
+				Hoard->hoard(1);
+				Hoard->hoard(0);
 				Autotime->Stop();
 				if(cannumber > 3)
 				{
@@ -90,23 +98,27 @@ void AutonomousCan::Run(int cannumber)
 	break;
 	case 4:
 		Autotime->Reset();
-		Drive->AutonomousSpeed(1,1,1,1);
+		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
 		if (Autotime->Get() > 2)
 		{
-			hoarder->hoard(1);
-			hoarder->hoard(0);
+			Hoard->hoard(1);
+			Hoard->hoard(0);
 			if(Autotime->Get() > 3)
 			{
-				hoarder->hoard(1);
-				hoarder->hoard(0);
+				Hoard->hoard(1);
+				Hoard->hoard(0);
 				Autotime->Stop();
 				Autostate = 5;
 			}
 		}
 		break;
 	case 5:
-		Autotime->Reset();
 		break;
 	}
+}
+
+void AutonomousCan::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+{
+	Autotime->Reset();
 }

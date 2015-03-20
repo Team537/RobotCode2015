@@ -3,6 +3,11 @@
 
 void Swerve::Initialize()
 {
+	if (initialized)
+	{
+		return;
+	}
+	initialized = true;
 	newtime.Start();
 	AngleSetpoint = 90;
 	FrontLeftMod->Initialize();
@@ -10,7 +15,6 @@ void Swerve::Initialize()
 	BackLeftMod->Initialize();
 	BackRightMod->Initialize();
 	AngleSetpoint = .5;
-	SmartDashboard::PutNumber("538test", 538);
 	automatic->InitializeRuntime(BackRightMod->ReadPot());
 }
 
@@ -38,15 +42,15 @@ void Swerve::Run()
 							{
 								FrontLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
 								FrontRightMod->drive(0,.7*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,.7*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,-.7*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,.7*Controller->GetRawAxis(2));
 							}
 							if (!turtle)
 							{
 								FrontLeftMod->drive(0,-1*Controller->GetRawAxis(2));
 								FrontRightMod->drive(0,1*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,1*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,-1*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,-1*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,1*Controller->GetRawAxis(2));
 							}
 						}
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && Controller->GetRawAxis(2) < -.25)
@@ -55,15 +59,15 @@ void Swerve::Run()
 							{
 								FrontLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
 								FrontRightMod->drive(0,.7*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,.7*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,-.7*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,.7*Controller->GetRawAxis(2));
 							}
 							if (!turtle)
 							{
 								FrontLeftMod->drive(0,-1*Controller->GetRawAxis(2));
 								FrontRightMod->drive(0,1*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,1*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,-1*Controller->GetRawAxis(2));
+								BackRightMod->drive(0,-1*Controller->GetRawAxis(2));
+								BackLeftMod->drive(0,1*Controller->GetRawAxis(2));
 							}
 						}
 					}
