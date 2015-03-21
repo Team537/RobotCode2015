@@ -224,7 +224,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 		else if (retract)
 		{
 			extensionspeedleft = -.2;
-			if (ExtendPotLeft->Get() <=  40)
+			if (ExtendPotLeft->Get() <=  63.676)
 			{
 				ExtendStateLeft = 3;
 			}
@@ -259,7 +259,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 		if(extend)
 		{
 			extensionspeedleft = .2;
-			if (ExtendPotLeft->Get() >= 40)
+			if (ExtendPotLeft->Get() >= 63.676)
 			{
 				ExtendStateLeft = 1;
 			}
@@ -274,7 +274,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 		}
 		break;
 	case 4:
-		if(ExtendPotLeft->Get() > 40)
+		if(ExtendPotLeft->Get() > 63.676)
 		{
 			extensionspeedleft = -.2;
 		}
@@ -297,7 +297,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			else if (retract)
 			{
 				extensionspeedright = -.2;
-				if (ExtendPotRight->Get() <= 35)
+				if (ExtendPotRight->Get() <= 59.372)
 				{
 					ExtendStateRight = 3;
 				}
@@ -332,7 +332,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			if(extend)
 			{
 				extensionspeedright = .2;
-				if (ExtendPotRight->Get() >= 35)
+				if (ExtendPotRight->Get() >= 59.372)
 				{
 					ExtendStateRight = 1;
 				}
@@ -347,7 +347,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			}
 			break;
 		case 4:
-			if(ExtendPotRight->Get() > 35)
+			if(ExtendPotRight->Get() > 59.372)
 			{
 				extensionspeedright = -.2;
 			}
@@ -357,8 +357,8 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			}
 			break;
 		}
-	ExtendLeft->Set(-1.04*extensionspeedleft);
-	ExtendRight->Set(extensionspeedright);
+	ExtendLeft->Set(-.5*extensionspeedleft);
+	ExtendRight->Set(.5*extensionspeedright);
 	SmartDashboard::PutNumber("Extend Pot Left", ExtendPotLeft->Get());
 	SmartDashboard::PutNumber("Extend Pot Right", ExtendPotRight->Get());
 	SmartDashboard::PutNumber("ExtendState Left", ExtendStateLeft);

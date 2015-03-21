@@ -16,6 +16,7 @@ class AutonomousCan : public AutoSelect
 		AutonomousCan()
 	{
 			Autotime = new Timer;
+			Hoardtime = new Timer;
 			Autostate = 0;
 			count = 0;
 			cannumber = 0;
@@ -26,6 +27,7 @@ class AutonomousCan : public AutoSelect
 private:
 
 	Timer *Autotime;
+	Timer *Hoardtime;
 	int Autostate;
 	int count;
 	int cannumber;
