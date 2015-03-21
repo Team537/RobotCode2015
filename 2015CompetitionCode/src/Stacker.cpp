@@ -223,8 +223,8 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 		}
 		else if (retract)
 		{
-			extensionspeedleft = -.2;
-			if (ExtendPotLeft->Get() <=  63.676)
+			extensionspeedleft = -.25;
+			if (ExtendPotLeft->Get() <=  70.5)
 			{
 				ExtendStateLeft = 3;
 			}
@@ -240,7 +240,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 	case 2:
 		if (retract)
 		{
-			extensionspeedleft = -.2;
+			extensionspeedleft = -.25;
 			if (ExtendPotLeft->Get() <= 260)
 			{
 				ExtendStateLeft = 1;
@@ -259,7 +259,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 		if(extend)
 		{
 			extensionspeedleft = .2;
-			if (ExtendPotLeft->Get() >= 63.676)
+			if (ExtendPotLeft->Get() >= 70.5)
 			{
 				ExtendStateLeft = 1;
 			}
@@ -274,9 +274,9 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 		}
 		break;
 	case 4:
-		if(ExtendPotLeft->Get() > 63.676)
+		if(ExtendPotLeft->Get() > 70.5)
 		{
-			extensionspeedleft = -.2;
+			extensionspeedleft = -.25;
 		}
 		else
 		{
@@ -297,7 +297,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			else if (retract)
 			{
 				extensionspeedright = -.2;
-				if (ExtendPotRight->Get() <= 59.372)
+				if (ExtendPotRight->Get() <= 70.5)
 				{
 					ExtendStateRight = 3;
 				}
@@ -332,7 +332,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			if(extend)
 			{
 				extensionspeedright = .2;
-				if (ExtendPotRight->Get() >= 59.372)
+				if (ExtendPotRight->Get() >= 70.5)
 				{
 					ExtendStateRight = 1;
 				}
@@ -347,7 +347,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			}
 			break;
 		case 4:
-			if(ExtendPotRight->Get() > 59.372)
+			if(ExtendPotRight->Get() > 70.5)
 			{
 				extensionspeedright = -.2;
 			}
@@ -358,7 +358,7 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 			break;
 		}
 	ExtendLeft->Set(-.5*extensionspeedleft);
-	ExtendRight->Set(.5*extensionspeedright);
+	ExtendRight->Set(.75*extensionspeedright);
 	SmartDashboard::PutNumber("Extend Pot Left", ExtendPotLeft->Get());
 	SmartDashboard::PutNumber("Extend Pot Right", ExtendPotRight->Get());
 	SmartDashboard::PutNumber("ExtendState Left", ExtendStateLeft);
