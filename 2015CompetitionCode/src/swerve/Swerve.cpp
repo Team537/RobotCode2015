@@ -30,44 +30,45 @@ void Swerve::Run()
 					}
 					lastturtle = Controller->GetRawButton(2);
 					SmartDashboard::PutBoolean("Turtle Mode", turtle);
-					if (fabs(Controller->GetRawAxis(2)) > .25)
+					float SpinAxis = Controller->GetRawAxis(2);
+					if (fabs(SpinAxis) > .25)
 					{
 						FrontLeftMod->AutoDrive(329.3);
 						FrontRightMod->AutoDrive(30.7);
 						BackLeftMod->AutoDrive(30.7);
 						BackRightMod->AutoDrive(329.3);
-						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && Controller->GetRawAxis(2) > .25)
+						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && (SpinAxis > .25))
 						{
 							if (turtle)
 							{
-								FrontLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
-								FrontRightMod->drive(0,.7*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,-.7*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,.7*Controller->GetRawAxis(2));
+								FrontLeftMod->drive(0,-.7*SpinAxis);
+								FrontRightMod->drive(0,.7*SpinAxis);
+								BackRightMod->drive(0,-.7*SpinAxis);
+								BackLeftMod->drive(0,.7*SpinAxis);
 							}
 							if (!turtle)
 							{
-								FrontLeftMod->drive(0,-1*Controller->GetRawAxis(2));
-								FrontRightMod->drive(0,1*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,-1*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,1*Controller->GetRawAxis(2));
+								FrontLeftMod->drive(0,-1*SpinAxis);
+								FrontRightMod->drive(0,1*SpinAxis);
+								BackRightMod->drive(0,-1*SpinAxis);
+								BackLeftMod->drive(0,1*SpinAxis);
 							}
 						}
-						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && Controller->GetRawAxis(2) < -.25)
+						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && (SpinAxis < -.25))
 						{
 							if (turtle)
 							{
-								FrontLeftMod->drive(0,-.7*Controller->GetRawAxis(2));
-								FrontRightMod->drive(0,.7*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,-.7*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,.7*Controller->GetRawAxis(2));
+								FrontLeftMod->drive(0,-.7*SpinAxis);
+								FrontRightMod->drive(0,.7*SpinAxis);
+								BackRightMod->drive(0,-.7*SpinAxis);
+								BackLeftMod->drive(0,.7*SpinAxis);
 							}
 							if (!turtle)
 							{
-								FrontLeftMod->drive(0,-1*Controller->GetRawAxis(2));
-								FrontRightMod->drive(0,1*Controller->GetRawAxis(2));
-								BackRightMod->drive(0,-1*Controller->GetRawAxis(2));
-								BackLeftMod->drive(0,1*Controller->GetRawAxis(2));
+								FrontLeftMod->drive(0,-1*SpinAxis);
+								FrontRightMod->drive(0,1*SpinAxis);
+								BackRightMod->drive(0,-1*SpinAxis);
+								BackLeftMod->drive(0,1*SpinAxis);
 							}
 						}
 					}
@@ -96,21 +97,22 @@ void Swerve::Run()
 						BackLeftMod->AutoDrive(AngleSetpoint);
 						BackRightMod->AutoDrive(AngleSetpoint);
 						FrontLeftMod->AutoDrive(AngleSetpoint);
+						float Magnitude = Controller->GetMagnitude();
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
 							if (!turtle)
 							{
-								FrontLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
-								FrontRightMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
-								BackRightMod->drive(Controller->GetRawAxis(0), sign*Controller->GetMagnitude());
-								BackLeftMod->drive(Controller->GetRawAxis(0),sign*Controller->GetMagnitude());
+								FrontLeftMod->drive(Controller->GetRawAxis(0),sign*Magnitude);
+								FrontRightMod->drive(Controller->GetRawAxis(0),sign*Magnitude);
+								BackRightMod->drive(Controller->GetRawAxis(0), sign*Magnitude);
+								BackLeftMod->drive(Controller->GetRawAxis(0),sign*Magnitude);
 							}
 							if (turtle)
 							{
-								FrontLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Controller->GetMagnitude());
-								FrontRightMod->drive(Controller->GetRawAxis(0),.7*sign*Controller->GetMagnitude());
-								BackRightMod->drive(Controller->GetRawAxis(0), .7*sign*Controller->GetMagnitude());
-								BackLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Controller->GetMagnitude());
+								FrontLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Magnitude);
+								FrontRightMod->drive(Controller->GetRawAxis(0),.7*sign*Magnitude);
+								BackRightMod->drive(Controller->GetRawAxis(0), .7*sign*Magnitude);
+								BackLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Magnitude);
 							}
 						}
 						else
