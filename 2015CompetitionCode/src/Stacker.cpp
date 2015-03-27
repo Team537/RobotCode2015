@@ -126,8 +126,6 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			}
 			break;
 	}
-	SmartDashboard::PutNumber("Automatic Stacker State", state);
-	SmartDashboard::PutNumber("level", level);
 }
 
 void  Stacker::SwitchLevel(int totelevel)
@@ -180,7 +178,6 @@ void Stacker::CurrentLevel()
 	{
 		currentlevel = 3;
 	}
-	SmartDashboard::PutNumber("Current Stacker Level", currentlevel);
 }
 
 bool Stacker::DangerLevel()
@@ -359,10 +356,10 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 		}
 	ExtendLeft->Set(-.5*extensionspeedleft);
 	ExtendRight->Set(.75*extensionspeedright);
-	SmartDashboard::PutNumber("Extend Pot Left", ExtendPotLeft->Get());
-	SmartDashboard::PutNumber("Extend Pot Right", ExtendPotRight->Get());
-	SmartDashboard::PutNumber("ExtendState Left", ExtendStateLeft);
-	SmartDashboard::PutNumber("ExtendState Right", ExtendStateRight);
+	//SmartDashboard::PutNumber("Extend Pot Left", ExtendPotLeft->Get());
+	//SmartDashboard::PutNumber("Extend Pot Right", ExtendPotRight->Get());
+	//SmartDashboard::PutNumber("ExtendState Left", ExtendStateLeft);
+	//SmartDashboard::PutNumber("ExtendState Right", ExtendStateRight);
 }
 
 bool Stacker::CollectorDanger(bool left, bool right)
@@ -531,22 +528,6 @@ void Stacker::SetLevel(float SetPoint)
 			AutoLiftPIDLeft->Disable();
 		}
 	}
-	SmartDashboard::PutNumber("Right time", Righttime->Get());
-	SmartDashboard::PutNumber("Left time", Lefttime->Get());
-	SmartDashboard::PutNumber("Stacker P", p);
-	SmartDashboard::PutNumber("Stacker I", i * 1000);
-	SmartDashboard::PutNumber("Stacker D", d);
-	SmartDashboard::PutNumber("Stacker Left Error", AutoLiftPIDLeft->GetError());
-	SmartDashboard::PutNumber("Stacker Right Error", AutoLiftPIDRight->GetError());
-	SmartDashboard::PutNumber("Stacker Left Error2", AutoLiftPIDLeft->GetError());
-	SmartDashboard::PutNumber("Stacker Right Error2", AutoLiftPIDRight->GetError());
-	SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
-	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
-	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
-	SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
-	SmartDashboard::PutBoolean("Left stack pid", AutoLiftPIDLeft->IsEnabled());
-	SmartDashboard::PutBoolean("Right stack pid", AutoLiftPIDRight->IsEnabled());
-	SmartDashboard::PutNumber("Absolute Pot Differance", fabs(LiftPotLeft->Get() - LiftPotRight->Get()));
 	CurrentLevel();
 }
 
@@ -559,5 +540,38 @@ bool Stacker::OnTarget()
 	else
 	{
 		return false;
+	}
+}
+
+void Stacker::DashboardDisplay()
+{
+	Dashboardtime->Start();
+	if (Dashboardtime->Get() > .25)
+	{
+		SmartDashboard::PutNumber("Right time", Righttime->Get());
+		SmartDashboard::PutNumber("Left time", Lefttime->Get());
+		SmartDashboard::PutNumber("Stacker P", p);
+		SmartDashboard::PutNumber("Stacker I", i * 1000);
+		SmartDashboard::PutNumber("Stacker D", d);
+		SmartDashboard::PutNumber("Stacker Left Error", AutoLiftPIDLeft->GetError());
+		SmartDashboard::PutNumber("Stacker Right Error", AutoLiftPIDRight->GetError());
+		SmartDashboard::PutNumber("Stacker Left Error2", AutoLiftPIDLeft->GetError());
+		SmartDashboard::PutNumber("Stacker Right Error2", AutoLiftPIDRight->GetError());
+		SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
+		SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
+		SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
+		SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
+		SmartDashboard::PutBoolean("Left stack pid", AutoLiftPIDLeft->IsEnabled());
+		SmartDashboard::PutBoolean("Right stack pid", AutoLiftPIDRight->IsEnabled());
+		SmartDashboard::PutNumber("Absolute Pot Differance", fabs(LiftPotLeft->Get() - LiftPotRight->Get()));
+		SmartDashboard::PutNumber("Extend Pot Left", ExtendPotLeft->Get());
+		SmartDashboard::PutNumber("Extend Pot Right", ExtendPotRight->Get());
+		SmartDashboard::PutNumber("ExtendState Left", ExtendStateLeft);
+		SmartDashboard::PutNumber("ExtendState Right", ExtendStateRight);
+		SmartDashboard::PutNumber("Automatic Stacker State", state);
+		SmartDashboard::PutNumber("level", level);
+		SmartDashboard::PutNumber("Current Stacker Level", currentlevel);
+		Dashboardtime->Stop();
+		Dashboardtime->Reset();
 	}
 }

@@ -29,7 +29,28 @@ void Swerve::Run()
 						turtle = !turtle;
 					}
 					lastturtle = Controller->GetRawButton(2);
+
+					//Creat Turtle Speed Variables
+					float SpinTurtle = 1;
+					float DriveTurtle = 1;
+
+					//Set Turtle Speeds
+					if(turtle)
+					{
+						SpinTurtle = .8;
+						DriveTurtle = .7;
+					}
+					if(!turtle)
+					{
+						SpinTurtle = 1;
+						DriveTurtle = 1;
+					}
+
+
 					SmartDashboard::PutBoolean("Turtle Mode", turtle);
+
+
+					//Get Spin Axis
 					float SpinAxis = Controller->GetRawAxis(2);
 					if (fabs(SpinAxis) > .25)
 					{
@@ -37,39 +58,17 @@ void Swerve::Run()
 						FrontRightMod->AutoDrive(30.7);
 						BackLeftMod->AutoDrive(30.7);
 						BackRightMod->AutoDrive(329.3);
-						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && (SpinAxis > .25))
+						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
-							if (turtle)
-							{
-								FrontLeftMod->drive(0,-.7*SpinAxis);
-								FrontRightMod->drive(0,.7*SpinAxis);
-								BackRightMod->drive(0,-.7*SpinAxis);
-								BackLeftMod->drive(0,.7*SpinAxis);
-							}
-							if (!turtle)
-							{
-								FrontLeftMod->drive(0,-1*SpinAxis);
-								FrontRightMod->drive(0,1*SpinAxis);
-								BackRightMod->drive(0,-1*SpinAxis);
-								BackLeftMod->drive(0,1*SpinAxis);
-							}
-						}
-						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && (SpinAxis < -.25))
-						{
-							if (turtle)
-							{
-								FrontLeftMod->drive(0,-.7*SpinAxis);
-								FrontRightMod->drive(0,.7*SpinAxis);
-								BackRightMod->drive(0,-.7*SpinAxis);
-								BackLeftMod->drive(0,.7*SpinAxis);
-							}
-							if (!turtle)
-							{
-								FrontLeftMod->drive(0,-1*SpinAxis);
-								FrontRightMod->drive(0,1*SpinAxis);
-								BackRightMod->drive(0,-1*SpinAxis);
-								BackLeftMod->drive(0,1*SpinAxis);
-							}
+							//Comp
+							//FrontLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
+							//FrontRightMod->drive(0,SpinTurtle*SpinAxis);
+							//Practice
+							FrontLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
+							FrontRightMod->drive(0,SpinTurtle*SpinAxis);
+							//These are Identical
+							BackRightMod->drive(0,SpinTurtle*SpinAxis);
+							BackLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
 						}
 					}
 					else
@@ -79,12 +78,12 @@ void Swerve::Run()
 						NAngleSetpoint += 180;
 						AngleSetpoint = (NAngleSetpoint);
 						SmartDashboard::PutNumber("Magnitude", Controller->GetMagnitude());
-						if(AngleSetpoint > 315)
+						if(AngleSetpoint > 345)
 						{
 							sign = -1;
 							AngleSetpoint -= 180;
 						}
-						else if (AngleSetpoint < 45)
+						else if (AngleSetpoint < 15)
 						{
 							sign = -1;
 							AngleSetpoint += 180;
@@ -100,20 +99,10 @@ void Swerve::Run()
 						float Magnitude = Controller->GetMagnitude();
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
-							if (!turtle)
-							{
-								FrontLeftMod->drive(Controller->GetRawAxis(0),sign*Magnitude);
-								FrontRightMod->drive(Controller->GetRawAxis(0),sign*Magnitude);
-								BackRightMod->drive(Controller->GetRawAxis(0), sign*Magnitude);
-								BackLeftMod->drive(Controller->GetRawAxis(0),sign*Magnitude);
-							}
-							if (turtle)
-							{
-								FrontLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Magnitude);
-								FrontRightMod->drive(Controller->GetRawAxis(0),.7*sign*Magnitude);
-								BackRightMod->drive(Controller->GetRawAxis(0), .7*sign*Magnitude);
-								BackLeftMod->drive(Controller->GetRawAxis(0),.7*sign*Magnitude);
-							}
+								FrontLeftMod->drive(0,DriveTurtle*sign*Magnitude);
+								FrontRightMod->drive(0,DriveTurtle*sign*Magnitude);
+								BackRightMod->drive(0,DriveTurtle* sign*Magnitude);
+								BackLeftMod->drive(0,DriveTurtle*sign*Magnitude);
 						}
 						else
 						{
@@ -142,7 +131,7 @@ void Swerve::Tune()
 
 					//Get Angle based off Button Inputs
 
-					/*if (Controller->GetRawButton(1) == 1){
+					if (Controller->GetRawButton(1) == 1){
 						AngleSetpoint = 250;
 					}
 					else if (Controller->GetRawButton(2)) {
@@ -166,7 +155,7 @@ void Swerve::Tune()
 					BackRightMod->AutoDrive(AngleSetpoint);
 					//FrontLeftMod->AutoDrive(AngleSetpoint);
 
-		 		/*if(newtime.Get() >= .25)
+		 		if(newtime.Get() >= .25)
 					{
 						if (Controller->GetRawButton(7)==1)
 						{
@@ -214,7 +203,7 @@ void Swerve::Tune()
 						newtime.Reset();
 						newtime.Start();
 						FrontLeftMod->PIDAdjust(p,i,d);
-						}*/
+						}
 }
 
 void Swerve::AutonomousAngle(float FrontLeft, float FrontRight, float BackLeft, float BackRight)

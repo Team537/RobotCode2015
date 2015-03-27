@@ -95,28 +95,31 @@ private:
 	{
 		//compressor.checkCompressor();
 		swerve->Run();
-		//swerve->Tune();
-		Collect->setMotors(PrimaryController->GetRawButton(5), PrimaryController->GetRawButton(6), PrimaryController->GetRawButton(8), PrimaryController->GetRawButton(7));
-		Hoard->hoard(PrimaryController->GetRawButton(HOARD_BTN));
-		//Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
-		//Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
-		//Stack->Tune(PrimaryController->GetRawButton(8),PrimaryController->GetRawButton(7),PrimaryController->GetRawButton(5),PrimaryController->GetRawButton(3),PrimaryController->GetRawButton(10),PrimaryController->GetRawButton(9),PrimaryController->GetRawButton(12),PrimaryController->GetRawButton(11),PrimaryController->GetRawButton(1), PrimaryController->GetRawButton(2));
-		//Stack->CollectorIn(Collect.getGrableft(), Collect.getGrabright());
-		//Stack->CollectorDanger(Collect.getGrableft(), Collect.getGrabright());
-		Stack->ManualStacker(SecondaryController->GetRawButton(SETPOINT_UP), SecondaryController->GetRawButton(SETPOINT_DOWN));
-		Stack->Extender(SecondaryController->GetRawButton(EXTENDER_OUT), SecondaryController->GetRawButton(EXTENDER_IN),SecondaryController->GetRawButton(AUTOMATIC), SecondaryController->GetRawButton(MANUAL), SecondaryController->GetRawButton(12));
+		Hoard->hoard(SecondaryController->GetRawButton(HOARD_BTN));
+		//Stack->ManualStacker(SecondaryController->GetRawButton(SETPOINT_UP), SecondaryController->GetRawButton(SETPOINT_DOWN));
+		//Stack->Extender(SecondaryController->GetRawButton(EXTENDER_OUT), SecondaryController->GetRawButton(EXTENDER_IN),SecondaryController->GetRawButton(AUTOMATIC), SecondaryController->GetRawButton(MANUAL), SecondaryController->GetRawButton(12));
 		//Stack->Grab(SecondaryController->GetRawButton(TOTE_GRAB_BTN));
-		Stack->AutoStacker(SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawButton(LEVEL_UP), SecondaryController->GetRawButton(LEVEL_DOWN), SecondaryController->GetRawButton(BUTTON_CAN));
+		//Stack->AutoStacker(SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawButton(LEVEL_UP), SecondaryController->GetRawButton(LEVEL_DOWN), SecondaryController->GetRawButton(BUTTON_CAN));
+		Collect->setMotors(PrimaryController->GetRawButton(5), PrimaryController->GetRawButton(6), PrimaryController->GetRawButton(8), PrimaryController->GetRawButton(7));
 		Collect->setState(PrimaryController->GetRawButton(4), SecondaryController->GetRawButton(RIGHT_VERTICAL), Stack->DangerLevel());
 		Collect->setGrab(PrimaryController->GetRawButton(3), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS), Stack->DangerLevel());
-		SmartDashboard::PutNumber("POV", SecondaryController->GetPOV());
 		SmartDashboard::PutNumber("Right Stacker Motor Current",  PDP.GetCurrent(10));
 		SmartDashboard::PutNumber("Left Stacker Motor Current",  PDP.GetCurrent(9));
 	}
 
+	void TestInit()
+	{
+		swerve->Initialize();
+		Stack->init();
+	}
+
 	void TestPeriodic()
 	{
-		lw->Run();
+		//swerve->Tune();
+		Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
+		Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
+		//Stack->Tune(PrimaryController->GetRawButton(8),PrimaryController->GetRawButton(7),PrimaryController->GetRawButton(5),PrimaryController->GetRawButton(3),PrimaryController->GetRawButton(10),PrimaryController->GetRawButton(9),PrimaryController->GetRawButton(12),PrimaryController->GetRawButton(11),PrimaryController->GetRawButton(1), PrimaryController->GetRawButton(2));
+
 	}
 };
 

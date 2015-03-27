@@ -36,20 +36,21 @@ public: //Used in all classes
 		ExtendPotRight = new AnalogPotentiometer(3,600,0);
 
 		AutoLiftPIDLeft = new PIDController(STACKERLEFT, LiftPotLeft, LiftLeft);
-		AutoLiftPIDRight = new PIDController(STACKERIGHT, LiftPotRight, LiftRight);
+		AutoLiftPIDRight = new PIDController(STACKERRIGHT, LiftPotRight, LiftRight);
 		Righttime = new Timer;
 		Lefttime = new Timer;
 		extendlefttimer = new Timer;
 		extendrighttimer = new Timer;
+		Dashboardtime = new Timer;
 		Intake = Grabber;
 
 		AutoLiftPIDRight->SetAbsoluteTolerance(10);
 		AutoLiftPIDRight->SetInputRange(20,1024);
-		AutoLiftPIDRight->SetOutputRange(-.65,1);
+		AutoLiftPIDRight->SetOutputRange(RIGHT_CAPS);
 
 		AutoLiftPIDLeft->SetAbsoluteTolerance(10);
 		AutoLiftPIDLeft->SetInputRange(20,1024);
-		AutoLiftPIDLeft->SetOutputRange(-1,.5);
+		AutoLiftPIDLeft->SetOutputRange(LEFT_CAPS);
 
 		elevatorrampspeed           = 0.1;
 		extendrampspeed				= 0.1;
@@ -91,6 +92,7 @@ public: //Used in all classes
 	void Grab(int button);
 	void ManualStacker(int up, int down);
 	void AutoStacker(bool autobtn, int levelup, int leveldown, bool buttoncan);
+	void DashboardDisplay();
 	bool DangerLevel();
 	bool CollectorDanger(bool left, bool right);
 	bool OnTarget();
@@ -134,7 +136,7 @@ private: //Only used in this class
 	DigitalInput* SwitchLeft, *SwitchRight;
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft, *ExtendPotLeft, *ExtendPotRight;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
-	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer;
+	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer, *Dashboardtime;
 
 
 };
