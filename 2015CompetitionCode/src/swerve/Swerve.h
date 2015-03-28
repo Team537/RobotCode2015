@@ -16,7 +16,7 @@ private:
 	PID_ATune *automatic;
 	Joystick *Controller;
 	float AngleSetpoint, PChangeTest, p, i, d, NAngleSetpoint;
-	Timer newtime;
+	Timer newtime, *dashboardtime;
 	int sign;
 	LiveWindow *LW;
 	bool turtle;
@@ -56,6 +56,7 @@ public:
 		lastturtle = 0;
 		turtle = 0;
 		initialized = false;
+		dashboardtime = new Timer;
 	}
 	void Initialize();
 	void Run();

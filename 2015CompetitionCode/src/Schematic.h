@@ -107,6 +107,7 @@
 
 //Stacker Heights
 #define ZERO 	5
+#define DRIVE 	75
 #define ONE		300
 #define TWO		500
 #define THREE	750
@@ -117,8 +118,8 @@
 //#define RIGHT_CAPS	-.65,1
 
 //Stacker Speed on PTSD
-#define LEFT_CAPS		-.5,.5
-#define RIGHT_CAPS		-.5,.5
+#define LEFT_CAPS		-.5,.4
+#define RIGHT_CAPS		-.5,.35
 
 //Names
 #define RETRACT 0

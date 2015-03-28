@@ -41,7 +41,7 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 		case 0:
 			if(levelup && lastleveluppressed == 0)
 			{
-				level ++;
+				level = currentlevel + 1;
 				if (level > 3)
 				{
 					level = currentlevel;
@@ -50,7 +50,7 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			}
 			if(leveldown && lastleveldownpressed == 0)
 			{
-				level --;
+				level = currentlevel - 1;
 				if (level < 0)
 				{
 					level = 0;
@@ -70,14 +70,14 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			SetLevel(targetPoint);
 			break;
 		case 1:
-			if(ExtendStateLeft != 2 && ExtendStateRight != 2)
+			/*if(ExtendStateLeft != 3 && ExtendStateRight != 3)
 			{
 				Stacker::Extender(1,0,0,0,0);
 			}
 			if(ExtendStateLeft == 2 && ExtendStateRight == 2)
 			{
 				state = 2;
-			}
+			}*/
 			if(Intake->GetLeftArm() == 0 && Intake->GetLeftArm() == 0)
 			{
 				Intake->setState(1,0,0);
@@ -144,12 +144,23 @@ void  Stacker::SwitchLevel(int totelevel)
 			targetPoint = ZERO;
 			break;
 		case 1:
-			targetPoint = ONE;
+			if(Intake->GetLeftArm() == 0 && Intake->GetLeftArm() == 0)
+			{
+				Intake->setState(1,0,0);
+			}
+			if(Intake->getGrableft() == 1 && Intake->getGrabright() == 1)
+			{
+				Intake->setGrab(1,0,0);
+			}
+			targetPoint = DRIVE;
 			break;
 		case 2:
-			targetPoint = TWO;
+			targetPoint = ONE;
 			break;
 		case 3:
+			targetPoint = TWO;
+			break;
+		case 4:
 			targetPoint = THREE;
 			break;
 	}
@@ -529,6 +540,21 @@ void Stacker::SetLevel(float SetPoint)
 		}
 	}
 	CurrentLevel();
+	/*SmartDashboard::PutNumber("Right time", Righttime->Get());
+	SmartDashboard::PutNumber("Left time", Lefttime->Get());
+	SmartDashboard::PutNumber("Stacker P", p);
+	SmartDashboard::PutNumber("Stacker I", i * 1000);
+	SmartDashboard::PutNumber("Stacker D", d);
+	SmartDashboard::PutNumber("Stacker Left Error", AutoLiftPIDLeft->GetError());
+	SmartDashboard::PutNumber("Stacker Right Error", AutoLiftPIDRight->GetError());
+	SmartDashboard::PutNumber("Stacker Left Error2", AutoLiftPIDLeft->GetError());
+	SmartDashboard::PutNumber("Stacker Right Error2", AutoLiftPIDRight->GetError());
+	SmartDashboard::PutNumber("Stacker Left Pot Value", LiftPotLeft->Get());
+	SmartDashboard::PutNumber("Stacker Right Pot Value", LiftPotRight->Get());
+	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
+	SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
+	SmartDashboard::PutBoolean("Left stack pid", AutoLiftPIDLeft->IsEnabled());
+	SmartDashboard::PutBoolean("Right stack pid", AutoLiftPIDRight->IsEnabled());*/
 }
 
 bool Stacker::OnTarget()

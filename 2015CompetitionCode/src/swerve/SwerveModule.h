@@ -77,5 +77,6 @@ public:
 	void PIDAuto(float distance);
 	bool GetDistancePID();
 	void DistancePIDDisable();
+	void DashboardLoop();
 };
 #endif
