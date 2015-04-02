@@ -2,10 +2,8 @@
 
 void AutonomousCan::Initialize(Swerve *DriveTrainTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
 {
-	SmartDashboard::PutString("Auto Selected", "Auto Can");
-	cannumber = 2;
 	count = 0;
-	Autostate = 0;
+	Autostate = INITIALIZE;
 	Autotime->Reset();
 	Hoardtime->Reset();
 }
@@ -17,61 +15,78 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 	SmartDashboard::PutNumber("Autotime", Autotime->Get());
 	switch (Autostate)
 	{
-	case 0:
+	case INITIALIZE:
 		Hoard->Extend();
 		Autotime->Start();
-		if(Autotime->Get() > 1.5){
+		if(Autotime->Get() > 1.25){
 			Autotime->Stop();
-			Autostate = 1;
+			Autostate = SETWHEEL_ANGLE;
 		}
 	break;
-	case 1:
+
+	case SETWHEEL_ANGLE:
 		Autotime->Stop();
 		Autotime->Reset();
 		DriveTrain->AutonomousAngle(180,180,180,180);
 		if(DriveTrain->OnTarget())
 		{
-			Autostate = 10;
+			Autostate = FIRST_CAN;
 		}
 	break;
-	case 2:
-		Hoard->Extend();
-		Hoardtime->Start();
-		if(Hoardtime->Get() > .5)
+
+	case FIRST_CAN:
+		DriveTrain->AutonomousSpeed(1,1,1,1);
+		Autotime->Start();
+		if(Autotime->Get() >= 1)
 		{
+			count = 1;
+			Autostate = RETRACT_STATE;
+		}
+		break;
+
+	case SECOND_CAN:
+		Hoardtime->Start();
+		if(Hoardtime->Get() > .1)
+		{
+			Hoard->Extend();
 			Hoardtime->Stop();
-			DriveTrain->AutonomousSpeed(1,1,1,1);
-			Autotime->Start();
-			if (Autotime->Get() > 1.6
-					)
+		}
+		DriveTrain->AutonomousSpeed(1,1,1,1);
+		Autotime->Start();
+		if (Autotime->Get() > 1.95)
+		{
+			Hoardtime->Reset();
+			Autotime->Stop();
+			Autotime->Reset();
+			count = 2;
+			Autostate = RETRACT_STATE;
+		}
+	break;
+
+	case THIRD_CAN:
+		DriveTrain->AutonomousAngle(170,170,170,170);
+		if(DriveTrain->OnTarget())
+		{
+			Hoard->Extend();
+			Hoardtime->Start();
+			if(Hoardtime->Get() > .5)
 			{
-				Hoardtime->Reset();
-				Autotime->Stop();
-				Autotime->Reset();
-				count = 2;
-				Autostate = 9;
+				Hoardtime->Stop();
+				DriveTrain->AutonomousSpeed(1,1,1,1);
+				Autotime->Start();
+				if (Autotime->Get() > 2.5)
+				{
+					count = 3;
+					Hoardtime->Reset();
+					Autotime->Stop();
+					Autotime->Reset();
+					Autostate =RETRACT_STATE;
+				}
 			}
 		}
 	break;
-	case 3:
-		Hoard->Extend();
-		Hoardtime->Start();
-		if(Hoardtime->Get() > .5)
-		{
-			Hoardtime->Stop();
-			DriveTrain->AutonomousSpeed(1,1,1,1);
-			Autotime->Start();
-			if (Autotime->Get() > 1)
-			{
-				count = 3;
-				Hoardtime->Reset();
-				Autotime->Stop();
-				Autotime->Reset();
-				Autostate = 6;
-			}
-		}
-	break;
-	case 4:
+
+	case FOURTH_CAN:
 		Hoard->Extend();
 		Hoardtime->Start();
 		if(Hoardtime->Get() > .5)
@@ -81,85 +96,91 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 			Autotime->Start();
 			if (Autotime->Get() > .5)
 			{
+				count = 4;
 				Hoardtime->Reset();
 				Autotime->Stop();
 				Autotime->Reset();
-				Autostate = 6;
+				Autostate = RETRACT_STATE;
 			}
 		}
 
 		break;
-	case 5:
-		//Hoarder Out
-		Autotime->Reset();
-		break;
-	case 6:
-		Hoardtime->Stop();
-		Hoardtime->Reset();
+
+	case RETRACT_STATE:
 		DriveTrain->AutonomousSpeed(0,0,0,0);
-		DriveTrain->AutonomousAngle(90,90,90,90);
-		if(DriveTrain->OnTarget())
-		{
-			Autostate = 7;
-		}
-		break;
-	case 7:
-		Autotime->Start();
-		DriveTrain->AutonomousSpeed(-1,-1,-1,-1);
-		if(Autotime->Get() > 1)
+
+		if((count - cannumber) != 0)
 		{
 			Hoard->Retract();
-			Autotime->Stop();
-			Hoardtime->Start();
-			Autostate = 8;
-		}
-		break;
-	case 8:
-		Autotime->Reset();
-		if(Hoardtime->Get() > 1)
-		{
-			DriveTrain->AutonomousSpeed(0,0,0,0);
-			Hoardtime->Stop();
-			Autostate = 9;
-		}
-		break;
-	case 9:
-		//DriveTrain->AutonomousSpeed(1,1,1,1);
-		DriveTrain->AutonomousSpeed(0,0,0,0);
-		Autotime->Start();
-
-		if(Autotime->Get() > 2)
-		{
-				Hoard->Retract();
+			Autotime->Start();
+			if(Autotime->Get() > 2)
+			{
 				Hoardtime->Reset();
 				Autotime->Stop();
 				Autotime->Reset();
 				if(cannumber > 1 && count == 1)
 				{
-					Autostate = 2;
+					Autostate = SECOND_CAN;
 				}
 				else if(cannumber > 2 && count == 2)
 				{
-					Autostate = 3;
+					Autostate = THIRD_CAN;
 				}
 				else if(cannumber == 4 && count == 3)
 				{
-					Autostate = 3;
+					Autostate = FOURTH_CAN;
 				}
 				else
 				{
-					Autostate = 5;
+					Autostate = NEW_ANGLE;
 				}
+			}
+		}
+		else
+		{
+			Hoardtime->Reset();
+			Autotime->Stop();
+			Autotime->Reset();
+			if(cannumber > 1 && count == 1)
+			{
+				Autostate = SECOND_CAN;
+			}
+			else if(cannumber > 2 && count == 2)
+			{
+				Autostate = THIRD_CAN;
+			}
+			else if(cannumber == 4 && count == 3)
+			{
+				Autostate = FOURTH_CAN;
+			}
+			else
+			{
+				Autostate = NEW_ANGLE;
+			}
 		}
 		break;
-	case 10:
-		DriveTrain->AutonomousSpeed(1,1,1,1);
-		Autotime->Start();
-		if(Autotime->Get() >= .9)
+
+	case NEW_ANGLE:
+		//Hoarder Out
+		DriveTrain->AutonomousAngle(90,90,90,90);
+		if(DriveTrain->OnTarget())
 		{
-			count = 1;
-			Autostate = 9;
+			Autostate = DRIVE_AWAY;
 		}
+		break;
+
+	case DRIVE_AWAY:
+		DriveTrain->AutonomousSpeed(-1,-1,-1,-1);
+		Hoard->Retract();
+		Autotime->Start();
+		if(Autotime->Get() > 1.65)
+		{
+			DriveTrain->AutonomousSpeed(0,0,0,0);
+			Autostate = DONE;
+		}
+		break;
+	case DONE:
+		Autotime->Reset();
 		break;
 	}
 }

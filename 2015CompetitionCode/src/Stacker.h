@@ -20,7 +20,7 @@ public: //Used in all classes
 
 
 
-	Stacker(Collector *Grabber)
+	Stacker(Collector *Grabber, PowerDistributionPanel *PowerPanel)
 {
 		Flaps = new Relay(STACKER_FLAPS, Relay::Direction::kForwardOnly);
 		LiftRight = new Victor (STACKER_LIFT_RIGHT);
@@ -42,7 +42,12 @@ public: //Used in all classes
 		extendlefttimer = new Timer;
 		extendrighttimer = new Timer;
 		Dashboardtime = new Timer;
+		DangerTimeRight = new Timer;
+		DangerTimeLeft = new Timer;
+		KillTime = new Timer;
+
 		Intake = Grabber;
+		PDP = PowerPanel;
 
 		AutoLiftPIDRight->SetAbsoluteTolerance(10);
 		AutoLiftPIDRight->SetInputRange(20,1024);
@@ -80,7 +85,13 @@ public: //Used in all classes
 		lastleveldownpressed = 0;
 		lastleveluppressed = 0;
 		currentlevel = 1;
-		DangerDiferance = 25;
+		DangerDiferance = 15;
+		extensionspeedleft = 0;
+		extensionspeedright = 0;
+		LeftMagicSmoke = false;
+		RightMagicSmoke = false;
+		DeadStack = false;
+
 }
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
@@ -93,6 +104,7 @@ public: //Used in all classes
 	void ManualStacker(int up, int down);
 	void AutoStacker(bool autobtn, int levelup, int leveldown, bool buttoncan);
 	void DashboardDisplay();
+	void Kill(int ButtonKill);
 	bool DangerLevel();
 	bool CollectorDanger(bool left, bool right);
 	bool OnTarget();
@@ -115,28 +127,32 @@ private: //Only used in this class
 	float rightelevatormin, leftelevatormin;
 	float lastpov;
 	bool lastswitch;
-	float p = .039;
-	float i = .000042;
-	float d = .005;
+	float p = .0;
+	float i = .000;
+	float d = .00;
 	float LeftOffset = 0;
 	int ExtendStateLeft, ExtendStateRight;
 	float extensionspeedleft, extensionspeedright;
 	int level;
 	int lastleveldownpressed;
 	int lastleveluppressed;
-	bool danger;
+	bool RightMagicSmoke;
+	bool LeftMagicSmoke;
+	bool DeadStack;
 
 	//Declare function
 	void SetLevel(float);
 	void SwitchLevel(int);
 	void CurrentLevel();
+	void MotorDanger();
 	Relay* Flaps;
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   ExtendLeft, *ExtendRight;
 	DigitalInput* SwitchLeft, *SwitchRight;
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft, *ExtendPotLeft, *ExtendPotRight;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
-	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer, *Dashboardtime;
+	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer, *Dashboardtime, *DangerTimeRight, *DangerTimeLeft, *KillTime;
+	PowerDistributionPanel *PDP;
 
 
 };

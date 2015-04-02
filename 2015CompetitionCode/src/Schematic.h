@@ -64,24 +64,24 @@
 #define COMPRESSOR_RELAY		1
 
 //PIDValues for the Stacker on Capn hook
-//#define STACKERLEFT	-.021,-.0000191,-.005
-//#define STACKERRIGHT	.039, .000042, .005
+#define STACKERLEFT	-.021,-.0000191,-.005
+#define STACKERRIGHT	.039, .000042, .005
 
-//PIDValues for the Stacker on PTSD
-#define STACKERLEFT -.02, -0.00012, -0.054
-#define STACKERRIGHT -.02, -0.000151, -0.054
+//PIDValues for the Stacker on Dragon
+//#define STACKERLEFT -.02, -0.00012, -0.054
+//#define STACKERRIGHT -.02, -0.000151, -0.054
 
 //Drive train Angle PID's on Capn hook
-//#define PID_FRONT_LEFT_ANGLE 	-.0217, -.00026, -.0444, 15, 345, -1, 1
-//#define PID_FRONT_RIGHT_ANGLE	 .0251,  .00029,  .0505, 15, 345, -1, 1
-//#define PID_BACK_RIGHT_ANGLE	 .0289,  .00029,  .0489, 15, 345, -1, 1
-//#define PID_BACK_LEFT_ANGLE	 .0301,  .00026,  .0633, 15, 345, -1, 1
+#define PID_FRONT_LEFT_ANGLE 	-.0217, -.00026, -.0444, 15, 345, -1, 1
+#define PID_FRONT_RIGHT_ANGLE	 .0251,  .00029,  .0505, 15, 345, -1, 1
+#define PID_BACK_RIGHT_ANGLE	 .0289,  .00029,  .0489, 15, 345, -1, 1
+#define PID_BACK_LEFT_ANGLE	 .0301,  .00026,  .0633, 15, 345, -1, 1
 
-//Drive train Angle PID's on PTSD
-#define PID_FRONT_LEFT_ANGLE 			.0217,0.000320,.0431, 15, 345, -1,1
-#define PID_FRONT_RIGHT_ANGLE 			.020,0.000350,0.05, 15, 345, -1, 1
-#define PID_BACK_LEFT_ANGLE				.0217,0.00025,0.045, 15,345,-1,1
-#define PID_BACK_RIGHT_ANGLE			.025,0.000220,0.05,15,345,-1,1
+//Drive train Angle PID's on Dragon
+//#define PID_FRONT_LEFT_ANGLE 			.0217,0.000320,.0431, 15, 345, -1,1
+//#define PID_FRONT_RIGHT_ANGLE 			.020,0.000350,0.05, 15, 345, -1, 1
+//#define PID_BACK_LEFT_ANGLE				.0217,0.00025,0.045, 15,345,-1,1
+//#define PID_BACK_RIGHT_ANGLE			.025,0.000220,0.05,15,345,-1,1
 
 //Have Back  Modules as Replacements
 
@@ -94,7 +94,7 @@
 #define PID_BACK_RIGHT_VELOCITY 		.04, 0, 0, 0
 
 
-//Drive train Velocity PID's on PTSD
+//Drive train Velocity PID's on Dragon
 //#define PID_FRONT_LEFT_VELOCITY 		.04, 0.0, 0.0, .5/515.808
 //#define PID_FRONT_RIGHT_VELOCITY		.04, 0.0, 0.0, .5/440
 //#define PID_BACK_LEFT_VELOCITY			.04, 0.0, 0.0, .5/477.852
@@ -103,26 +103,44 @@
 //Drive train Distance PID's on Capn hook
 
 
-//Drive train Distance PID's on PTSD
+//Drive train Distance PID's on Dragon
 
 //Stacker Heights
 #define ZERO 	5
-#define DRIVE 	75
+#define DRIVE 	100
 #define ONE		300
 #define TWO		500
 #define THREE	750
 #define CAN 	150
 
 //Stacker Speed on Cap'n Hook
-//#define LEFT_CAPS		-1,.5
-//#define RIGHT_CAPS	-.65,1
+#define LEFT_CAPS		-1,.9
+#define RIGHT_CAPS	-1,1
 
-//Stacker Speed on PTSD
-#define LEFT_CAPS		-.5,.4
-#define RIGHT_CAPS		-.5,.35
+//Stacker Speed on Dragon
+//#define LEFT_CAPS		-.5,.4
+//#define RIGHT_CAPS		-.5,.35
 
 //Names
 #define RETRACT 0
 #define EXTEND 1
+
+//Autonomous Can States
+#define INITIALIZE 			0
+#define SETWHEEL_ANGLE 		1
+#define FIRST_CAN 			7
+#define RETRACT_STATE 		6
+#define SECOND_CAN 			2
+#define THIRD_CAN 			3
+#define FOURTH_CAN 			4
+#define	NEW_ANGLE			5
+#define DRIVE_AWAY			8
+#define DONE				9
+
+//Current Dragon
+//#define MAX_CURRENT	25
+
+//Current Comp Bot
+#define MAX_CURRENT 41
 
 #endif

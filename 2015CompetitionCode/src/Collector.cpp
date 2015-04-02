@@ -85,29 +85,34 @@ void Collector::setMotors(int leftverticaljoy, int rightverticaljoy, int rightre
 	{
 		leftBelt->Set(0);
 	}*/
-	if(leftverticaljoy && leftreverse == 0)
+	if(leftverticaljoy && oldlbelt == false && leftreverse == 0)
 	{
-		leftBelt->Set(-1);
+		lbelton = !lbelton;
 	}
-	else if (leftreverse && leftverticaljoy == 0)
+	oldlbelt = leftverticaljoy;
+
+	if (leftreverse && lbelton == false)
 	{
 		leftBelt->Set(1);
 	}
 	else
 	{
-		leftBelt->Set(0);
+		leftBelt->Set(-lbelton);
 	}
-	if(rightverticaljoy && rightreverse == 0)
+
+	if(rightverticaljoy && oldrbelt == false && rightreverse == 0)
 	{
-		rightBelt->Set(1);
+		rbelton = !rbelton;
 	}
-	else if (rightreverse && rightverticaljoy == 0)
+	oldrbelt = rightverticaljoy;
+
+	if (rightreverse && rbelton == false)
 	{
 		rightBelt->Set(-1);
 	}
 	else
 	{
-		rightBelt->Set(0);
+		rightBelt->Set(rbelton);
 	}
 }
 
@@ -117,4 +122,9 @@ float Collector::getLeftMotor() {
 
 float Collector::getRightMotor() {
 	return rightBelt->Get();
+}
+void Collector::LimitSwitch()
+{
+	bool CollectSwitch = CollectedTote->Get();
+	SmartDashboard::PutBoolean("Collected Tote 2", CollectSwitch);
 }

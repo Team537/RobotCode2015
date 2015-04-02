@@ -13,6 +13,7 @@ void Stacker::init()
 	targetPoint = LiftPotLeft->Get();
 	ExtendStateLeft = 3;
 	ExtendStateRight = 3;
+	DeadStack = false;
 }
 
 //When a button is pressed, grab a tote
@@ -41,8 +42,8 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 		case 0:
 			if(levelup && lastleveluppressed == 0)
 			{
-				level = currentlevel + 1;
-				if (level > 3)
+				level++;
+				if (level > 4)
 				{
 					level = currentlevel;
 				}
@@ -50,7 +51,7 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			}
 			if(leveldown && lastleveldownpressed == 0)
 			{
-				level = currentlevel - 1;
+				level--;
 				if (level < 0)
 				{
 					level = 0;
@@ -70,14 +71,6 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			SetLevel(targetPoint);
 			break;
 		case 1:
-			/*if(ExtendStateLeft != 3 && ExtendStateRight != 3)
-			{
-				Stacker::Extender(1,0,0,0,0);
-			}
-			if(ExtendStateLeft == 2 && ExtendStateRight == 2)
-			{
-				state = 2;
-			}*/
 			if(Intake->GetLeftArm() == 0 && Intake->GetLeftArm() == 0)
 			{
 				Intake->setState(1,0,0);
@@ -86,6 +79,7 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			{
 				Intake->setGrab(1,0,0);
 			}
+			state = 2;
 			break;
 		case 2:
 			targetPoint = ZERO;
@@ -99,7 +93,7 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 		case 3:
 			if (Clock.Get() >= .5)
 			{
-				targetPoint = ONE;
+				targetPoint = TWO;
 				SetLevel(targetPoint);
 				if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
 				{
@@ -373,15 +367,6 @@ void Stacker::Extender(int extend, int retract, int limitswitch, int manual, int
 	//SmartDashboard::PutNumber("ExtendState Right", ExtendStateRight);
 }
 
-bool Stacker::CollectorDanger(bool left, bool right)
-{
-	if (left || right)
-		danger = true;
-	else
-		danger = false;
-	return danger;
-}
-
 void Stacker::StackLeft(int lup, int ldown)
 {
 	if(lup)
@@ -479,51 +464,59 @@ void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown,
 
 void Stacker::SetLevel(float SetPoint)
 {
+	if(DeadStack == false)
+	{
+		MotorDanger();
 		if (SetPoint < 10)
 		{
 			AutoLiftPIDLeft->SetSetpoint(22);
-			AutoLiftPIDRight->SetSetpoint(24);
+			AutoLiftPIDRight->SetSetpoint(15);
 		}
 		if (SetPoint > 10)
 		{
 			AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
 			AutoLiftPIDRight->SetSetpoint(SetPoint);
 		}
-	/*
-	if(danger && SetPoint > (ONE - 100))
-	{
-		AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
-		AutoLiftPIDRight->SetSetpoint(SetPoint);
-	}*/
-	if (AutoLiftPIDLeft->OnTarget())
-	{
-		Lefttime->Start();
-		if(Lefttime->Get() > 1)
+		if(SetPoint > 850)
+		{
+			AutoLiftPIDLeft->SetSetpoint(850);
+			AutoLiftPIDRight->SetSetpoint(850);
+		}
+		if (AutoLiftPIDLeft->OnTarget())
+		{
+			Lefttime->Start();
+			if(Lefttime->Get() > 1)
+			{
+				Lefttime->Stop();
+				AutoLiftPIDLeft->Disable();
+			}
+		}
+		else
 		{
 			Lefttime->Stop();
-			AutoLiftPIDLeft->Disable();
+			Lefttime->Reset();
+			AutoLiftPIDLeft->Enable();
 		}
-	}
-	else
-	{
-		Lefttime->Stop();
-		Lefttime->Reset();
-		AutoLiftPIDLeft->Enable();
-	}
-	if (AutoLiftPIDRight->OnTarget())
-	{
-		Righttime->Start();
-		if(Righttime->Get() > 1)
+		if (AutoLiftPIDRight->OnTarget())
+		{
+			Righttime->Start();
+			if(Righttime->Get() > 1)
+			{
+				Righttime->Stop();
+				AutoLiftPIDRight->Disable();
+			}
+		}
+		else
 		{
 			Righttime->Stop();
-			AutoLiftPIDRight->Disable();
+			Righttime->Reset();
+			AutoLiftPIDRight->Enable();
 		}
 	}
-	else
+	if(DeadStack == true)
 	{
-		Righttime->Stop();
-		Righttime->Reset();
-		AutoLiftPIDRight->Enable();
+		AutoLiftPIDRight->Disable();
+		AutoLiftPIDLeft->Disable();
 	}
 	if(fabs(LiftPotLeft->Get() - LiftPotRight->Get()) > DangerDiferance)
 	{
@@ -540,7 +533,7 @@ void Stacker::SetLevel(float SetPoint)
 		}
 	}
 	CurrentLevel();
-	/*SmartDashboard::PutNumber("Right time", Righttime->Get());
+	SmartDashboard::PutNumber("Right time", Righttime->Get());
 	SmartDashboard::PutNumber("Left time", Lefttime->Get());
 	SmartDashboard::PutNumber("Stacker P", p);
 	SmartDashboard::PutNumber("Stacker I", i * 1000);
@@ -554,7 +547,7 @@ void Stacker::SetLevel(float SetPoint)
 	SmartDashboard::PutNumber("Stacker Left Setpoint", AutoLiftPIDLeft->GetSetpoint());
 	SmartDashboard::PutNumber("Stacker Right Setpoint", AutoLiftPIDRight->GetSetpoint());
 	SmartDashboard::PutBoolean("Left stack pid", AutoLiftPIDLeft->IsEnabled());
-	SmartDashboard::PutBoolean("Right stack pid", AutoLiftPIDRight->IsEnabled());*/
+	SmartDashboard::PutBoolean("Right stack pid", AutoLiftPIDRight->IsEnabled());
 }
 
 bool Stacker::OnTarget()
@@ -599,5 +592,59 @@ void Stacker::DashboardDisplay()
 		SmartDashboard::PutNumber("Current Stacker Level", currentlevel);
 		Dashboardtime->Stop();
 		Dashboardtime->Reset();
+	}
+}
+
+void Stacker::MotorDanger()
+{
+	bool StopStack = true;
+	if(PDP->GetCurrent(9) > MAX_CURRENT)
+	{
+		LeftMagicSmoke = true;
+		DangerTimeLeft->Start();
+	}
+	else
+	{
+		LeftMagicSmoke = false;
+		DangerTimeLeft->Stop();
+		DangerTimeLeft->Reset();
+	}
+	if(LeftMagicSmoke == true && DangerTimeLeft->Get() > 3)
+	{
+		StopStack = false;
+		SmartDashboard::PutBoolean("Stacker In Danger", StopStack);
+	}
+	if(PDP->GetCurrent(10) > MAX_CURRENT)
+	{
+		RightMagicSmoke = true;
+		DangerTimeRight->Start();
+	}
+	else
+	{
+		RightMagicSmoke = false;
+		DangerTimeRight->Stop();
+		DangerTimeRight->Reset();
+	}
+	if(RightMagicSmoke == true && DangerTimeRight->Get() > 3)
+	{
+		StopStack = false;
+		SmartDashboard::PutBoolean("Stacker In Danger", StopStack);
+	}
+}
+
+void Stacker::Kill(int ButtonKill)
+{
+	if(ButtonKill)
+	{
+		KillTime->Start();
+	}
+	else
+	{
+		KillTime->Stop();
+		KillTime->Reset();
+	}
+	if(KillTime->Get() > 2)
+	{
+		DeadStack = true;
 	}
 }

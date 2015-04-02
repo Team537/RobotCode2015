@@ -13,13 +13,13 @@
 class AutonomousCan : public AutoSelect
 {
 	public:
-		AutonomousCan()
+		AutonomousCan(int can)
 	{
 			Autotime = new Timer;
 			Hoardtime = new Timer;
 			Autostate = 0;
 			count = 0;
-			cannumber = 0;
+			cannumber = can;
 	}
 	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
 	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);

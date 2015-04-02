@@ -26,7 +26,7 @@ private: //Used only in this class
 	Solenoid  *leftFrontArm, *rightFrontArm; //arm pistons
 									 //pushing pistons to grab
 	Victor 	 *leftBelt, *rightBelt; 	  								 //conveyor belt suckers
-
+	DigitalInput *CollectedTote;
 	int lState, rState;
 
 
@@ -42,6 +42,7 @@ public: //Used in all classes
 
 		leftBelt = new Victor(COLLECTOR_SUCKL);
 		rightBelt = new Victor(COLLECTOR_SUCKR);
+		CollectedTote = new DigitalInput(9);
 
 
 		lastrightgrab = 0;
@@ -49,10 +50,12 @@ public: //Used in all classes
 		lState = 0;
 		rState = 0;
 		rampbelt = 0.1;
-		oldlbelt = 0;
-		oldrbelt = 0;
+		oldlbelt = false;
+		oldrbelt = false;
 		lastltoggle = 0;
 		lastrtoggle = 0;
+		rbelton = 0;
+		lbelton = 0;
 	}
 
 	//Declare functions
@@ -61,10 +64,11 @@ public: //Used in all classes
 	int getRightState();
 	int lastrightgrab;
 	int lastleftgrab;
-	float oldrbelt, oldlbelt;
+	bool oldrbelt, oldlbelt;
 	float rampbelt;
 	int lastltoggle;
 	int lastrtoggle;
+	int rbelton, lbelton;
 
 
 	void setGrab(int leftyaxis, float rightyaxis, bool elevatordanger);
@@ -72,7 +76,7 @@ public: //Used in all classes
 	bool getGrabright();
 	bool GetLeftArm();
 	bool GetRightArm();
-
+	void LimitSwitch();
 	void setMotors(int leftverticaljoy, int rightverticaljoyint, int rightreverse, int leftreverse);
 	float getLeftMotor();
 	float getRightMotor();
