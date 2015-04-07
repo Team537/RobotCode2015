@@ -37,7 +37,7 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 	case FIRST_CAN:
 		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
-		if(Autotime->Get() >= 1)
+		if(Autotime->Get() >= 1.1)
 		{
 			count = 1;
 			Autostate = RETRACT_STATE;

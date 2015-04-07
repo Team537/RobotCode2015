@@ -150,7 +150,7 @@ void Swerve::Tune()
 
 					//FrontRightMod->AutoDrive(AngleSetpoint);
 					//BackLeftMod->AutoDrive(AngleSetpoint);
-					BackRightMod->AutoDrive(AngleSetpoint);
+					//BackRightMod->AutoDrive(AngleSetpoint);
 					//FrontLeftMod->AutoDrive(AngleSetpoint);
 
 		 		if(newtime.Get() >= .25)

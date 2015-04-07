@@ -91,9 +91,9 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			}
 			break;
 		case 3:
-			if (Clock.Get() >= .5)
+			if (Clock.Get() >= 1)
 			{
-				targetPoint = TWO;
+				targetPoint = ONE;
 				SetLevel(targetPoint);
 				if (AutoLiftPIDLeft->OnTarget() && AutoLiftPIDRight->OnTarget())
 				{
