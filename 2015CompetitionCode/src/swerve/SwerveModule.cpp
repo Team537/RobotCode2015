@@ -111,6 +111,7 @@ void SwerveModule::PIDAuto(float distance)
 	SpeedEncoder->SetPIDSourceParameter(PIDSource::kDistance);
 	PIDDriveDistance->Enable();
 	PIDDriveDistance->SetSetpoint(distance);
+	SmartDashboard::PutNumber(Name +" PID Error Distance", PIDDriveDistance->GetError());
 }
 bool SwerveModule::GetDistancePID()
 {

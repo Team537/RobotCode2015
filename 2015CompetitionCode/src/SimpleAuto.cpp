@@ -42,6 +42,7 @@ void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stac
 		Autotime->Reset();
 		break;
 	}
+	SmartDashboard::PutNumber("AutoState",SimpleAutoSwitch);
 }
 
 void SimpleAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)

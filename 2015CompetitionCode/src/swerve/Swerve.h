@@ -45,8 +45,8 @@ public:
 		///                             (speed,angle,encoder1,encoder2,pot,pidAngle,PIDDrive,name,PIDDistance Values,offset, Max Encoder rate, setpointoffset)
 		FrontRightMod = new SwerveModule(10,   14,   14,      15,      4,  FrontRightAngleValues,FrontRightDriveValues,FrontRightDistance,"FrontRight", 0,400,0);
 		FrontLeftMod  = new SwerveModule(11,   15,   16,      17,      5,  FrontLeftAngleValues, FrontLeftDriveValues,FrontLeftDistance,"FrontLeft", 0,400,0);
-		BackRightMod  = new SwerveModule(12,   16,   23,      22,      6,  BackRightAngleValues, BackRightDriveValues,BackRightDistance,"BackRight", 0,400,0);
-		BackLeftMod   = new SwerveModule(/*13 comp*/ 9 ,   17,   24,      25,      7,  BackLeftAngleValues, BackLeftDriveValues,BackLeftDistance,"BackLeft",0,400,0);
+		BackRightMod  = new SwerveModule(12,   16,  23,      22,      6,  BackRightAngleValues, BackRightDriveValues,BackRightDistance,"BackRight", 0,400,0);
+		BackLeftMod   = new SwerveModule(/*13 comp*/ 9 ,   17,   24,     25,      7,  BackLeftAngleValues, BackLeftDriveValues,BackLeftDistance,"BackLeft",0,400,0);
 
 		sign = 0;
 		NAngleSetpoint = 0;
@@ -62,7 +62,8 @@ public:
 		SpinTurtle = 1;
 		DriveTurtle = 1;
 	}
-	void Initialize();
+	void Initialize(
+			);
 	void Run();
 	void TestMode();
 	void Tune();
