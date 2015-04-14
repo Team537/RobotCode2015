@@ -462,77 +462,78 @@ void Stacker::Tune(int pup, int pdown, int biup, int bidown, int iup, int idown,
 	AutoLiftPIDRight->SetPID(p,i,d);
 }
 
+void Stacker::CheckPIDError() {
+	if (AutoLiftPIDRight - AutoLiftPIDLeft > 0) {
+		// SLOW SLAVE (left) DOWN
+	} else if (AutoLiftPIDRight - AutoLiftPIDLeft < 0) {
+		// HURRY SLAVE (left) UP
+	} else {
+		// Do  Nothing
+	}
+}
+
 void Stacker::SetLevel(float SetPoint)
 {
-	if(DeadStack == false)
-	{
+	if(DeadStack == false) {
 		MotorDanger();
-		if (SetPoint < 10)
-		{
+
+		if (SetPoint < 10) {
 			AutoLiftPIDLeft->SetSetpoint(22);
 			AutoLiftPIDRight->SetSetpoint(15);
-		}
-		if (SetPoint > 10)
-		{
-			AutoLiftPIDLeft->SetSetpoint(SetPoint+LeftOffset);
+		} else if (SetPoint > 10 && SetPoint < 850) {
+			AutoLiftPIDLeft->SetSetpoint(SetPoint + LeftOffset);
 			AutoLiftPIDRight->SetSetpoint(SetPoint);
-		}
-		if(SetPoint > 850)
-		{
+		} else if(SetPoint > 850) {
 			AutoLiftPIDLeft->SetSetpoint(850);
 			AutoLiftPIDRight->SetSetpoint(850);
 		}
-		if (AutoLiftPIDLeft->OnTarget())
-		{
+
+		if (AutoLiftPIDLeft->OnTarget()) {
 			Lefttime->Start();
-			if(Lefttime->Get() > 1)
-			{
+
+			if(Lefttime->Get() > 1) {
 				Lefttime->Stop();
 				AutoLiftPIDLeft->Disable();
 			}
-		}
-		else
-		{
+		} else {
 			Lefttime->Stop();
 			Lefttime->Reset();
 			AutoLiftPIDLeft->Enable();
 		}
-		if (AutoLiftPIDRight->OnTarget())
-		{
+
+		if (AutoLiftPIDRight->OnTarget()) {
 			Righttime->Start();
-			if(Righttime->Get() > 1)
-			{
+
+			if(Righttime->Get() > 1) {
 				Righttime->Stop();
 				AutoLiftPIDRight->Disable();
 			}
-		}
-		else
-		{
+		} else {
 			Righttime->Stop();
 			Righttime->Reset();
 			AutoLiftPIDRight->Enable();
 		}
 	}
-	if(DeadStack == true)
-	{
+
+	if(DeadStack == true) {
 		AutoLiftPIDRight->Disable();
 		AutoLiftPIDLeft->Disable();
 	}
-	if(fabs(LiftPotLeft->Get() - LiftPotRight->Get()) > DangerDiferance)
-	{
+
+	if(fabs(LiftPotLeft->Get() - LiftPotRight->Get()) > DangerDiferance) {
 		SmartDashboard::PutNumber("Safety Test", 0);
-		if(fabs(AutoLiftPIDLeft->GetError()) > fabs(AutoLiftPIDRight->GetError()))
-		{
+
+		if(fabs(AutoLiftPIDLeft->GetError()) > fabs(AutoLiftPIDRight->GetError())) {
 			SmartDashboard::PutNumber("Safety Test", 1);
 			AutoLiftPIDRight->Disable();
-		}
-		else
-		{
+		} else {
 			SmartDashboard::PutNumber("Safety Test", 2);
 			AutoLiftPIDLeft->Disable();
 		}
 	}
+
 	CurrentLevel();
+
 	SmartDashboard::PutNumber("Right time", Righttime->Get());
 	SmartDashboard::PutNumber("Left time", Lefttime->Get());
 	SmartDashboard::PutNumber("Stacker P", p);

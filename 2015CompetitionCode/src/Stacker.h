@@ -141,6 +141,7 @@ private: //Only used in this class
 	bool DeadStack;
 
 	//Declare function
+	void CheckPIDError();
 	void SetLevel(float);
 	void SwitchLevel(int);
 	void CurrentLevel();

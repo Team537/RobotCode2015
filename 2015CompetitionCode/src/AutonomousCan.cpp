@@ -42,6 +42,14 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 			count = 1;
 			Autostate = RETRACT_STATE;
 		}
+		/*
+		 * DriveTrain->SetDistance(24,24,24,24);
+		 * if (DriveTrain->DistanceOnTarget())
+		 * {
+		 * 		count = 1;
+				Autostate = RETRACT_STATE;
+		 * }
+		 */
 		break;
 
 	case SECOND_CAN:
@@ -61,6 +69,17 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 			count = 2;
 			Autostate = RETRACT_STATE;
 		}
+		/*
+		 * DriveTrain->SetDistance(36,36,36,36);
+		 * if (DriveTrain->DistanceOnTarget())
+		 * {
+		 * 		Hoardtime->Reset();
+				Autotime->Stop();
+				Autotime->Reset();
+				count = 2;
+				Autostate = RETRACT_STATE;
+		 * }
+		 */
 	break;
 
 	case THIRD_CAN:
@@ -84,6 +103,17 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 				}
 			}
 		}
+		/*
+		 * DriveTrain->SetDistance(48,48,48,48);
+		 * if (DriveTrain->DistanceOnTarget())
+		 * {
+		 *		count = 3;
+				Hoardtime->Reset();
+				Autotime->Stop();
+				Autotime->Reset();
+				Autostate =RETRACT_STATE;
+		 * }
+		 */
 	break;
 
 	case FOURTH_CAN:
@@ -103,7 +133,17 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 				Autostate = RETRACT_STATE;
 			}
 		}
-
+		/*
+		 * DriveTrain->SetDistance(48,48,48,48);
+		 * if (DriveTrain->DistanceOnTarget())
+		 * {
+		 *		count = 4;
+				Hoardtime->Reset();
+				Autotime->Stop();
+				Autotime->Reset();
+				Autostate = RETRACT_STATE;
+		 * }
+		 */
 		break;
 
 	case RETRACT_STATE:

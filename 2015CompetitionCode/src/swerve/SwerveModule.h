@@ -53,10 +53,10 @@ public:
 		target  = 0;
 		Oldreading = 165;
 		firsttime = true;
-		SpeedEncoder->SetDistancePerPulse(.05026548);
+		SpeedEncoder->SetDistancePerPulse(4.1887902);
 		maxencrate = 10;
 		offSet = OFFSETsetpoint;
-
+		PIDDriveDistance->SetTolerance(5);
 	}
 	void Initialize();
 	void drive(float angle, float speed);

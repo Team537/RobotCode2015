@@ -59,14 +59,14 @@ void Swerve::Run()
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
 							//Comp
+							//BackRightMod->drive(0,-1*SpinTurtle*SpinAxis);
+							//BackLeftMod->drive(0,1*SpinTurtle*SpinAxis);
+							//Practice
+							BackRightMod->drive(0,1*SpinTurtle*SpinAxis);
+							BackLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
+							//These are Identical
 							FrontLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
 							FrontRightMod->drive(0,SpinTurtle*SpinAxis);
-							//Practice
-							//FrontLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
-							//FrontRightMod->drive(0,SpinTurtle*SpinAxis);
-							//These are Identical
-							BackRightMod->drive(0,-1*SpinTurtle*SpinAxis);
-							BackLeftMod->drive(0,1*SpinTurtle*SpinAxis);
 						}
 					}
 					else
@@ -231,3 +231,31 @@ bool Swerve::OnTarget()
 	}
 }
 
+bool Swerve::DistanceOnTarget()
+{
+	if (FrontLeftMod->GetDistancePID(), FrontRightMod->GetDistancePID(), BackLeftMod->GetDistancePID(), BackRightMod->GetDistancePID())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void Swerve::SetDistance(float FrontLeft, float FrontRight, float BackLeft, float BackRight)
+{
+	FrontLeftMod->PIDAuto(FrontLeft);
+	FrontRightMod->PIDAuto(FrontRight);
+	BackLeftMod->PIDAuto(BackLeft);
+	BackRightMod->PIDAuto(BackRight);
+
+}
+
+void Swerve::DisableDistance()
+{
+	FrontLeftMod->DistancePIDDisable();
+	FrontRightMod->DistancePIDDisable();
+	BackLeftMod->DistancePIDDisable();
+	BackRightMod->DistancePIDDisable();
+}

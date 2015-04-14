@@ -14,6 +14,7 @@ void SwerveModule::Initialize()
 
 void SwerveModule::drive(float angle, float speed)
 {
+	SpeedEncoder->SetPIDSourceParameter(PIDSource::kRate);
 	if (fabs(angle) < JOYDEADBAND)
 	{
 		angle = 0;
@@ -30,7 +31,7 @@ void SwerveModule::drive(float angle, float speed)
 	SpeedOutput->Set(.6*speed);
 	//SmartDashboard::PutNumber(Name+ "Potentiometer", AnglePotentiometer->PIDGet());
 	//PIDDrive->SetSetpoint(.5*speed*MaxRate);
-	//SmartDashboard::PutNumber("Encoder", SpeedEncoder->GetRate());
+	SmartDashboard::PutNumber(Name+" Encoder", SpeedEncoder->GetRate());
 	//SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
 	//SmartDashboard::PutNumber("Angle IO",angle);
 	//SmartDashboard::PutNumber("Speed IO",speed);
@@ -108,12 +109,11 @@ PIDController* SwerveModule::GetAnglePID()
 void SwerveModule::PIDAuto(float distance)
 {
 	SpeedEncoder->SetPIDSourceParameter(PIDSource::kDistance);
-	PIDDriveDistance->Disable();
+	PIDDriveDistance->Enable();
 	PIDDriveDistance->SetSetpoint(distance);
 }
 bool SwerveModule::GetDistancePID()
 {
-	SmartDashboard::PutBoolean("Distance on Target", PIDDriveDistance->OnTarget());
 	return PIDDriveDistance->OnTarget();
 }
 

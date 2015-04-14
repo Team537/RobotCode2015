@@ -21,13 +21,19 @@ void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stac
 		}
 		break;
 	case 1:
-		//Drive For a Time
+	/*	//Drive For a Time
 		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
 		if (Autotime->Get() >= 1.75)
 		{
 			DriveTrain->AutonomousSpeed(0,0,0,0);
 			Autotime->Stop();
+			SimpleAutoSwitch = 2;
+		}*/
+		DriveTrain->SetDistance(60,60,60,60);
+		if (DriveTrain->DistanceOnTarget())
+		{
+			DriveTrain->DisableDistance();
 			SimpleAutoSwitch = 2;
 		}
 		break;
