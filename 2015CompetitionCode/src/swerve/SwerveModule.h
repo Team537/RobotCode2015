@@ -53,7 +53,7 @@ public:
 		target  = 0;
 		Oldreading = 165;
 		firsttime = true;
-		SpeedEncoder->SetDistancePerPulse(4.1887902);
+		SpeedEncoder->SetDistancePerPulse(.023271056296296);
 		maxencrate = 10;
 		offSet = OFFSETsetpoint;
 		PIDDriveDistance->SetTolerance(5);

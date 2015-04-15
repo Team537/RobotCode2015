@@ -99,8 +99,6 @@ public: //Used in all classes
 	void StackRight(int rup, int rdown);
 	void Tune(int pup, int pdown, int biup, int bidown, int iup, int idown, int dup, int ddown, int toggle, int otoggle);
 	void init();
-	void Extender(int extend, int retract, int limitswitch, int manual, int reset);
-	void Grab(int button);
 	void ManualStacker(int up, int down);
 	void AutoStacker(bool autobtn, int levelup, int leveldown, bool buttoncan);
 	void DashboardDisplay();
@@ -154,7 +152,6 @@ private: //Only used in this class
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer, *Dashboardtime, *DangerTimeRight, *DangerTimeLeft, *KillTime;
 	PowerDistributionPanel *PDP;
-
 
 };
 
