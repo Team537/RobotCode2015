@@ -1,13 +1,13 @@
 #include "AutonomousTote.h"
 
-void AutonomousTote::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void AutonomousTote::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	SmartDashboard::PutString("Auto Selected", "Three Tote Auto");
 	AutoState = 0;
 	repetition = 0;
 }
 
-void AutonomousTote::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard) {
+void AutonomousTote::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro) {
 	switch (AutoState) {
 	case 0:
 		Autotime->Reset();
@@ -108,7 +108,7 @@ void AutonomousTote::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack,
 		break;
 	}
 }
-void AutonomousTote::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void AutonomousTote::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	Autotime->Reset();
 }

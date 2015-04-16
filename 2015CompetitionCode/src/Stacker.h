@@ -32,8 +32,6 @@ public: //Used in all classes
 
 		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT,1024,0);
 		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,-1024,1024);
-		ExtendPotLeft = new AnalogPotentiometer(2,600,0);
-		ExtendPotRight = new AnalogPotentiometer(3,600,0);
 
 		AutoLiftPIDLeft = new PIDController(STACKERLEFT, LiftPotLeft, LiftLeft);
 		AutoLiftPIDRight = new PIDController(STACKERRIGHT, LiftPotRight, LiftRight);
@@ -148,7 +146,7 @@ private: //Only used in this class
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   ExtendLeft, *ExtendRight;
 	DigitalInput* SwitchLeft, *SwitchRight;
-	AnalogPotentiometer* LiftPotRight, *LiftPotLeft, *ExtendPotLeft, *ExtendPotRight;
+	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer, *Dashboardtime, *DangerTimeRight, *DangerTimeLeft, *KillTime;
 	PowerDistributionPanel *PDP;

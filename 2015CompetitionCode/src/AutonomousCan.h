@@ -21,9 +21,9 @@ class AutonomousCan : public AutoSelect
 			count = 0;
 			cannumber = can;
 	}
-	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
-	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
-	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard);
+	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
+	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
+	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
 private:
 
 	Timer *Autotime;
@@ -32,6 +32,7 @@ private:
 	int count;
 	int cannumber;
 	bool armout   = false;
+	float GyroOffset;
 
 };
 

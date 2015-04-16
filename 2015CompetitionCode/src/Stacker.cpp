@@ -307,7 +307,7 @@ void Stacker::SetLevel(float SetPoint)
 
 		if (SetPoint < 10) {
 			AutoLiftPIDLeft->SetSetpoint(22);
-			AutoLiftPIDRight->SetSetpoint(15);
+			AutoLiftPIDRight->SetSetpoint(22);
 		} else if (SetPoint > 10 && SetPoint < 850) {
 			AutoLiftPIDLeft->SetSetpoint(SetPoint + LeftOffset);
 			AutoLiftPIDRight->SetSetpoint(SetPoint);
@@ -412,8 +412,6 @@ void Stacker::DashboardDisplay()
 		SmartDashboard::PutBoolean("Left stack pid", AutoLiftPIDLeft->IsEnabled());
 		SmartDashboard::PutBoolean("Right stack pid", AutoLiftPIDRight->IsEnabled());
 		SmartDashboard::PutNumber("Absolute Pot Differance", fabs(LiftPotLeft->Get() - LiftPotRight->Get()));
-		SmartDashboard::PutNumber("Extend Pot Left", ExtendPotLeft->Get());
-		SmartDashboard::PutNumber("Extend Pot Right", ExtendPotRight->Get());
 		SmartDashboard::PutNumber("ExtendState Left", ExtendStateLeft);
 		SmartDashboard::PutNumber("ExtendState Right", ExtendStateRight);
 		SmartDashboard::PutNumber("Automatic Stacker State", state);

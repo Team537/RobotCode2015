@@ -1,12 +1,12 @@
 #include "SimpleCanAndToteAuto.h"
 
-void SimpleCanAndToteAutonomous::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void SimpleCanAndToteAutonomous::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	SmartDashboard::PutString("Auto Selected", "Single Yellow Tote");
 	SimpleAutoSwitch = 0;
 }
 
-void SimpleCanAndToteAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void SimpleCanAndToteAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	switch(SimpleAutoSwitch)
 	{
@@ -65,7 +65,7 @@ void SimpleCanAndToteAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Sta
 	}
 }
 
-void SimpleCanAndToteAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void SimpleCanAndToteAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	Autotime->Reset();
 }

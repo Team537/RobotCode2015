@@ -17,6 +17,7 @@ class Robot: public IterativeRobot
 
 private:
 	Joystick* PrimaryController, *SecondaryController;
+	Gyro *AutoGyro;
 	Hoarder  * Hoard;
 	Stacker   *Stack;
 	Collector *Collect;
@@ -40,6 +41,7 @@ private:
 		camera->StartAutomaticCapture("cam0");
 		PrimaryController 	= new Joystick(0);
 		SecondaryController = new Joystick(1);
+		AutoGyro = new Gyro(0);
 		swerve 				= new Swerve(PrimaryController);
 		Collect = new Collector();
 		Stack = new Stacker(Collect, PDP);
@@ -53,6 +55,7 @@ private:
 		NoAuto = new NoAutonomous();
 		AutoChooser = new SendableChooser;
 
+		AutoGyro->InitGyro();
 		AutoChooser->AddDefault("2 Can Auto", CanAuto2);
 		AutoChooser->AddObject("SimpleAuto", SimpleAuto);
 		AutoChooser->AddObject("NoAutonomous", NoAuto);
@@ -67,7 +70,7 @@ private:
 	{
 		//compressor.checkCompressor();
 		AutoSelect *ChoosenAutonomous = (AutoSelect *)AutoChooser->GetSelected();
-		ChoosenAutonomous->Initialize(swerve, Collect, Stack, Hoard);
+		ChoosenAutonomous->Initialize(swerve, Collect, Stack, Hoard, AutoGyro);
 		//SimpleAuto->Initialize(swerve, Collect, Stack, Hoard);
 	}
 
@@ -76,9 +79,9 @@ private:
 		AutoSelect *ChoosenAutonomous = (AutoSelect *)AutoChooser->GetSelected();
 		while(IsAutonomous() && IsEnabled())
 		{
-			ChoosenAutonomous->Run(swerve, Collect, Stack, Hoard);
+			ChoosenAutonomous->Run(swerve, Collect, Stack, Hoard, AutoGyro);
 		}
-		ChoosenAutonomous->End(swerve, Collect, Stack, Hoard);
+		ChoosenAutonomous->End(swerve, Collect, Stack, Hoard, AutoGyro);
 		//compressor.checkCompressor();
 		//SimpleAuto->Run(swerve, Collect, Stack, Hoard);
 		//CanAuto->Run(swerve, Collect, Stack, Hoard);
@@ -102,14 +105,14 @@ private:
 		swerve->Run();
 		//swerve->Tune();
 		Hoard->hoard(SecondaryController->GetRawButton(HOARD_BTN));
-		//Stack->ManualStacker(SecondaryController->GetRawButton(SETPOINT_UP), SecondaryController->GetRawButton(SETPOINT_DOWN));
-		//Stack->AutoStacker(SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawButton(LEVEL_UP), SecondaryController->GetRawButton(LEVEL_DOWN), SecondaryController->GetRawButton(BUTTON_CAN));
-		//Stack->Kill(SecondaryController->GetRawButton(9));
+		Stack->ManualStacker(SecondaryController->GetRawButton(SETPOINT_UP), SecondaryController->GetRawButton(SETPOINT_DOWN));
+		Stack->AutoStacker(SecondaryController->GetRawButton(AUTOSTACK_BTN), SecondaryController->GetRawButton(LEVEL_UP), SecondaryController->GetRawButton(LEVEL_DOWN), SecondaryController->GetRawButton(BUTTON_CAN));
+		Stack->Kill(SecondaryController->GetRawButton(9));
 		Collect->setMotors(PrimaryController->GetRawButton(5), PrimaryController->GetRawButton(6), PrimaryController->GetRawButton(8), PrimaryController->GetRawButton(7));
 		Collect->setState(PrimaryController->GetRawButton(4), SecondaryController->GetRawButton(RIGHT_VERTICAL), Stack->DangerLevel());
 		Collect->setGrab(PrimaryController->GetRawButton(3), SecondaryController->GetRawAxis(COL_GRAB_LEFT_AXIS), Stack->DangerLevel());
-		Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
-		Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
+		//Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
+		//Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
 		//Stack->Tune(PrimaryController->GetRawButton(8),PrimaryController->GetRawButton(7),PrimaryController->GetRawButton(5),PrimaryController->GetRawButton(3),PrimaryController->GetRawButton(10),PrimaryController->GetRawButton(9),PrimaryController->GetRawButton(12),PrimaryController->GetRawButton(11),PrimaryController->GetRawButton(1), PrimaryController->GetRawButton(2));
 		Collect->LimitSwitch();
 		SmartDashboard::PutNumber("Right Stack Current", PDP->GetCurrent(10));

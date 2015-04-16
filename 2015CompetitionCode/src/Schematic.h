@@ -56,8 +56,8 @@
 #define STACKER_SWITCH_RIGHT	1
 
 //Analog Inputs
-#define STACKER_LIFT_POT_RIGHT	0
-#define STACKER_LIFT_POT_LEFT	1
+#define STACKER_LIFT_POT_RIGHT	2
+#define STACKER_LIFT_POT_LEFT	3
 
 //Compressor
 #define COMPRESSOR_SWITCH		5
@@ -121,12 +121,12 @@
 #define CAN 	150
 
 //Stacker Speed on Cap'n Hook
-#define LEFT_CAPS		-1,.9
-#define RIGHT_CAPS	-1,1
+//#define LEFT_CAPS		-1,.9
+//#define RIGHT_CAPS	-1,1
 
 //Stacker Speed on Dragon
-//#define LEFT_CAPS		-.5,.4
-//#define RIGHT_CAPS		-.5,.35
+#define LEFT_CAPS		-.5,.4
+#define RIGHT_CAPS		-.5,.35
 
 //Names
 #define RETRACT 0

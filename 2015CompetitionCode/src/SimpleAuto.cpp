@@ -1,13 +1,13 @@
 #include "SimpleAuto.h"
 
-void SimpleAutonomous::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void SimpleAutonomous::Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	DriveTrain->Initialize();
 	SmartDashboard::PutString("Auto Selected", "Simple Autonomous");
 	SimpleAutoSwitch = 0;
 }
 
-void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 
 	switch(SimpleAutoSwitch)
@@ -45,7 +45,7 @@ void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stac
 	SmartDashboard::PutNumber("AutoState",SimpleAutoSwitch);
 }
 
-void SimpleAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void SimpleAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	Autotime->Reset();
 }

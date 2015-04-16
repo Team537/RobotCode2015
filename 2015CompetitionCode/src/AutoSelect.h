@@ -11,9 +11,9 @@
 class AutoSelect {
 
 public:
-	virtual void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard) = 0;
-	virtual void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard) = 0;
-	virtual void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard) = 0;
+	virtual void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro) = 0;
+	virtual void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro) = 0;
+	virtual void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro) = 0;
 	virtual ~AutoSelect() {};
 
 };

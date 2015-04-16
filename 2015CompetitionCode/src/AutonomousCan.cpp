@@ -1,6 +1,6 @@
 #include "AutonomousCan.h"
 
-void AutonomousCan::Initialize(Swerve *DriveTrainTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void AutonomousCan::Initialize(Swerve *DriveTrainTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	count = 0;
 	Autostate = INITIALIZE;
@@ -8,9 +8,9 @@ void AutonomousCan::Initialize(Swerve *DriveTrainTrain, Collector *Collect, Stac
 	Hoardtime->Reset();
 }
 
-void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
-
+	GyroOffset = -.5*AutonomousGyro->GetAngle();
 	SmartDashboard::PutNumber("Auto Sate", Autostate);
 	SmartDashboard::PutNumber("Autotime", Autotime->Get());
 	switch (Autostate)
@@ -35,6 +35,7 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 	break;
 
 	case FIRST_CAN:
+		DriveTrain->AutonomousAngle(180+GyroOffset, 180+GyroOffset,180,180);
 		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
 		if(Autotime->Get() >= 1.1)
@@ -54,6 +55,7 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 
 	case SECOND_CAN:
 		Hoardtime->Start();
+		DriveTrain->AutonomousAngle(180+GyroOffset, 180+GyroOffset,180,180);
 		if(Hoardtime->Get() > .1)
 		{
 			Hoard->Extend();
@@ -83,9 +85,7 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 	break;
 
 	case THIRD_CAN:
-		DriveTrain->AutonomousAngle(170,170,170,170);
-		if(DriveTrain->OnTarget())
-		{
+		DriveTrain->AutonomousAngle(180+GyroOffset, 180+GyroOffset,180,180);
 			Hoard->Extend();
 			Hoardtime->Start();
 			if(Hoardtime->Get() > .5)
@@ -102,7 +102,6 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 					Autostate =RETRACT_STATE;
 				}
 			}
-		}
 		/*
 		 * DriveTrain->SetDistance(48,48,48,48);
 		 * if (DriveTrain->DistanceOnTarget())
@@ -117,6 +116,7 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 	break;
 
 	case FOURTH_CAN:
+		DriveTrain->AutonomousAngle(180+GyroOffset, 180+GyroOffset,180,180);
 		Hoard->Extend();
 		Hoardtime->Start();
 		if(Hoardtime->Get() > .5)
@@ -225,7 +225,7 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 	}
 }
 
-void AutonomousCan::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard)
+void AutonomousCan::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
 	Autotime->Reset();
 }
