@@ -14,12 +14,14 @@ class SimpleAutonomous : public AutoSelect{
 private:
 	Timer *Autotime;
 	int SimpleAutoSwitch;
+	float GyroOffset;
 
 public:
 	SimpleAutonomous ()
 {
 		Autotime = new Timer;
 		SimpleAutoSwitch = 0;
+		GyroOffset = 0;
 }
 	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
 	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);

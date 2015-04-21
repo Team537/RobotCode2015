@@ -306,8 +306,8 @@ void Stacker::SetLevel(float SetPoint)
 		MotorDanger();
 
 		if (SetPoint < 10) {
-			AutoLiftPIDLeft->SetSetpoint(22);
-			AutoLiftPIDRight->SetSetpoint(22);
+			AutoLiftPIDLeft->SetSetpoint(20);
+			AutoLiftPIDRight->SetSetpoint(20);
 		} else if (SetPoint > 10 && SetPoint < 850) {
 			AutoLiftPIDLeft->SetSetpoint(SetPoint + LeftOffset);
 			AutoLiftPIDRight->SetSetpoint(SetPoint);

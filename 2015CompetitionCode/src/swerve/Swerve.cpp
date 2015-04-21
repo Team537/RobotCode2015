@@ -59,11 +59,11 @@ void Swerve::Run()
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
 							//Comp
-							//BackRightMod->drive(0,-1*SpinTurtle*SpinAxis);
-							//BackLeftMod->drive(0,1*SpinTurtle*SpinAxis);
+							BackRightMod->drive(0,-1*SpinTurtle*SpinAxis);
+							BackLeftMod->drive(0,1*SpinTurtle*SpinAxis);
 							//Practice
-							BackRightMod->drive(0,1*SpinTurtle*SpinAxis);
-							BackLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
+							//BackRightMod->drive(0,1*SpinTurtle*SpinAxis);
+							//BackLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
 							//These are Identical
 							FrontLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
 							FrontRightMod->drive(0,SpinTurtle*SpinAxis);

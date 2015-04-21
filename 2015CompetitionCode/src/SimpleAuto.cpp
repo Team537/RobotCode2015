@@ -9,6 +9,8 @@ void SimpleAutonomous::Initialize(Swerve *DriveTrain, Collector *Collect, Stacke
 
 void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro)
 {
+	GyroOffset = -.5*AutonomousGyro->GetAngle();
+	SmartDashboard::PutNumber("GyroReading", GyroOffset);
 
 	switch(SimpleAutoSwitch)
 	{
@@ -21,7 +23,7 @@ void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stac
 		}
 		break;
 	case 1:
-	/*	//Drive For a Time
+		//Drive For a Time
 		DriveTrain->AutonomousSpeed(1,1,1,1);
 		Autotime->Start();
 		if (Autotime->Get() >= 1.75)
@@ -29,13 +31,15 @@ void SimpleAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stac
 			DriveTrain->AutonomousSpeed(0,0,0,0);
 			Autotime->Stop();
 			SimpleAutoSwitch = 2;
-		}*/
-		DriveTrain->SetDistance(60,60,60,60);
+		}
+
+		DriveTrain->AutonomousAngle(180+GyroOffset, 180+GyroOffset,180,180);
+		/*DriveTrain->SetDistance(300,300,300,300);
 		if (DriveTrain->DistanceOnTarget())
 		{
 			DriveTrain->DisableDistance();
 			SimpleAutoSwitch = 2;
-		}
+		}*/
 		break;
 	case 2:
 		//Reset Timer
