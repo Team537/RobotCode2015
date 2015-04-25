@@ -11,6 +11,9 @@
 #include "AutonomousCan.h"
 #include "NoAuto.h"
 #include "AutonomousTote.h"
+#include "Whips.h"
+#include "WhipAuto.h"
+
 
 class Robot: public IterativeRobot
 {
@@ -21,6 +24,7 @@ private:
 	Hoarder  * Hoard;
 	Stacker   *Stack;
 	Collector *Collect;
+	Whips *Burgerler;
 	//CompressorManager compressor;
 	PowerDistributionPanel *PDP;
 	LiveWindow *lw;
@@ -30,6 +34,7 @@ private:
 	SimpleCanAndToteAutonomous *SingleTote;
 	AutonomousCan *CanAuto, *CanAuto2, *CanAuto3;
 	AutonomousTote *TripleTote;
+	WhipAuto *StealCans;
 	NoAutonomous *NoAuto;
 	SendableChooser *AutoChooser;
 
@@ -46,12 +51,15 @@ private:
 		Collect = new Collector();
 		Stack = new Stacker(Collect, PDP);
 		Hoard = new Hoarder();
+		Burgerler = new Whips();
 		SimpleAuto = new SimpleAutonomous();
 		SingleTote = new SimpleCanAndToteAutonomous();
 		CanAuto = new AutonomousCan(1);
 		CanAuto2 = new AutonomousCan(2);
 		CanAuto3 = new AutonomousCan(3);
 		TripleTote = new AutonomousTote();
+		StealCans = new WhipAuto(Burgerler);
+
 		NoAuto = new NoAutonomous();
 		AutoChooser = new SendableChooser;
 
@@ -60,6 +68,7 @@ private:
 		AutoChooser->AddObject("SimpleAuto", SimpleAuto);
 		AutoChooser->AddObject("NoAutonomous", NoAuto);
 		AutoChooser->AddObject("3 Can Auto", CanAuto3);
+		AutoChooser->AddObject("Whip Auto", StealCans);
 		//AutoChooser->AddObject("Triple Yellow Tote", TripleTote);
 		AutoChooser->AddObject("Hoard Can", CanAuto);
 		//AutoChooser->AddObject("Single Yellow Tote", SingleTote);
