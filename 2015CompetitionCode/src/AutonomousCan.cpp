@@ -54,8 +54,8 @@ void AutonomousCan::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, 
 		break;
 
 	case SECOND_CAN:
-		Hoardtime->Start();
 		DriveTrain->AutonomousAngle(180+GyroOffset, 180+GyroOffset,180,180);
+		Hoardtime->Start();
 		if(Hoardtime->Get() > .1)
 		{
 			Hoard->Extend();

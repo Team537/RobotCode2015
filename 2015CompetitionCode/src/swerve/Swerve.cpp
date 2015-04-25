@@ -44,19 +44,20 @@ void Swerve::Run()
 						DriveTurtle = 1;
 					}
 
-
+					float SpinAxis = Controller->GetRawAxis(2);
 					SmartDashboard::PutBoolean("Turtle Mode", turtle);
-
+					bool SetSpinMode = fabs(SpinAxis) > .25;
 
 					//Get Spin Axis
-					float SpinAxis = Controller->GetRawAxis(2);
-					if (fabs(SpinAxis) > .25)
+
+					if (SetSpinMode || SpinMode)
 					{
+						SpinMode = true;
 						FrontLeftMod->AutoDrive(329.3);
 						FrontRightMod->AutoDrive(30.7);
 						BackLeftMod->AutoDrive(30.7);
 						BackRightMod->AutoDrive(329.3);
-						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
+						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && SetSpinMode)
 						{
 							//Comp
 							BackRightMod->drive(0,-1*SpinTurtle*SpinAxis);
@@ -67,10 +68,19 @@ void Swerve::Run()
 							//These are Identical
 							FrontLeftMod->drive(0,-1*SpinTurtle*SpinAxis);
 							FrontRightMod->drive(0,SpinTurtle*SpinAxis);
+
+						}
+						else
+						{
+							FrontLeftMod->drive(0,0);
+							FrontRightMod->drive(0,0);
+							BackRightMod->drive(0,0);
+							BackLeftMod->drive(0,0);
 						}
 					}
-					else
+					if (Controller->GetMagnitude() > .05)
 					{
+						SpinMode = false;
 						NAngleSetpoint = Controller->GetDirectionDegrees();
 						NAngleSetpoint = NAngleSetpoint * (-1);
 						NAngleSetpoint += 180;
@@ -97,10 +107,10 @@ void Swerve::Run()
 						float Magnitude = Controller->GetMagnitude();
 						if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle())
 						{
-								FrontLeftMod->drive(0,DriveTurtle*sign*Magnitude);
-								FrontRightMod->drive(0,DriveTurtle*sign*Magnitude);
-								BackRightMod->drive(0,DriveTurtle* sign*Magnitude);
-								BackLeftMod->drive(0,DriveTurtle*sign*Magnitude);
+							FrontLeftMod->drive(0,DriveTurtle*sign*Magnitude);
+							FrontRightMod->drive(0,DriveTurtle*sign*Magnitude);
+							BackRightMod->drive(0,DriveTurtle* sign*Magnitude);
+							BackLeftMod->drive(0,DriveTurtle*sign*Magnitude);
 						}
 						else
 						{

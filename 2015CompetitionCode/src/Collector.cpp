@@ -60,31 +60,6 @@ bool Collector::getGrabright()
 }
 
 void Collector::setMotors(int leftverticaljoy, int rightverticaljoy, int rightreverse, int leftreverse) {
-	/*if(fabs(rightverticaljoy) >= .25)
-	{
-		float rightbeltdifferance = rightverticaljoy - oldrbelt;
-		if(fabs(rightbeltdifferance) >= rampbelt)
-		{
-			oldrbelt += rampbelt * (rightbeltdifferance / fabs(rightbeltdifferance));
-		}
-		rightBelt->Set(-rightverticaljoy);
-	}
-	else{
-		rightBelt->Set(0);
-	}
-	if (fabs(leftverticaljoy) >= .25)
-	{
-		float leftbeltdifferance = leftverticaljoy - oldlbelt;
-		if(fabs(leftbeltdifferance) >= rampbelt)
-		{
-			oldlbelt += rampbelt * (leftbeltdifferance / fabs(leftbeltdifferance));
-		}
-		leftBelt->Set(-leftverticaljoy);
-	}
-	else
-	{
-		leftBelt->Set(0);
-	}*/
 	if(leftverticaljoy && oldlbelt == false && leftreverse == 0)
 	{
 		lbelton = !lbelton;
@@ -104,8 +79,6 @@ void Collector::setMotors(int leftverticaljoy, int rightverticaljoy, int rightre
 	{
 		rbelton = !rbelton;
 	}
-	oldrbelt = rightverticaljoy;
-
 	if (rightreverse && rbelton == false)
 	{
 		rightBelt->Set(-1);
@@ -114,6 +87,38 @@ void Collector::setMotors(int leftverticaljoy, int rightverticaljoy, int rightre
 	{
 		rightBelt->Set(rbelton);
 	}
+	oldrbelt = rightverticaljoy;
+	/*
+	if(rightverticaljoy)
+	{
+		lbelton = true;
+	}
+	if(leftverticaljoy)
+	{
+		lbelton = false;
+	}
+
+	if (rightreverse && lbelton == false)
+	{
+		rightBelt->Set(-1);
+	}
+	if (leftreverse && lbelton == false)
+	{
+		leftBelt->Set(1);
+	}
+
+	if(lbelton == true)
+	{
+		leftBelt->Set(-lbelton);
+		rightBelt->Set(rbelton);
+	}
+	else if (lbelton == false && leftreverse == false && rightreverse == false)
+	{
+		leftBelt->Set(0);
+		rightBelt->Set(0);
+	}*/
+
+
 }
 
 float Collector::getLeftMotor() {

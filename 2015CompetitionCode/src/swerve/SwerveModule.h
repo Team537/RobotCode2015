@@ -38,7 +38,7 @@ public:
 		PIDDrive->SetPID(DrivePIDValues->P,DrivePIDValues->I,DrivePIDValues->D,DrivePIDValues->F);
 		PIDAngle->SetInputRange(AnglePIDValues->MINInput,AnglePIDValues->MAXInput);
 		PIDAngle->SetOutputRange(AnglePIDValues->MINOutput, AnglePIDValues->MaxOutput);
-		PIDAngle->SetAbsoluteTolerance(15);
+		PIDAngle->SetAbsoluteTolerance(20);
 		potfeedbackmin = 100;
 		potfeedbackmax = 100;
 		PIDAngle->SetContinuous(true);

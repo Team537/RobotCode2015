@@ -20,6 +20,7 @@ class AutonomousCan : public AutoSelect
 			Autostate = 0;
 			count = 0;
 			cannumber = can;
+			GyroOffset = 0;
 	}
 	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
 	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);

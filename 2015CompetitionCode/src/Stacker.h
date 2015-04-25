@@ -33,6 +33,8 @@ public: //Used in all classes
 		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT,1024,0);
 		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,-1024,1024);
 
+		CollectedTote = new DigitalInput(9);
+
 		AutoLiftPIDLeft = new PIDController(STACKERLEFT, LiftPotLeft, LiftLeft);
 		AutoLiftPIDRight = new PIDController(STACKERRIGHT, LiftPotRight, LiftRight);
 		Righttime = new Timer;
@@ -100,6 +102,7 @@ public: //Used in all classes
 	void ManualStacker(int up, int down);
 	void AutoStacker(bool autobtn, int levelup, int leveldown, bool buttoncan);
 	void DashboardDisplay();
+	void SwitchStacking(bool btnStack);
 	void Kill(int ButtonKill);
 	bool DangerLevel();
 	bool CollectorDanger(bool left, bool right);
@@ -123,7 +126,7 @@ private: //Only used in this class
 	float rightelevatormin, leftelevatormin;
 	float lastpov;
 	bool lastswitch;
-	float p = .0;
+	float p = .039;
 	float i = .000;
 	float d = .00;
 	float LeftOffset = 0;
@@ -145,7 +148,7 @@ private: //Only used in this class
 	Relay* Flaps;
 	Victor*   LiftRight, *LiftLeft;
 	Talon*   ExtendLeft, *ExtendRight;
-	DigitalInput* SwitchLeft, *SwitchRight;
+	DigitalInput* SwitchLeft, *SwitchRight, *CollectedTote;
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;
 	Timer *Lefttime, *Righttime, *extendlefttimer, *extendrighttimer, *Dashboardtime, *DangerTimeRight, *DangerTimeLeft, *KillTime;

@@ -101,10 +101,10 @@
 //#define PID_BACK_RIGHT_VELOCITY 		.04, 0.0, 0.0, .5/476.224
 
 //Drive train Distance PID's on Capn hook
-#define PID_FRONT_LEFT_DISTANCE		 	.04, 0, 0, 0
-#define PID_FRONT_RIGHT_DISTANCE		.04, 0, 0, 0
-#define PID_BACK_LEFT_DISTANCE			.04, 0, 0, 0
-#define PID_BACK_RIGHT_DISTANCE 		.04, 0, 0, 0
+#define PID_FRONT_LEFT_DISTANCE		 	.04, 0, 0
+#define PID_FRONT_RIGHT_DISTANCE		.04, 0, 0
+#define PID_BACK_LEFT_DISTANCE			.04, 0, 0
+#define PID_BACK_RIGHT_DISTANCE 		.04, 0, 0
 
 //Drive train Distance PID's on Dragon
 //#define PID_FRONT_LEFT_DISTANCE		 	.03, 0, 0.03

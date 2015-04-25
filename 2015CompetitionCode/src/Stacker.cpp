@@ -16,6 +16,15 @@ void Stacker::init()
 	DeadStack = false;
 }
 
+void Stacker::SwitchStacking(bool btnStack)
+{
+	if(btnStack && CollectedTote->Get())
+	{
+		AutoStacker(1,0,0,0);
+	}
+}
+
+
 //When a button is pressed, automatically move the stacker down and back up
 void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttoncan)
 {
@@ -73,7 +82,7 @@ void Stacker::AutoStacker(bool autobtn, int levelup, int leveldown, bool buttonc
 			}
 			break;
 		case 3:
-			if (Clock.Get() >= 1)
+			if (Clock.Get() >= .75)
 			{
 				targetPoint = ONE;
 				SetLevel(targetPoint);
@@ -354,7 +363,8 @@ void Stacker::SetLevel(float SetPoint)
 		if(fabs(AutoLiftPIDLeft->GetError()) > fabs(AutoLiftPIDRight->GetError())) {
 			SmartDashboard::PutNumber("Safety Test", 1);
 			AutoLiftPIDRight->Disable();
-		} else {
+		}
+		if(fabs(AutoLiftPIDLeft->GetError()) < fabs(AutoLiftPIDRight->GetError())){
 			SmartDashboard::PutNumber("Safety Test", 2);
 			AutoLiftPIDLeft->Disable();
 		}
