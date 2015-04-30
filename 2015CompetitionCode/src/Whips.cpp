@@ -13,37 +13,37 @@ double Whips::OppisiteConversion(double ticks, double Offset)
 
 void Whips::DeployWhips()
 {
-	LeftWhip->SetControlMode(CANTalon::kPosition);
+	//LeftWhip->SetControlMode(CANTalon::kPosition);
 	RightWhip->SetControlMode(CANTalon::kPosition);
 
 	RightWhip->SetPID(10,0.004,0);
-	LeftWhip->SetPID(10,0.004,0);
+	//LeftWhip->SetPID(10,0.004,0);
 
-	LeftWhip->SetD(Conversion(Deployed*-1,-362));
+	//LeftWhip->SetD(Conversion(Deployed*-1,-362));
 	RightWhip->SetD(Conversion(Deployed,-580));
 
-	LeftWhip->EnableControl();
+	//LeftWhip->EnableControl();
 	RightWhip->EnableControl();
 }
 
 void Whips::RetractWhips()
 {
-	LeftWhip->SetControlMode(CANTalon::kPosition);
+	//LeftWhip->SetControlMode(CANTalon::kPosition);
 	RightWhip->SetControlMode(CANTalon::kPosition);
 
 	RightWhip->SetPID(2,0.004,0);
-	LeftWhip->SetPID(2,0.004,0);
+	//LeftWhip->SetPID(2,0.004,0);
 
-	LeftWhip->SetD(Conversion(Stowed*-1,-362));
+	//LeftWhip->SetD(Conversion(Stowed*-1,-362));
 	RightWhip->SetD(Conversion(Stowed,-580));
 
-	LeftWhip->EnableControl();
+	//LeftWhip->EnableControl();
 	RightWhip->EnableControl();
 }
 
 bool Whips::ReadyToDrive()
 {
-	return (((OppisiteConversion(LeftWhip->GetPosition(),-362)*-1) >= 20) && (OppisiteConversion(RightWhip->GetPosition(),-580) >= 20));
+	return ((OppisiteConversion(RightWhip->GetPosition(),-580) >= 20));
 }
 
 void Whips::TeleWhips(int WhipsToggle)
@@ -68,7 +68,7 @@ void Whips::EndClaws(int ClawToggle)
 {
 	if(ClawToggle == 1 && lastpressedClaws == 0)
 	{
-		LeftClaw->Set(!LeftClaw->Get());
+		//LeftClaw->Set(!LeftClaw->Get());
 		RightClaw->Set(!RightClaw->Get());
 	}
 	lastpressedClaws = ClawToggle;

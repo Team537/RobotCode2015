@@ -9,9 +9,9 @@ class Whips
 
 	Whips()
 	{
-		LeftWhip = new CANTalon(4);
+		//LeftWhip = new CANTalon(4);
 		RightWhip = new CANTalon(5);
-		LeftClaw = new Solenoid(3);
+		//LeftClaw = new Solenoid(3);
 		RightClaw = new Solenoid(4);
 		Stowed = 0;
 		Deployed = 85;
@@ -28,8 +28,8 @@ class Whips
 	void TeleWhips(int WhipsToggle);
 	void EndClaws(int ClawToggle);
 private:
-	CANTalon *LeftWhip, *RightWhip;
-	Solenoid *LeftClaw, *RightClaw;
+	CANTalon  *RightWhip;
+	Solenoid  *RightClaw;
 	double Stowed;
 	double Deployed;
 	bool drive;
