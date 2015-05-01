@@ -1,39 +1,32 @@
-//Define header file
 #ifndef COLLECTOR_H
 #define COLLECTOR_H
 
-//Dependencies
 #include "WPILib.h"
 #include "Schematic.h"
 
-/* #### CONTROLS ####
-LT		-	increase left arm extend state
-LB		-	decrease left arm extend state
-RT 		-	increase right arm extend state
-RB		-	decrease right arm extend state
+/** CONTROLS:
+	 LT - Increase left arm extend state.
+	 LB - Decrease left arm extend state.
+	 RT - Increase right arm extend state.
+	 RB - Decrease right arm extend state.
 
-## below are changeable ##
-Start	-	grab
-Dpad v	-	motor into bot
-Dpad ^	-	motor out of bot
-*/
+	 Start  - Grab.
+	 Dpad v	- Motor into bot.
+	 Dpad ^	- Motor out of bot.
+ */
 
-//Collector class constructor
+// Collector class constructor.
 class Collector {
-
-private: //Used only in this class
-
-	Solenoid  *leftFrontArm, *rightFrontArm; //arm pistons
-									 //pushing pistons to grab
-	Victor 	 *leftBelt, *rightBelt; 	  								 //conveyor belt suckers
+private:
+	// Used only in this class.
+	Solenoid *leftFrontArm, *rightFrontArm; // Arm pistons pushing pistons to grab.
+	Victor *leftBelt, *rightBelt; // Conveyer belt suckers.
 	DigitalInput *CollectedTote;
 	int lState, rState;
 
-
-public: //Used in all classes
+public:
 	Solenoid *leftGrabber, *rightGrabber;
-	Collector ()
-	{
+	Collector() {
 		leftFrontArm = new Solenoid(COLLECTOR_ARMLF);
 		rightFrontArm = new Solenoid(COLLECTOR_ARMRF);
 
@@ -43,7 +36,6 @@ public: //Used in all classes
 		leftBelt = new Victor(COLLECTOR_SUCKL);
 		rightBelt = new Victor(COLLECTOR_SUCKR);
 		CollectedTote = new DigitalInput(9);
-
 
 		lastrightgrab = 0;
 		lastleftgrab = 0;
@@ -58,8 +50,7 @@ public: //Used in all classes
 		lbelton = 0;
 	}
 
-	//Declare functions
-	void setState(int ltoggle, int rtoggle, bool elevatordanger );
+	void setState(int ltoggle, int rtoggle, bool elevatordanger);
 	int getLeftState();
 	int getRightState();
 	int lastrightgrab;
@@ -70,7 +61,6 @@ public: //Used in all classes
 	int lastrtoggle;
 	int rbelton, lbelton;
 
-
 	void setGrab(int leftyaxis, float rightyaxis, bool elevatordanger);
 	bool getGrableft();
 	bool getGrabright();
@@ -80,8 +70,6 @@ public: //Used in all classes
 	void setMotors(int leftverticaljoy, int rightverticaljoyint, int rightreverse, int leftreverse);
 	float getLeftMotor();
 	float getRightMotor();
-
-
 };
 
 #endif

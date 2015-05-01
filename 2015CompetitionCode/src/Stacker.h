@@ -8,30 +8,25 @@
 #include "Collector.h"
 #include "cmath"
 
-
 //Stacker class constructor
-class Stacker
-{
-
+class Stacker {
 
 	Timer Clock;
 	Collector *Intake;
-public: //Used in all classes
+public:
+	//Used in all classes
 
-
-
-	Stacker(Collector *Grabber, PowerDistributionPanel *PowerPanel)
-{
+	Stacker(Collector *Grabber, PowerDistributionPanel *PowerPanel) {
 		Flaps = new Relay(STACKER_FLAPS, Relay::Direction::kForwardOnly);
-		LiftRight = new Victor (STACKER_LIFT_RIGHT);
-		LiftLeft = new Victor (STACKER_LIFT_LEFT);
-		ExtendLeft = new Talon (STACKER_EXTEND_LEFT);
-		ExtendRight = new Talon (STACKER_EXTEND_RIGHT);
+		LiftRight = new Victor(STACKER_LIFT_RIGHT);
+		LiftLeft = new Victor(STACKER_LIFT_LEFT);
+		ExtendLeft = new Talon(STACKER_EXTEND_LEFT);
+		ExtendRight = new Talon(STACKER_EXTEND_RIGHT);
 		SwitchLeft = new DigitalInput(STACKER_SWITCH_LEFT);
 		SwitchRight = new DigitalInput(STACKER_SWITCH_RIGHT);
 
-		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT,1024,0);
-		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT,-1024,1024);
+		LiftPotRight = new AnalogPotentiometer(STACKER_LIFT_POT_RIGHT, 1024, 0);
+		LiftPotLeft = new AnalogPotentiometer(STACKER_LIFT_POT_LEFT, -1024, 1024);
 
 		CollectedTote = new DigitalInput(9);
 
@@ -50,18 +45,17 @@ public: //Used in all classes
 		PDP = PowerPanel;
 
 		AutoLiftPIDRight->SetAbsoluteTolerance(10);
-		AutoLiftPIDRight->SetInputRange(20,1024);
+		AutoLiftPIDRight->SetInputRange(20, 1024);
 		AutoLiftPIDRight->SetOutputRange(RIGHT_CAPS);
 
 		AutoLiftPIDLeft->SetAbsoluteTolerance(10);
-		AutoLiftPIDLeft->SetInputRange(20,1024);
+		AutoLiftPIDLeft->SetInputRange(20, 1024);
 		AutoLiftPIDLeft->SetOutputRange(LEFT_CAPS);
 
-		elevatorrampspeed           = 0.1;
-		extendrampspeed				= 0.1;
+		elevatorrampspeed = 0.1;
+		extendrampspeed = 0.1;
 		lastreleasedpressed = 0;
-		deadband            = 0.1;
-
+		deadband = 0.1;
 
 		oldelevatorspd = 0;
 		oldextendspeed = 0;
@@ -92,7 +86,7 @@ public: //Used in all classes
 		RightMagicSmoke = false;
 		DeadStack = false;
 
-}
+	}
 	//Declare master function
 	void Run(bool btngrab, bool autobtn, float pov, int up, int down, int extend, int retract);
 	void StackLeft(int lup, int ldown);
@@ -111,13 +105,13 @@ public: //Used in all classes
 	int currentlevel;
 	float DangerDiferance;
 
-
-private: //Only used in this class
+private:
+	//Only used in this class
 
 	//Declare variables
-	bool   lastreleasedpressed;
+	bool lastreleasedpressed;
 	float oldelevatorspd, oldextendspeed;
-	float elevatorrampspeed, extendrampspeed,deadband;
+	float elevatorrampspeed, extendrampspeed, deadband;
 	float targetPoint;
 	int state = 0;
 	float rightcurrentlevel, leftcurrentlevel;
@@ -146,8 +140,8 @@ private: //Only used in this class
 	void CurrentLevel();
 	void MotorDanger();
 	Relay* Flaps;
-	Victor*   LiftRight, *LiftLeft;
-	Talon*   ExtendLeft, *ExtendRight;
+	Victor* LiftRight, *LiftLeft;
+	Talon* ExtendLeft, *ExtendRight;
 	DigitalInput* SwitchLeft, *SwitchRight, *CollectedTote;
 	AnalogPotentiometer* LiftPotRight, *LiftPotLeft;
 	PIDController* AutoLiftPIDRight, *AutoLiftPIDLeft;

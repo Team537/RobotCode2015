@@ -9,7 +9,7 @@
 #include "Hoarder.h"
 #include "AutoSelect.h"
 
-class SimpleAutonomous : public AutoSelect{
+class SimpleAutonomous: public AutoSelect {
 
 private:
 	Timer *Autotime;
@@ -17,12 +17,11 @@ private:
 	float GyroOffset;
 
 public:
-	SimpleAutonomous ()
-{
+	SimpleAutonomous() {
 		Autotime = new Timer;
 		SimpleAutoSwitch = 0;
 		GyroOffset = 0;
-}
+	}
 	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
 	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
 	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);

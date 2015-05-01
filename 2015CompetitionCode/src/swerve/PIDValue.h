@@ -4,13 +4,11 @@
 #include "schematic.h"
 #include "wpilib.h"
 
-class PIDValue
-{
+class PIDValue {
 private:
-	
-	
+
 public:
-	PIDValue(float p,float i, float d, float mininput, float maxinput, float minoutput, float maxoutput){
+	PIDValue(float p, float i, float d, float mininput, float maxinput, float minoutput, float maxoutput) {
 		P = p;
 		I = i;
 		D = d;
@@ -18,7 +16,7 @@ public:
 		MAXInput = maxinput;
 		MINOutput = minoutput;
 		MaxOutput = maxoutput;
-		
+
 	}
 
 	float P;

@@ -85,14 +85,12 @@
 
 //Have Back  Modules as Replacements
 
-
 //Drive train Velocity PID's on Capn hook
 
 #define PID_FRONT_LEFT_VELOCITY		 	.04, 0, 0, 0
 #define PID_FRONT_RIGHT_VELOCITY		.04, 0, 0, 0
 #define PID_BACK_LEFT_VELOCITY			.04, 0, 0, 0
 #define PID_BACK_RIGHT_VELOCITY 		.04, 0, 0, 0
-
 
 //Drive train Velocity PID's on Dragon
 //#define PID_FRONT_LEFT_VELOCITY 		.04, 0.0, 0.0, .5/515.808

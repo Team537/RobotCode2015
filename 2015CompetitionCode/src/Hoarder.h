@@ -1,32 +1,24 @@
-//Define header file
 #ifndef HOARDER_H
 #define HOARDER_H
 
-//Dependencies
 #include "WPILib.h"
 #include "Schematic.h"
 
-//Hoarder class constructor
 class Hoarder {
-
-public: //Used in all classes
-	Hoarder()
-{
+public:
+	Hoarder() {
 		pistonextend = new Solenoid(HOARDER);
 		lastpressed = 0;
-}
-	//Declare functions
+	}
+
 	void hoard(int btnhoard);
 	void initialize();
 	void Extend();
 	void Retract();
 
-private: //Only used in this class
-
-	//Declare variables
+private:
 	Solenoid *pistonextend;
 	bool lastpressed;
-
 };
 
 #endif

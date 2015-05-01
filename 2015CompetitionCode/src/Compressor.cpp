@@ -1,17 +1,14 @@
 #include "Compressor.h"
 #include "Schematic.h"
 
-void CompressorManager::checkCompressor()
-{
-	if (preassureswitch->Get() == 1)
-	{
+void CompressorManager::checkCompressor() {
+	if (preassureswitch->Get() == 1) {
 		comp->Set(Relay::Value::kOff);
-	}
-	else
+	} else {
 		comp->Set(Relay::Value::kOn);
+	}
 }
 
-int CompressorManager::getPressureSwitch()
-{
+int CompressorManager::getPressureSwitch() {
 	return preassureswitch->Get();
 }

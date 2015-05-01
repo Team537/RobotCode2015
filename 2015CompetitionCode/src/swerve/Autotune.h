@@ -3,32 +3,31 @@
 #define LIBRARY_VERSION	0.0.1
 #include "WPILib.h"
 
-class PID_ATune
-{
+class PID_ATune {
 
+public:
+	PID_ATune(); // Constructor. Links the Autotune to a given PID.
 
-  public:
-  //commonly used functions **************************************************************************
-    PID_ATune();                       	// * Constructor.  links the Autotune to a given PID
-    void InitializeRuntime(float);
-    int Runtime(float,float);						   			   	// * Similar to the PID Compue function, returns non 0 when done
-	void Cancel();									   	// * Stops the AutoTune					   	//
+	void InitializeRuntime(float); // Initialize working variables the first run.
+	int Runtime(float, float); // Similar to the PID Compute function, returns non 0 when done.
+	void Cancel(); // Stops the AutoTune.
 
-	void SetControlType(int); 						   	// * Determies if the tuning parameters returned will be PI (D=0)
-	int GetControlType();							   	//   or PID.  (0=PI, 1=PID)
+	void SetControlType(int); // Determines if the tuning parameters returned will be PI (D=0) or PID. (0=PI, 1=PID).
+	int GetControlType(); // Returns ControlType.
 
-	void SetLookbackSec(int);							// * how far back are we looking to identify peaks
-	int GetLookbackSec();								//
+	void SetLookbackSec(int); // How far back are we looking to identify peaks.
+	int GetLookbackSec(); // Returns LookBack * SampleTime.
 
-	void SetNoiseBand(float);							// * the autotune will ignore signal chatter smaller than this value
-	double GetNoiseBand();								//   this should be acurately set
+	void SetNoiseBand(float); // The autotune will ignore signal chatter smaller than this value.
+	double GetNoiseBand(); // This should be accurately set.
 
-	double GetKp();										// * once autotune is complete, these functions contain the
-	double GetKi();										//   computed tuning parameters.
-	double GetKd();										//
+	// Once autotune is complete, these functions contain the computed tuning parameters.
+	double GetKp();
+	double GetKi();
+	double GetKd();
 
-  private:
-    void FinishUp();
+private:
+	void FinishUp();
 	bool isMax, isMin;
 	Timer watchclock;
 	float noiseBand;
@@ -40,14 +39,14 @@ class PID_ATune
 	int nLookBack;
 	int peakType;
 	float lastInputs[101];
-    float peaks[10];
+	float peaks[10];
 	int peakCount;
 	bool justchanged;
 	bool justevaled;
 	float absMax, absMin;
 	float Ku, Pu;
 	int i;
-
 };
+
 #endif
 

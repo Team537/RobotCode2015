@@ -2,9 +2,8 @@
 #include "SwerveModule.h"
 #include "cmath"
 
-void SwerveModule::Initialize()
-{
-	//SmartDashboard::PutData("Angle PID", PIDAngle);
+void SwerveModule::Initialize() {
+	// SmartDashboard::PutData("Angle PID", PIDAngle);
 	PIDAngle->Disable();
 	PIDAngle->Reset();
 	PIDAngle->Disable();
@@ -12,145 +11,140 @@ void SwerveModule::Initialize()
 	SpeedEncoder->Reset();
 }
 
-void SwerveModule::drive(float angle, float speed)
-{
+void SwerveModule::drive(float angle, float speed) {
 	SpeedEncoder->SetPIDSourceParameter(PIDSource::kRate);
-	if (fabs(angle) < JOYDEADBAND)
-	{
+	if (fabs(angle) < JOYDEADBAND) {
 		angle = 0;
 	}
 
-	if (fabs(speed) < JOYDEADBAND)
-	{
+	if (fabs(speed) < JOYDEADBAND) {
 		speed = 0;
 	}
 
-	//SmartDashboard::PutNumber(Name + "crate", crate);
-	//SmartDashboard::PutNumber(Name + "max encoder rate", maxencrate);
-	//AngleOutput->Set(angle);
-	SpeedOutput->Set(.6*speed);
-	//SmartDashboard::PutNumber(Name+ "Potentiometer", AnglePotentiometer->PIDGet());
-	//PIDDrive->SetSetpoint(.5*speed*MaxRate);
-	SmartDashboard::PutNumber(Name+" Encoder", SpeedEncoder->GetRate());
-	SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
-	//SmartDashboard::PutNumber("Angle IO",angle);
-	//SmartDashboard::PutNumber("Speed IO",speed);
-	//SmartDashboard::PutNumber("angle", angle);
+	/*SmartDashboard::PutNumber(Name + "crate", crate);
+	SmartDashboard::PutNumber(Name + "max encoder rate", maxencrate);
+	AngleOutput->Set(angle);*/
+	SpeedOutput->Set(.6 * speed);
+	/*SmartDashboard::PutNumber(Name+ "Potentiometer", AnglePotentiometer->PIDGet());
+	PIDDrive->SetSetpoint(.5*speed*MaxRate);*/
+	SmartDashboard::PutNumber(Name + " Encoder", SpeedEncoder->GetRate());
+	SmartDashboard::PutNumber(Name + "Potentiometer", AnglePotentiometer->Get());
+	/*SmartDashboard::PutNumber("Angle IO",angle);
+	SmartDashboard::PutNumber("Speed IO",speed);
+	SmartDashboard::PutNumber("angle", angle);*/
 }
 
-void SwerveModule::AutoDrive(float Angle)
-{
-	Angle = (Angle/360)*330 + 15;
-	//SmartDashboard::PutNumber(Name+"actual I",((PIDAngle->GetI())*1000));
+void SwerveModule::AutoDrive(float Angle) {
+	Angle = (Angle / 360) * 330 + 15;
+	// SmartDashboard::PutNumber(Name+"actual I",((PIDAngle->GetI())*1000));
 	Angle += Offset;
 	Angle += range;
-	if (Angle > MAX)
+
+	if (Angle > MAX) {
 		Angle -= range;
-	if (Angle < MIN)
+	} if (Angle < MIN) {
 		Angle += range;
-	SmartDashboard::PutNumber(Name+ "Angle Setpoint pre cap", Angle);
-/*	if(Angle > 300)
-		Angle = 300;
-	if (Angle < 90)
-		Angle = 90;*/
+	}
+
+	SmartDashboard::PutNumber(Name + "Angle Setpoint pre cap", Angle);
+	/* if(Angle > 300) {
+	 	 Angle = 300;
+	 } if (Angle < 90) {
+	 	 Angle = 90;
+	 }*/
+
 	PIDAngle->Enable();
 	OldSetpoint = Angle;
 	PIDAngle->SetSetpoint(Angle);
 	target = PIDAngle->Get();
 	//SmartDashboard::PutNumber(Name+ "PID output", target);
-	SmartDashboard::PutNumber(Name+ "Potentiometer", AnglePotentiometer->PIDGet());
+	SmartDashboard::PutNumber(Name + "Potentiometer", AnglePotentiometer->PIDGet());
 	//SmartDashboard::PutNumber(Name+ "Angle Error", PIDAngle->GetError());*/
-	SmartDashboard::PutNumber(Name+ "Angle Setpoint", PIDAngle->GetSetpoint());
+	SmartDashboard::PutNumber(Name + "Angle Setpoint", PIDAngle->GetSetpoint());
 	//SmartDashboard::PutBoolean(Name+ "Angle Target", PIDAngle->OnTarget());
-	SmartDashboard::PutNumber(Name+ "Angle Error2", PIDAngle->GetError());
+	SmartDashboard::PutNumber(Name + "Angle Error2", PIDAngle->GetError());
 }
 
-void SwerveModule::PIDAdjust(float P, float I, float D)
-{
+void SwerveModule::PIDAdjust(float P, float I, float D) {
 	/*SmartDashboard::PutNumber(Name+ "P", PIDAngle->GetP()*1000);
-	SmartDashboard::PutNumber(Name+ "I", ((PIDAngle->GetI())*1000));
-	SmartDashboard::PutNumber(Name+ "D", PIDAngle->GetD()*1000);*/
-	SmartDashboard::PutNumber(Name+ "setpoint offset", offSet);
+	 SmartDashboard::PutNumber(Name+ "I", ((PIDAngle->GetI())*1000));
+	 SmartDashboard::PutNumber(Name+ "D", PIDAngle->GetD()*1000);*/
+	SmartDashboard::PutNumber(Name + "setpoint offset", offSet);
 	PIDAngle->SetPID(P, I, D);
 }
 
-bool SwerveModule::AtAngle()
-{
+bool SwerveModule::AtAngle() {
 	return PIDAngle->OnTarget();
 }
-float SwerveModule::ReadPot(){
-	//SmartDashboard::PutNumber(Name+ " Initial Pot Reading", AnglePotentiometer->PIDGet());
+
+float SwerveModule::ReadPot() {
+	// SmartDashboard::PutNumber(Name+ " Initial Pot Reading", AnglePotentiometer->PIDGet());
 	return AnglePotentiometer->PIDGet();
-	
 }
-void SwerveModule::Reset()
-{
+
+void SwerveModule::Reset() {
 	PIDAngle->Reset();
 }
 
-void SwerveModule::DisablePID()
-{
+void SwerveModule::DisablePID() {
 	PIDAngle->Disable();
 }
-void SwerveModule::offSetAdjust(int a, int b){
-	if (a)
-	{
+
+void SwerveModule::offSetAdjust(int a, int b) {
+	if (a) {
 		offSet += 1;
 	}
-	if (b)
-	{
+
+	if (b) {
 		offSet -= 1;
 	}
 }
-PIDController* SwerveModule::GetAnglePID()
-{
+
+PIDController* SwerveModule::GetAnglePID() {
 	return PIDAngle;
 }
-void SwerveModule::PIDAuto(float distance)
-{
+
+void SwerveModule::PIDAuto(float distance) {
 	SpeedEncoder->SetPIDSourceParameter(PIDSource::kDistance);
 	PIDDriveDistance->Enable();
 	PIDDriveDistance->SetSetpoint(distance);
-	SmartDashboard::PutNumber(Name +" PID Error Distance", PIDDriveDistance->GetError());
+	SmartDashboard::PutNumber(Name + " PID Error Distance", PIDDriveDistance->GetError());
 }
-bool SwerveModule::GetDistancePID()
-{
+
+bool SwerveModule::GetDistancePID() {
 	return PIDDriveDistance->OnTarget();
 }
 
-void SwerveModule::DistancePIDDisable()
-{
+void SwerveModule::DistancePIDDisable() {
 	PIDDriveDistance->Disable();
 }
 
-void SwerveModule::DashboardLoop()
-{
+void SwerveModule::DashboardLoop() {
 	watch.Start();
-	if(watch.Get() > .25)
-	{
+
+	if (watch.Get() > .25) {
 		SmartDashboard::PutBoolean("Distance on Target", PIDDriveDistance->OnTarget());
-		//SmartDashboard::PutNumber(Name+ " Initial Pot Reading", AnglePotentiometer->PIDGet());
-		/*SmartDashboard::PutNumber(Name+ "P", PIDAngle->GetP()*1000);
+		/* SmartDashboard::PutNumber(Name+ " Initial Pot Reading", AnglePotentiometer->PIDGet());
+		SmartDashboard::PutNumber(Name+ "P", PIDAngle->GetP()*1000);
 		SmartDashboard::PutNumber(Name+ "I", ((PIDAngle->GetI())*1000));
-		SmartDashboard::PutNumber(Name+ "D", PIDAngle->GetD()*1000);*/
-		//SmartDashboard::PutNumber(Name+ "PID output", target);
-		SmartDashboard::PutNumber(Name+ "Potentiometer", AnglePotentiometer->PIDGet());
+		SmartDashboard::PutNumber(Name+ "D", PIDAngle->GetD()*1000);
+		SmartDashboard::PutNumber(Name+ "PID output", target);*/
+		SmartDashboard::PutNumber(Name + "Potentiometer", AnglePotentiometer->PIDGet());
 		//SmartDashboard::PutNumber(Name+ "Angle Error", PIDAngle->GetError());*/
-		SmartDashboard::PutNumber(Name+ "Angle Setpoint", PIDAngle->GetSetpoint());
+		SmartDashboard::PutNumber(Name + "Angle Setpoint", PIDAngle->GetSetpoint());
 		//SmartDashboard::PutBoolean(Name+ "Angle Target", PIDAngle->OnTarget());
-		SmartDashboard::PutNumber(Name+ "Angle Error2", PIDAngle->GetError());
-		SmartDashboard::PutNumber(Name+ "setpoint offset", offSet);
-		//PIDDrive->SetSetpoint(.5*speed*MaxRate);
-		//SmartDashboard::PutNumber("Encoder", SpeedEncoder->GetRate());
-		//SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
-		//SmartDashboard::PutNumber("Angle IO",angle);
-		//SmartDashboard::PutNumber("Speed IO",speed);
-		//SmartDashboard::PutNumber("angle", angle);
-		//SmartDashboard::PutNumber(Name + "crate", crate);
-		//SmartDashboard::PutNumber(Name + "max encoder rate", maxencrate);
-		//AngleOutput->Set(angle);
+		SmartDashboard::PutNumber(Name + "Angle Error2", PIDAngle->GetError());
+		SmartDashboard::PutNumber(Name + "setpoint offset", offSet);
+		/*PIDDrive->SetSetpoint(.5*speed*MaxRate);
+		SmartDashboard::PutNumber("Encoder", SpeedEncoder->GetRate());
+		SmartDashboard::PutNumber(Name +"Potentiometer", AnglePotentiometer->Get());
+		SmartDashboard::PutNumber("Angle IO",angle);
+		SmartDashboard::PutNumber("Speed IO",speed);
+		SmartDashboard::PutNumber("angle", angle);
+		SmartDashboard::PutNumber(Name + "crate", crate);
+		SmartDashboard::PutNumber(Name + "max encoder rate", maxencrate);
+		AngleOutput->Set(angle);*/
 		watch.Stop();
 		watch.Reset();
 	}
 }
-

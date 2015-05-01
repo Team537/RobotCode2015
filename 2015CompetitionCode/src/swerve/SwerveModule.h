@@ -8,8 +8,7 @@
 #include <ctime>
 #include <string>
 
-class SwerveModule
-{
+class SwerveModule {
 private:
 	Victor *SpeedOutput, *AngleOutput;
 	Encoder *SpeedEncoder;
@@ -19,24 +18,24 @@ private:
 	PIDController *PIDDrive;
 	PIDController *PIDDriveDistance;
 	std::string Name;
-	float range,MIN,MAX,Offset;
+	float range, MIN, MAX, Offset;
 	float OldSetpoint;
 	float target;
 	Timer watch;
 	double MaxRate;
+
 public:
-	SwerveModule(uint32_t SpeedPort, uint32_t AngPort, uint32_t EncPort1, uint32_t EncPort2,uint32_t PotPort, PIDValue *AnglePIDValues, PIDDriveValue *DrivePIDValues, PIDDistance *DistancePIDValues,std::string name, float offset, double MAXRate, float OFFSETsetpoint)
-	{
+	SwerveModule(uint32_t SpeedPort, uint32_t AngPort, uint32_t EncPort1, uint32_t EncPort2, uint32_t PotPort, PIDValue *AnglePIDValues, PIDDriveValue *DrivePIDValues, PIDDistance *DistancePIDValues, std::string name, float offset, double MAXRate, float OFFSETsetpoint) {
 		SpeedOutput = new Victor(SpeedPort);
-		SpeedEncoder = new Encoder(EncPort1,EncPort2, false, Encoder::EncodingType::k4X);
+		SpeedEncoder = new Encoder(EncPort1, EncPort2, false, Encoder::EncodingType::k4X);
 		AngleOutput = new Victor(AngPort);
-		AnglePotentiometer = new DoublePot(PotPort,360,0, AnglePIDValues->MINInput, AnglePIDValues->MAXInput,0, name);
+		AnglePotentiometer = new DoublePot(PotPort, 360, 0, AnglePIDValues->MINInput, AnglePIDValues->MAXInput, 0, name);
 		Name = name;
-		PIDAngle = new PIDController(AnglePIDValues->P,AnglePIDValues->I,AnglePIDValues->D,AnglePotentiometer,AngleOutput, .025);
-		PIDDrive = new PIDController(DrivePIDValues->P,DrivePIDValues->I,DrivePIDValues->D,SpeedEncoder,SpeedOutput);
-		PIDDriveDistance = new PIDController(DistancePIDValues->P,DistancePIDValues->I,DistancePIDValues->D,SpeedEncoder,SpeedOutput);
-		PIDDrive->SetPID(DrivePIDValues->P,DrivePIDValues->I,DrivePIDValues->D,DrivePIDValues->F);
-		PIDAngle->SetInputRange(AnglePIDValues->MINInput,AnglePIDValues->MAXInput);
+		PIDAngle = new PIDController(AnglePIDValues->P, AnglePIDValues->I, AnglePIDValues->D, AnglePotentiometer, AngleOutput, .025);
+		PIDDrive = new PIDController(DrivePIDValues->P, DrivePIDValues->I, DrivePIDValues->D, SpeedEncoder, SpeedOutput);
+		PIDDriveDistance = new PIDController(DistancePIDValues->P, DistancePIDValues->I, DistancePIDValues->D, SpeedEncoder, SpeedOutput);
+		PIDDrive->SetPID(DrivePIDValues->P, DrivePIDValues->I, DrivePIDValues->D, DrivePIDValues->F);
+		PIDAngle->SetInputRange(AnglePIDValues->MINInput, AnglePIDValues->MAXInput);
 		PIDAngle->SetOutputRange(AnglePIDValues->MINOutput, AnglePIDValues->MaxOutput);
 		PIDAngle->SetAbsoluteTolerance(20);
 		potfeedbackmin = 100;
@@ -50,7 +49,7 @@ public:
 		lasttrigger = 0;
 		range = MAX - MIN;
 		OldSetpoint = 165;
-		target  = 0;
+		target = 0;
 		Oldreading = 165;
 		firsttime = true;
 		SpeedEncoder->SetDistancePerPulse(.023271056296296);
@@ -58,6 +57,7 @@ public:
 		offSet = OFFSETsetpoint;
 		PIDDriveDistance->SetTolerance(5);
 	}
+
 	void Initialize();
 	void drive(float angle, float speed);
 	void AutoDrive(float Angle);
@@ -79,4 +79,5 @@ public:
 	void DistancePIDDisable();
 	void DashboardLoop();
 };
+
 #endif

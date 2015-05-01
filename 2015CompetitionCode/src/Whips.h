@@ -3,12 +3,10 @@
 
 #include "WPIlib.h"
 
-class Whips
-{
-	public:
+class Whips {
+public:
 
-	Whips()
-	{
+	Whips() {
 		//LeftWhip = new CANTalon(4);
 		RightWhip = new CANTalon(5);
 		//LeftClaw = new Solenoid(3);
@@ -28,8 +26,8 @@ class Whips
 	void TeleWhips(int WhipsToggle);
 	void EndClaws(int ClawToggle);
 private:
-	CANTalon  *RightWhip;
-	Solenoid  *RightClaw;
+	CANTalon *RightWhip;
+	Solenoid *RightClaw;
 	double Stowed;
 	double Deployed;
 	bool drive;
@@ -37,10 +35,8 @@ private:
 	int lastpressedWhips;
 	int lastpressedClaws;
 
-
 	double Conversion(double, double);
 	double OppisiteConversion(double, double);
-
 
 };
 #endif

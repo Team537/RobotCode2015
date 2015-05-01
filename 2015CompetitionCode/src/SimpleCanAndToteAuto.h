@@ -8,8 +8,7 @@
 #include "Hoarder.h"
 #include "AutoSelect.h"
 
-
-class SimpleCanAndToteAutonomous : public AutoSelect{
+class SimpleCanAndToteAutonomous: public AutoSelect {
 
 private:
 	Timer *Autotime;

@@ -4,13 +4,11 @@
 #include "schematic.h"
 #include "wpilib.h"
 
-class PIDDriveValue
-{
+class PIDDriveValue {
 private:
 
-
 public:
-	PIDDriveValue(float p,float i, float d, float f, float rate){
+	PIDDriveValue(float p, float i, float d, float f, float rate) {
 		P = p;
 		I = i;
 		D = d;

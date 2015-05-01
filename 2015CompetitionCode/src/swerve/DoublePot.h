@@ -6,13 +6,13 @@
 
 #define OVERSAMPLE 2
 
-class DoublePot : public AnalogPotentiometer
-{
+class DoublePot: public AnalogPotentiometer {
 public:
-	explicit DoublePot(int channel, double fullRange, double offset,float min, float max, float Offset, std::string name);
+	explicit DoublePot(int channel, double fullRange, double offset, float min, float max, float Offset, std::string name);
 	double PIDGet();
 	double getAverage();
 	void addData(double);
+
 private:
 	bool alternater;
 	bool lastdeltasign;
@@ -23,8 +23,8 @@ private:
 	double accum;
 	double OFFSet;
 	std::string Name;
-
 	int oversampleAcc;
-	double data [OVERSAMPLE];
+	double data[OVERSAMPLE];
 };
+
 #endif

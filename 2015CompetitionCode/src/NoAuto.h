@@ -9,13 +9,12 @@
 #include "Hoarder.h"
 #include "AutoSelect.h"
 
-class NoAutonomous : public AutoSelect{
-
-
+class NoAutonomous: public AutoSelect {
 public:
-	NoAutonomous(){
+	NoAutonomous() {
 		GyroOffset = 0;
-		}
+	}
+
 	void Initialize(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
 	void Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
 	void End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro);
