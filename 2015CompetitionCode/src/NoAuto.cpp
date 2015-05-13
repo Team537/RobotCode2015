@@ -12,5 +12,4 @@ void NoAutonomous::Run(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, H
 }
 
 void NoAutonomous::End(Swerve *DriveTrain, Collector *Collect, Stacker *Stack, Hoarder *Hoard, Gyro *AutonomousGyro) {
-
 }
