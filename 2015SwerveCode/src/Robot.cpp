@@ -1,27 +1,29 @@
-#include <swerve/Swerve.h>
+#include <WPILib.h>
 #include <Schematic.h>
-#include "WPILib.h"
+#include <swerve/Swerve.h>
+
+/**
+ * --- Formatting Rules: ---
+ *
+ * Schematic Variables: All characters capitalized, and between words put underscores EXAMPLE: (EXAMPLE_SCHEMATIC).
+ * Header Variables: All characters capitalized, and between words put nothing EXAMPLE: (EXAMPLEHEADER).
+ * Function Arguments: All characters lowercased, and between words put nothing EXAMPLE: (exampleargument).
+ * Function Local Variables: Beginning of each word should be capitalized, and between words put nothing EXAMPLE: (ExampleVariable).
+ */
 
 class Robot: public IterativeRobot {
 private:
-	Joystick *PrimaryController, *SecondaryController;
-	//Gyro *AutoGyro;
-	PowerDistributionPanel *PDP;
-	LiveWindow *lw;
-	Swerve *swerve;
-	//CameraServer *camera;
+	Joystick *CONTROLLER;
+	LiveWindow *LW;
+	Gyro *GYRO;
+	Swerve *SWERVE;
 
 	void RobotInit() {
-		lw = LiveWindow::GetInstance();
-		//camera = CameraServer::GetInstance();
-		PDP = new PowerDistributionPanel;
-		//camera->StartAutomaticCapture("cam0");
-		PrimaryController = new Joystick(0);
-		SecondaryController = new Joystick(1);
-		//AutoGyro = new Gyro(0);
-		swerve = new Swerve(PrimaryController);
-
-		//AutoGyro->InitGyro();
+		CONTROLLER = new Joystick(0);
+		LW = LiveWindow::GetInstance();
+		GYRO = new Gyro(0);
+		GYRO->InitGyro();
+		SWERVE = new Swerve(CONTROLLER, LW, GYRO);
 	}
 
 	void AutonomousInit() {
@@ -31,19 +33,26 @@ private:
 	}
 
 	void TeleopInit() {
-		swerve->Initialize();
+		SWERVE->Initialize();
 	}
 
 	void TeleopPeriodic() {
-		swerve->Run();
+		if (TUNING_DRIVE_PID) {
+			SWERVE->Tune();
+		} else {
+			SWERVE->Run();
+		}
+
+		SmartDashboard::PutNumber("Gyro", GYRO->GetAngle());
 	}
 
+	// TODO: Could we devote test mode to PID tuning?
 	void TestInit() {
-		swerve->Initialize();
+		SWERVE->Initialize();
 	}
 
 	void TestPeriodic() {
-		// swerve->Tune();
+		//swerve->Tune();
 	}
 };
 

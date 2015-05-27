@@ -1,22 +1,22 @@
 #ifndef PIDDISTANCE_H
 #define PIDDISTANCE_H
 
+#include <WPILib.h>
 #include <Schematic.h>
-#include "WPILib.h"
 
 class PIDDistance {
-private:
-
 public:
+	float P, I, D;
+
+	/**
+	 * PIDDistance Constructor. Needs to be given these arguments:
+	 * (p, i, d)
+	 */
 	PIDDistance(float p, float i, float d) {
 		P = p;
 		I = i;
 		D = d;
 	}
-
-	float P;
-	float I;
-	float D;
 };
 
 #endif

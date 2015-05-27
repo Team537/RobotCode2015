@@ -1,30 +1,27 @@
 #ifndef DOUBLEPOT_H
 #define DOUBLEPOT_H
 
+#include <cmath>
+#include <WPIlib.h>
 #include <Schematic.h>
-#include "WPILib.h"
 
 #define OVERSAMPLE 2
 
 class DoublePot: public AnalogPotentiometer {
 private:
-	bool alternater;
-	bool lastdeltasign;
-	double lastval;
-	float Min;
-	float Max;
-	int counter;
-	double accum;
-	double OFFSet;
-	std::string Name;
-	int oversampleAcc;
-	double data[OVERSAMPLE];
+	bool ALTERNATER, LASTDELTASIGN;
+	double LASTVALUE;
+	float MIN, MAX;
+	int COUNTER;
+	double ACCUM, OFFSET;
+	std::string NAME;
+	int OVERSAMPLEACC;
+	double DATA[OVERSAMPLE];
 
 public:
-	explicit DoublePot(int channel, double fullRange, double offset, float min, float max, float Offset, std::string name);
+	explicit DoublePot(int channel, double fullrange, float min, float max, float offset, std::string name);
 	double PIDGet();
-	double getAverage();
-	void addData(double);
+	double GetAverage();
 };
 
 #endif

@@ -1,31 +1,26 @@
 #ifndef PIDVALUE_H
 #define PIDVALUE_H
 
+#include <WPILib.h>
 #include <Schematic.h>
-#include "WPILib.h"
 
 class PIDValue {
-private:
-
 public:
+	float P, I, D, MININPUT, MAXINPUT, MINOUTPUT, MaxOUTPUT;
+
+	/**
+	 * PIDValue Constructor. Needs to be given these arguments:
+	 * (p, i, d, mininput, maxinput, minoutput, maxoutput)
+	 */
 	PIDValue(float p, float i, float d, float mininput, float maxinput, float minoutput, float maxoutput) {
 		P = p;
 		I = i;
 		D = d;
-		MINInput = mininput;
-		MAXInput = maxinput;
-		MINOutput = minoutput;
-		MaxOutput = maxoutput;
-
+		MININPUT = mininput;
+		MAXINPUT = maxinput;
+		MINOUTPUT = minoutput;
+		MaxOUTPUT = maxoutput;
 	}
-
-	float P;
-	float I;
-	float D;
-	float MINInput;
-	float MAXInput;
-	float MINOutput;
-	float MaxOutput;
 };
 
 #endif
