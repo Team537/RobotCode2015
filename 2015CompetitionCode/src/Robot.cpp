@@ -118,10 +118,10 @@ private:
 		Collect->LimitSwitch();
 
 		// Comment this out when running a funtionality:
-		/*Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
-		Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
-		Stack->Tune(PrimaryController->GetRawButton(8),PrimaryController->GetRawButton(7),PrimaryController->GetRawButton(5),PrimaryController->GetRawButton(3),PrimaryController->GetRawButton(10),PrimaryController->GetRawButton(9),PrimaryController->GetRawButton(12),PrimaryController->GetRawButton(11),PrimaryController->GetRawButton(1), PrimaryController->GetRawButton(2));
-		swerve->Tune();*/
+		//Stack->StackLeft(SecondaryController->GetRawButton(5), SecondaryController->GetRawButton(7));
+		//Stack->StackRight(SecondaryController->GetRawButton(6), SecondaryController->GetRawButton(8));
+		//Stack->Tune(PrimaryController->GetRawButton(8),PrimaryController->GetRawButton(7),PrimaryController->GetRawButton(5),PrimaryController->GetRawButton(3),PrimaryController->GetRawButton(10),PrimaryController->GetRawButton(9),PrimaryController->GetRawButton(12),PrimaryController->GetRawButton(11),PrimaryController->GetRawButton(1), PrimaryController->GetRawButton(2));
+		//swerve->Tune();
 
 		SmartDashboard::PutNumber("Right Stack Current", PDP->GetCurrent(10));
 		SmartDashboard::PutNumber("Left Stack Current", PDP->GetCurrent(9));

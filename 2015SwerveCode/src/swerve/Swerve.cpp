@@ -40,8 +40,8 @@ void Swerve::Run() {
 	//double GRO = GYRO->GetAngle(); // The robot gyroscope angle.
 
 	// It doesn't matter what measurement units are used for L and W, since only the ratios will be used in the calculations.
-	double L = 40; // The robots wheelbase.
-	double W = 40; // The robots trackwidth.
+	double L = 36.5; // The robots wheelbase.
+	double W = 22; // The robots trackwidth.
 	double R = sqrt((L * L) + (W * W));  // The robot length and width ratio.
 
 	// Field Orientation.

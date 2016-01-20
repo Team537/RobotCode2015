@@ -50,10 +50,10 @@ void Swerve::Run() {
 	// Get Spin Axis.
 	if (SetSpinMode || SpinMode) {
 		SpinMode = true;
-		FrontLeftMod->AutoDrive(329.3);
+		FrontLeftMod->AutoDrive(320);
 		FrontRightMod->AutoDrive(30.7);
 		BackLeftMod->AutoDrive(30.7);
-		BackRightMod->AutoDrive(329.3);
+		BackRightMod->AutoDrive(320);
 
 		if (FrontRightMod->AtAngle() && BackRightMod->AtAngle() && FrontLeftMod->AtAngle() && BackLeftMod->AtAngle() && SetSpinMode) {
 			// Comp
@@ -151,43 +151,46 @@ void Swerve::Tune() {
 	if (newtime.Get() >= .25) {
 		if (Controller->GetRawButton(7) == 1) {
 			p -= .0001;
-			BackRightMod->Reset();
+			FrontLeftMod->Reset();
 		}
 
 		if (Controller->GetRawButton(8) == 1) {
 			p += .0001;
-			BackRightMod->Reset();
+			FrontLeftMod->Reset();
 		}
 
 		if (Controller->GetRawButton(9) == 1) {
 			i -= .000001;
-			BackRightMod->Reset();
+			FrontLeftMod->Reset();
 		}
 
 		if (Controller->GetRawButton(10) == 1) {
 			i += .000001;
-			BackRightMod->Reset();
+			FrontLeftMod->Reset();
 		}
 
 		if (Controller->GetRawButton(3) == 1) {
 			i -= .00001;
-			BackRightMod->Reset();
+			FrontLeftMod->Reset();
 		}
 
 		if (Controller->GetRawButton(5) == 1) {
 			i += .00001;
-			BackRightMod->Reset();
+			FrontLeftMod->Reset();
 		}
 
 		if (Controller->GetRawButton(11) == 1) {
 			d -= .0001;
-			BackRightMod->Reset();
+			FrontLeftMod->Reset();
 		}
 
 		if (Controller->GetRawButton(12) == 1) {
 			d += .0001;
 			FrontLeftMod->Reset();
 		}
+		SmartDashboard::PutNumber("P", p);
+		SmartDashboard::PutNumber("I", i);
+		SmartDashboard::PutNumber("D", d);
 
 		FrontLeftMod->offSetAdjust(Controller->GetRawButton(4), Controller->GetRawButton(6));
 		newtime.Stop();

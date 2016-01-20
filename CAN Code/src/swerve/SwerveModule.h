@@ -1,0 +1,87 @@
+#ifndef SWERVEMODULE_H
+#define SWERVEMODULE_H
+#include <swerve/PIDValue.h>
+#include <swerve/PIDDriveValue.h>
+#include <swerve/PIDDistance.h>
+#include "DoublePot.h"
+#include <wpilib.h>
+#include <ctime>
+#include <string>
+
+class SwerveModule {
+private:
+	CANTalon *SpeedOutput, *AngleOutput;
+	Encoder *SpeedEncoder;
+	DoublePot *AnglePotentiometer;
+	double potfeedbackmin, potfeedbackmax;
+	PIDController *PIDAngle;
+	PIDController *PIDDrive;
+	PIDController *PIDDriveDistance;
+	std::string Name;
+	float range, MIN, MAX, Offset;
+	float OldSetpoint;
+	float target;
+	Timer watch;
+	double MaxRate;
+
+public:
+	SwerveModule(uint32_t SpeedPort, uint32_t AngPort, uint32_t EncPort1, uint32_t EncPort2, uint32_t PotPort, PIDValue *AnglePIDValues, PIDDriveValue *DrivePIDValues, PIDDistance *DistancePIDValues, std::string name, float offset, double MAXRate, float OFFSETsetpoint) {
+		SpeedOutput = new CANTalon(SpeedPort);
+		AngleOutput->SetControlMode(CANTalon::ControlMode::kPercentVbus);
+		SpeedEncoder = new Encoder(EncPort1, EncPort2, false, Encoder::EncodingType::k4X);
+		AngleOutput = new CANTalon(AngPort);
+		AngleOutput->SetControlMode(CANTalon::ControlMode::kPosition);
+		AnglePotentiometer = new DoublePot(PotPort, 360, 0, AnglePIDValues->MINInput, AnglePIDValues->MAXInput, 0, name);
+		Name = name;
+		PIDAngle = new PIDController(AnglePIDValues->P, AnglePIDValues->I, AnglePIDValues->D, AnglePotentiometer, AngleOutput, .025);
+		PIDDrive = new PIDController(DrivePIDValues->P, DrivePIDValues->I, DrivePIDValues->D, SpeedEncoder, SpeedOutput);
+		PIDDriveDistance = new PIDController(DistancePIDValues->P, DistancePIDValues->I, DistancePIDValues->D, SpeedEncoder, SpeedOutput);
+		PIDDrive->SetPID(DrivePIDValues->P, DrivePIDValues->I, DrivePIDValues->D, DrivePIDValues->F);
+		PIDAngle->SetInputRange(AnglePIDValues->MINInput, AnglePIDValues->MAXInput);
+		PIDAngle->SetOutputRange(AnglePIDValues->MINOutput, AnglePIDValues->MaxOutput);
+		PIDAngle->SetAbsoluteTolerance(20);
+		potfeedbackmin = 100;
+		potfeedbackmax = 100;
+		PIDAngle->SetContinuous(true);
+		MIN = AnglePIDValues->MINInput;
+		MAX = AnglePIDValues->MAXInput;
+		toggle = true;
+		MaxRate = MAXRate;
+		Offset = offset;
+		lasttrigger = 0;
+		range = MAX - MIN;
+		OldSetpoint = 165;
+		target = 0;
+		Oldreading = 165;
+		firsttime = true;
+		SpeedEncoder->SetDistancePerPulse(.023271056296296);
+		maxencrate = 10;
+		offSet = OFFSETsetpoint;
+		PIDDriveDistance->SetTolerance(5);
+	}
+
+	void Initialize();
+	void drive(float speed);
+	void steer(float angle);
+	void offSetAdjust(int a, int b);
+	void PIDAdjust(float P, float I, float D);
+	bool AtAngle();
+	bool toggle;
+	float ReadPot();
+	int lasttrigger;
+	PIDController* GetAnglePID();
+	float Oldreading;
+	bool firsttime;
+	double maxencrate;
+	float offSet;
+	void Reset();
+	void DisablePID();
+	void PIDAuto(float distance);
+	bool GetDistancePID();
+	void DistancePIDDisable();
+	void DashboardLoop();
+	void shittydrive(float speed);
+	void shittyangle(float speed);
+};
+
+#endif

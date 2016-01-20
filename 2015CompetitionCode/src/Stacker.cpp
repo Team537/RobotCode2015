@@ -248,7 +248,7 @@ void Stacker::SetLevel(float SetPoint) {
 
 		if (SetPoint < 10) {
 			AutoLiftPIDLeft->SetSetpoint(20);
-			AutoLiftPIDRight->SetSetpoint(20);
+			AutoLiftPIDRight->SetSetpoint(30);
 		} else if (SetPoint > 10 && SetPoint < 850) {
 			AutoLiftPIDLeft->SetSetpoint(SetPoint + LeftOffset);
 			AutoLiftPIDRight->SetSetpoint(SetPoint);
@@ -330,8 +330,7 @@ bool Stacker::OnTarget() {
 }
 
 void Stacker::DashboardDisplay() {
-	Dashboardtime->Start();
-	if (Dashboardtime->Get() > .25) {
+
 		SmartDashboard::PutNumber("Right time", Righttime->Get());
 		SmartDashboard::PutNumber("Left time", Lefttime->Get());
 		SmartDashboard::PutNumber("Stacker P", p);
@@ -353,9 +352,7 @@ void Stacker::DashboardDisplay() {
 		SmartDashboard::PutNumber("Automatic Stacker State", state);
 		SmartDashboard::PutNumber("level", level);
 		SmartDashboard::PutNumber("Current Stacker Level", currentlevel);
-		Dashboardtime->Stop();
-		Dashboardtime->Reset();
-	}
+
 }
 
 void Stacker::MotorDanger() {

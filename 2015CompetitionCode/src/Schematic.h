@@ -119,7 +119,7 @@
 #define CAN 	150
 
 //Stacker Speed on Cap'n Hook
-#define LEFT_CAPS		-1,.9
+#define LEFT_CAPS		-1,1
 #define RIGHT_CAPS	-1,1
 
 //Stacker Speed on Dragon

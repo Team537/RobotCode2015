@@ -69,7 +69,7 @@ public:
 		lefttargetlevel = 0;
 		rightelevatormax = 900;
 		leftelevatormax = 900;
-		rightelevatormin = 15;
+		rightelevatormin = 40;
 		leftelevatormin = 15;
 		lastpov = -1;
 		lastswitch = false;
@@ -123,7 +123,7 @@ private:
 	float p = .039;
 	float i = .000;
 	float d = .00;
-	float LeftOffset = 0;
+	float LeftOffset = -10;
 	int ExtendStateLeft, ExtendStateRight;
 	float extensionspeedleft, extensionspeedright;
 	int level;
