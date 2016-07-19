@@ -13,7 +13,7 @@ void SwerveModule::Initialize() {
  * Moves the wheels forward at the provided speed, limited by the max drive speed multiplier.
  */
 void SwerveModule::Drive(float speed) {
-	SPEEDENCODER->SetPIDSourceParameter(PIDSource::kRate);
+	SPEEDENCODER->SetPIDSourceType(PIDSourceType::kRate);
 
 	if (fabs(speed) < JOYSTICK_DEADBAND) {
 		speed = 0;
@@ -33,7 +33,7 @@ void SwerveModule::Drive(float speed) {
  * Autonomously drives the robot a set distance.
  */
 void SwerveModule::AutoDrive(float distance) {
-	SPEEDENCODER->SetPIDSourceParameter(PIDSource::kDistance);
+	SPEEDENCODER->SetPIDSourceType(PIDSourceType::kDisplacement);
 	PIDDriveDistance->Enable();
 	PIDDriveDistance->SetSetpoint(distance);
 

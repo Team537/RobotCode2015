@@ -15,13 +15,13 @@ class Robot: public IterativeRobot {
 private:
 	Joystick *CONTROLLER;
 	LiveWindow *LW;
-	Gyro *GYRO;
+	AnalogGyro *GYRO;
 	Swerve *SWERVE;
 
 	void RobotInit() {
 		CONTROLLER = new Joystick(0);
 		LW = LiveWindow::GetInstance();
-		GYRO = new Gyro(0);
+		GYRO = new AnalogGyro(0);
 		GYRO->InitGyro();
 		SWERVE = new Swerve(CONTROLLER, LW, GYRO);
 	}
